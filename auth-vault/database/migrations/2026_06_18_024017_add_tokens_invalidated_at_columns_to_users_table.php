@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_roles', function (Blueprint $table) {
-            $table->foreignUlid('user_id')->constrained('users','id')->cascadeOnDelete();
-            $table->foreignUlid('role_id')->constrained('roles','id')->cascadeOnDelete();
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+        Schema::table('users', function (Blueprint $table) {
+            $table->timestamp('tokens_invalidated_at')->nullable();
         });
-    }   
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_roles');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

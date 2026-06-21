@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
-#[Fillable(['email','ip_address','reason','failed_at'])]
-class LoginAttempt extends Model
+#[Fillable(['name'])]
+class Scope extends Model
 {
-
+    
     use HasUlids;
 
     public $timestamps = false;
-    
-}
 
+    public function roles(){
+        return $this->hasMany(Role::class);
+    }
+
+}

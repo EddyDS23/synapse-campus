@@ -12,15 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('audit_logs', function (Blueprint $table) {
+        Schema::create('service_clients', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->constrained('users','id')->cascadeOnDelete();
-            $table->string('action')->nullable(false);
-            $table->string('ip_address')->nullable(false);
-            $table->string('service')->nullable();
-            $table->string('resource_type')->nullable();
-            $table->string('resource_id')->nullable();
-            $table->json('metadata')->nullable();
+            $table->string('client_id')->unique();
+            $table->string('client_secret');
+            $table->string('name');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('audit_log');
+        Schema::dropIfExists('service_clients');
     }
 };

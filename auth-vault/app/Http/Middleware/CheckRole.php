@@ -13,12 +13,12 @@ class CheckRole
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next,string $role): Response
+    public function handle(Request $request, Closure $next,string ...$roles): Response
     {
 
         $user = $request->user();
 
-        if(!$user || !$user->roles->contains('name',$role) ){
+        if(!$user || !$user->roles->whereIn('name',$roles)->count()){
             return response()->json(['message'=>'Unauthorized'],403);
         }
 

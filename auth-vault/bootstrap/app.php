@@ -5,6 +5,9 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\CheckScope;
+use App\Http\Middleware\JWTCheck;
+use App\Http\Middleware\ServiceAuth;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,7 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo((fn()=>null));
         $middleware->alias([
-            'role'=> CheckRole::class,
+            'role'=>CheckRole::class,
+            'jwt_check'=>JWTCheck::class,
+            'service.auth'=>ServiceAuth::class,
+            'scope'=>CheckScope::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -13,11 +13,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('api_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users','id')->cascadeOnDelete();
-            $table->foreignId('token_id')->constrained('personal_access_tokens','id')->cascadeOnDelete();
+            $table->ulid('id')->primary();
+            $table->foreignUlid('user_id')->constrained('users','id')->cascadeOnDelete();
+            $table->string('jti')->unique();
             $table->string('ip_address')->nullable(false);
             $table->string('device')->nullable(false);
+            $table->timestamp('expires_at');
+            $table->string('refresh_token')->unique();
+            $table->timestamp('refresh_expires_at');
             $table->timestamp('last_use_at')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

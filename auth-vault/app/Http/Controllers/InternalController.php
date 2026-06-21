@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+
 use App\Models\User;
 
-class UserController extends Controller
+class InternalController extends Controller
 {
-
-    public function me(Request $request){
-        
-        $user = $request->user();
-
-        return response()->json([
-            "user"=>$user
-        ]);
-
-    }
-
-    public function securityStatus(Request $request, string $id){
+    
+    public function security_status(Request $request, string $id): JsonResponse{
 
         $user = User::where('id',$id)->first();
 
@@ -37,10 +29,10 @@ class UserController extends Controller
             'user_id'=>$user->id,
             'two_factor_enabled'=>$user->two_factor_enabled,
             'active_sessions'=> $active_sessions,
-            'last_login'=> $last_login->created_at ?? null,
+            'last_login'=> $last_login->created_at,
             'account_blocked'=> $user->unblocked_at !== null && $user->unblocked_at > now(),
         ],200);
 
-    }
+    }   
 
 }

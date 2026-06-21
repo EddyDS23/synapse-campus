@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('login_attempts', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('email')->nullable(false);
             $table->string('ip_address')->nullable(false);
             $table->string('reason');
