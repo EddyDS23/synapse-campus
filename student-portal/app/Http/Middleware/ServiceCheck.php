@@ -2,40 +2,38 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\AuthVaultKeyProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-use App\Services\AuthVaultKeyProvider;
-use Exception;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
 use UnexpectedValueException;
 
-class JWTCheck
+class ServiceCheck
 {
 
-    public function __construct(private AuthVaultKeyProvider $authkey){}
+    public function __construct(private AuthVaultKeyProvider $authKey){}
     /**
      * Handle an incoming request.
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next,string $scope): Response
     {
-
-
+        
         $token = $request->bearerToken();
 
         if($token === null){
             return response()->json(['message'=>'Bearer token not send'],401);
-        } 
+        }
 
         try {
-            $publicKey = $this->authkey->getPublicKey();
-        } catch (Exception $e) {
+            $publicKey = $this->authKey->getPublicKey();
+        } catch (\Exception $e) {
             return response()->json(['message'=>$e->getMessage()],503);
         }
 
@@ -50,20 +48,19 @@ class JWTCheck
         } catch(\Throwable $t){
             return response()->json(['message'=>'Error'],401);
         }
-
-        if($payload->aud !== 'student-portal'){
-            return response()->json(['message'=>'Bearer token invalid to this service'],403);
+        
+        $type = $payload->type ?? null;
+        if($type !== 'service'){
+            return response()->json(['message'=>'This token is invalid'],403);
         }
 
-        if($payload->sub === null){
-            return response()->json(['mmesage'=>'Bearer token incompleted',403]);
-        }
 
+        if(!in_array($scope,$payload->scopes,true)){
+            return response()->json(['message'=>'This token havent enought scopes'],403);
+        }
 
         $request->attributes->set('jwt_payload',$payload);
 
         return $next($request);
     }
 }
-
-

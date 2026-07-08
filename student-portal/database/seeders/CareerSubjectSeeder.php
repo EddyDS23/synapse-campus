@@ -68,13 +68,13 @@ class CareerSubjectSeeder extends Seeder
             ['career_id'=> $isc, 'subject_id'=> $subjects['ISC704'], 'semester'=> 7],
 
             // ISC - Semestre 8
-            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC801'], 'semester'=> 7],
-            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC802'], 'semester'=> 7],
-            ['career_id'=> $isc, 'subject_id'=> $subjects['GEN801'], 'semester'=> 7],
+            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC801'], 'semester'=> 8],
+            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC802'], 'semester'=> 8],
+            ['career_id'=> $isc, 'subject_id'=> $subjects['GEN801'], 'semester'=> 8],
 
             // ISC - Semestre 9
-            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC901'], 'semester'=> 7],
-            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC902'], 'semester'=> 7],
+            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC901'], 'semester'=> 9],
+            ['career_id'=> $isc, 'subject_id'=> $subjects['ISC902'], 'semester'=> 9],
         
             // LAE - Semestre 1
             ['career_id'=> $lae, 'subject_id'=> $subjects['LAE101'], 'semester'=> 1],

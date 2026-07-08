@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Middleware\CheckScope;
 use App\Http\Middleware\JWTCheck;
+use App\Http\Middleware\ServiceCheck;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn()=>null);
         $middleware->alias([
             'authvault.jwt'=>JWTCheck::class,
+            'scope.check'=>CheckScope::class,
+            'service.check'=>ServiceCheck::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
