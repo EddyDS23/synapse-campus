@@ -35,4 +35,23 @@ class InternalController extends Controller
 
     }   
 
+
+    public function basic_info(Request $request, string $teacherId):JsonResponse{
+
+        $user = User::where('id',$teacherId)->first();
+
+
+        if($user === null){
+            return response()->json([],404);
+        }
+
+        return response()->json([
+            'id'=>$teacherId,
+            'name'=>$user->name,
+            'email'=>$user->email
+        ],200);
+
+
+    }
+
 }

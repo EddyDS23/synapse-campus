@@ -6,10 +6,13 @@ use App\Models\Career;
 use Illuminate\Http\Request;
 
 use App\Models\StudentProfile;
+use App\Services\AuthVaultServiceClient;
 use Illuminate\Http\JsonResponse;
 
 class StudentController extends Controller
 {
+
+    public function __construct(private AuthVaultServiceClient $authService){}
     
     public function profile(Request $request): JsonResponse{
 
@@ -42,6 +45,7 @@ class StudentController extends Controller
             return response()->json(['This student havent profile'],404);
         }
         
+        
         $scheduleData = [];
 
         foreach($student_profile->sections as $section){
@@ -55,7 +59,7 @@ class StudentController extends Controller
                     'start_time'=>$schedule->start_time,
                     'end_time'=>$schedule->end_time,
                     'group'=>$group_label,
-                    'teacher'=>$teacher
+                    'teacher'=>$this->authService->resolveTeacherName($teacher)
                 ];
             }
         }

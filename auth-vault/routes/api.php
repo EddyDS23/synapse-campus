@@ -60,3 +60,7 @@ Route::middleware(['auth:api','jwt_check','scope:user:security_status:read'])->g
 Route::middleware(['service.auth:internal:security-status:read'])->group(function(){
     Route::get('internal/users/{id}/security-status',[InternalController::class,'security_status']);
 });
+
+Route::middleware(['service.auth:internal:users:basic-info:read'])->group(function(){
+    Route::get('internal/users/{id}/basic-info', [InternalController::class,'basic_info']);
+});

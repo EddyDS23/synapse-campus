@@ -38,6 +38,7 @@
         - .:/var/www/html
       networks:
         - auth-value-network
+        - synapse-campus-network
       expose:
         - "9000"
       depends_on:
@@ -52,12 +53,15 @@
         - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       networks:
         - auth-value-network
+        - synapse-campus-network
         - proxy_network
       depends_on:
         - app
 
   networks:
     auth-value-network:
+    synapse-campus-network:
+      external: true
     proxy_network:
       external: true
 
