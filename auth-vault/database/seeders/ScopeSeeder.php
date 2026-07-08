@@ -36,6 +36,8 @@ class ScopeSeeder extends Seeder
             'audit:events:write',
             'audit:events:read',
             'internal:security_status:read',
+            'internal:student-status:read',
+            'internal:users:basic-info:read',
             'user:security_status:read'
         ];
 
