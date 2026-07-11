@@ -1,0 +1,62 @@
+
+services:
+  mariadb:
+    image: mariadb:11.4
+    environment:
+      - MARIADB_DATABASE=audit_logs_system
+      - MARIADB_ROOT_PASSWORD=12345678
+      - MARIADB_USER=audit_logs_user
+      - MARIADB_PASSWORD=12345678
+    expose:
+      - "3306"
+    networks:
+      - audit_logs_network  
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    
+
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    networks:
+      - audit_logs_network
+      - synapse-campus-network
+    expose:
+      - "9000"
+    depends_on:
+      - mariadb
+    
+
+  nginx:
+    image: nginx:alpine
+    container_name: auditlogs_nginx
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - audit_logs_network
+      - synapse-campus-network
+      - proxy_network
+    expose:
+      - "80"
+    depends_on:
+      - app
+    
+  
+
+
+networks:
+  audit_logs_network:
+  synapse-campus-network:
+    external: true
+  proxy_network:
+    external: true
+
+volumes:
+  mariadb_data:
+
