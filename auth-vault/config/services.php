@@ -41,4 +41,9 @@ return [
         'redirect' => env('GITHUB_REDIRECT_URI'),
     ],
 
+    'audit_log'=>[
+        'base_url'=>env('AUDITLOGS_BASE_URL'),
+        'events_url'=>'/api/internal/events',
+    ]
+
 ];

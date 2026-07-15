@@ -7,9 +7,13 @@ use App\Models\StudentProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+use App\Services\AuditLogServiceClient;
+
 class InternalController extends Controller
 {
     
+    public function __construct(private AuditLogServiceClient $auditLog) {}
+
     public function student_status(Request $request, string $studentId):JsonResponse{
 
         $student_profile = StudentProfile::with('career')->find($studentId);
@@ -36,6 +40,18 @@ class InternalController extends Controller
             'metadata'=>[
                 'service_id'=>$request->attributes->get('jwt_payload')->sub
             ]
+        ]);
+
+
+        $this->auditLog->sendLog([
+            'service' => 'student-portal',
+            'action' => 'student.status.check_by_service',
+            'resource_type' => 'student_profile',
+            'resource_id' => $studentId,
+            'ip_address' => $request->ip(),
+            'metadata' => [
+                'service_id' => $request->attributes->get('jwt_payload')->sub
+            ],
         ]);
 
         return response()->json($statusData,200);

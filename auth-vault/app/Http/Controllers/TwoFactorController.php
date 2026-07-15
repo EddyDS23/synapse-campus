@@ -13,17 +13,23 @@ use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use Illuminate\Support\Str;
 use App\Http\Requests\TwoFactorVerifyRequest;
+use App\Services\AuditLogServiceClient;
+use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 
 class TwoFactorController extends Controller
 {
 
-    public function __construct(private Google2FA $google2fa) {}
+    public function __construct(private Google2FA $google2fa,
+                 private JWTAuth $jwt,
+                 private AuditLogServiceClient $auditLog) {}
 
     public function enable(Request $request): JsonResponse
     {
 
         $user = $request->user();
+        $token = $this->jwt->getToken();
+        $sub = $this->jwt->setToken($token)->getClaim('sub');
 
         if ($user->two_factor_enabled == true) {
             return response()->json(['message' => 'This user already has actived 2fa', 409]);
@@ -57,6 +63,18 @@ class TwoFactorController extends Controller
             'resource_id' => $user->id,
         ]);
 
+        $this->auditLog->sendLog([
+            'actor_id' => $sub,
+            'service' => 'auth-vault',
+            'action' => '2fa.enabled',
+            'resource_type' => 'user',
+            'resource_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'metadata' => [
+                'user_agent'=>$request->userAgent(),
+            ],
+        ]);
+
         return response()->json(['qr' => $encode]);
     }
 
@@ -64,6 +82,8 @@ class TwoFactorController extends Controller
     {
 
         $user = $request->user();
+        $token = $this->jwt->getToken();
+        $sub = $this->jwt->setToken($token)->getClaim('sub');
 
         if (!$user->two_factor_enabled) {
             return response()->json(['message' => 'User not activate two factor authentication'], 400);
@@ -88,6 +108,16 @@ class TwoFactorController extends Controller
             'resource_id' => $user->id,
         ]);
 
+        $this->auditLog->sendLog([
+            'actor_id' => $sub,
+            'service' => 'auth-vault',
+            'action' => '2fa.disabled',
+            'resource_type' => 'user',
+            'resource_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'metadata' => [],
+        ]);
+
         return response()->json(['message' => 'Two factor authentication is disable'], 200);
     }
 
@@ -95,6 +125,8 @@ class TwoFactorController extends Controller
     {
 
         $user = $request->user();
+        $token = $this->jwt->getToken();
+        $sub = $this->jwt->setToken($token)->getClaim('sub');
 
         if ($user->two_factor_secret == null) {
             return response()->json(['message' => 'This user havent activate two factor'], 400);
@@ -126,6 +158,16 @@ class TwoFactorController extends Controller
             'service' => 'auth-vault',
             'resource_type' => 'two_factor_auth',
             'resource_id' => $user->id,
+        ]);
+
+        $this->auditLog->sendLog([
+            'actor_id' => $sub,
+            'service' => 'auth-vault',
+            'action' => '2fa.verified',
+            'resource_type' => 'user',
+            'resource_id' => $user->id,
+            'ip_address' => $request->ip(),
+            'metadata' => [],
         ]);
 
         return response()->json(['message' => 'Activated success', 'two_factor_recovery_codes' => $codes], 200);

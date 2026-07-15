@@ -26,7 +26,7 @@ class JWTExchangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'audience'=>['required','string','in:student-portal,library-core,support-desk,audit-log'],
+            'audience'=>['required','string','in:student-portal,library-core,support-desk,audit-logs'],
         ];
     }
 
