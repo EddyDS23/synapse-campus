@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'authvault'=>[
+        'base_url'=>env('AUTHVAULT_BASE_URL'),
+        'public_key_url'=>'/api/auth/public-key'
+    ]
+
 ];
