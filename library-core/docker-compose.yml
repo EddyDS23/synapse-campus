@@ -70,7 +70,7 @@ networks:
   library_core_network:
   synapse-campus-network:
     external: true
-  proxy_networkh:
+  proxy_network:
     external: true
     
 
