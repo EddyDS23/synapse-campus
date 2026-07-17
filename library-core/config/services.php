@@ -37,7 +37,18 @@ return [
 
     'authvault'=>[
         'base_url'=>env('AUTHVAULT_BASE_URL'),
-        'public_key_url'=>'/api/auth/public-key'
+        'public_key_url'=>'/api/auth/public-key',
+        'token_service_url'=>'/api/service/token'
+    ],
+
+    'studentportal'=>[
+        'base_url'=>env('STUDENTPORTAL_BASE_URL'),
+        'student_status_url'=>'/api/internal/students/{id}/status'
+    ],
+
+    'auditlog'=>[
+        'base_url'=>env('AUDITLOG_BASE_URL'),
+        'send_events_url'=>'/api/internal/events'
     ]
 
 ];

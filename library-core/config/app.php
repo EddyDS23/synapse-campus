@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'client_id'=>env('CLIENT_ID'),
+    'client_secret'=>env('CLIENT_SECRET'),
+    'due_at'=>env('DUE_AT'),
+
 ];

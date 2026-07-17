@@ -1,14 +1,18 @@
 <?php
 
+namespace App\Services;
+
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
+
+use RuntimeException;
 
 class AuthVaultKeyProvider{
 
     private const CACHE_PUBLIC_KEY = 'authvault_public_key';
 
-    public function getKey(): ?string{
+    public function getPublicKey(): ?string{
         
         $cached = Cache::get(SELF::CACHE_PUBLIC_KEY);
 

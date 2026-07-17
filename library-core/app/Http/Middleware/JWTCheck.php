@@ -32,7 +32,7 @@ class JWTCheck
         $token = $request->bearerToken();
 
         if($token === null){
-            return response()->json(['message'=>'Bearer token not send',401]);
+            return response()->json(['message'=>'Bearer token not send'],401);
         }
 
         try {
@@ -51,11 +51,11 @@ class JWTCheck
         }catch (UnexpectedValueException $e){
             return response()->json(['message'=>"Format's token invalid"],400);
         }catch (Throwable $th){
-            return response()->json(['message'=>'Error'],401);
+            return response()->json(['message'=>$th->getMessage()],401);
         }
 
         
-        if($payload->aud === 'library-core'){
+        if($payload->aud !== 'library-core'){
             return response()->json(['message'=>'Token invalid to this service'],403);
         }
 
