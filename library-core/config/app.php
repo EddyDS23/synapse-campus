@@ -127,5 +127,6 @@ return [
     'client_secret'=>env('CLIENT_SECRET'),
     'due_at'=>env('DUE_AT'),
     'book_renew_limit'=>env('BOOK_RENEW_LIMIT'),
+    'fine_per_day'=>env('FINE_PER_DAY'),
 
 ];

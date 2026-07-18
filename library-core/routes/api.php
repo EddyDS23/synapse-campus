@@ -18,3 +18,5 @@ Route::get('/loans/my', [LoanController::class,'getLoansUser'])->middleware(['jw
 
 Route::post('/loans/{id}/renew',[LoanController::class,'renew'])->middleware(['jwt_check','check.scope:library:loans:renew']);
 
+Route::post('/loans/{id}/return', [LoanController::class,'returnBook'])->middleware(['jwt_check']);
+

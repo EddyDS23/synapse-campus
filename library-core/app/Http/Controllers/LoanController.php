@@ -15,6 +15,7 @@ use App\Models\Renewal;
 use App\Services\AuditLogServiceClient;
 
 use Illuminate\Support\Facades\DB;
+use Psr\SimpleCache\CacheInterface;
 
 class LoanController extends Controller
 {
@@ -94,7 +95,7 @@ class LoanController extends Controller
 
     public function renew(Request $request, string $id): JsonResponse
     {
-        
+
         $payload = $request->attributes->get('jwt_payload');
         $sub = $payload->sub;
 
@@ -160,5 +161,101 @@ class LoanController extends Controller
         $this->auditlog->sendLog($token, $data);
 
         return response()->json(['message' => 'Loan renewed'], 200);
+    }
+
+    public function returnBook(Request $request, string $id): JsonResponse
+    {
+
+        $payload = $request->attributes->get('jwt_payload');
+        $sub = $payload->sub;
+
+        $loan = Loan::where('id', $id)->first();
+
+        if ($loan === null) {
+            return response()->json(['message' => 'Loan not found'], 404);
+        }
+
+        if ($loan->borrower_id !== $sub) {
+            return response()->json(['message' => 'student isnt owner this loan'], 403);
+        }
+
+        if ($loan->status === 'returned') {
+            return response()->json(['message' => 'This loan has been finished'], 409);
+        }
+
+        $days_overdue = 0;
+        if ($loan->due_at < now()) {
+            $days_overdue = ceil(now()->diffInHours($loan->due_at) / 24) * -1;
+        }
+    
+        $fineData=null;
+        $loanData=[];
+        $fineAmount =0;
+        try {
+            DB::transaction(function () use ($request, $loan, $sub, $days_overdue, &$fineData, &$loanData, &$fineAmount) {
+
+                $loan->update([
+                    'status' => 'returned',
+                    'returned_at' => now(),
+                ]);
+
+                $loanData = [
+                    'actor_id' => $sub,
+                    'service' => 'library-core',
+                    'action' => 'loan.returned',
+                    'resource_type' => 'loans',
+                    'resource_id' => $loan->id,
+                    'ip_address' => $request->ip(),
+                    'metadata' => ['user_agent' => $request->userAgent()],
+                ];
+
+                AuditLog::create($loanData);
+
+
+                if ($days_overdue > 0) {
+                  
+                    $fineAmount = $days_overdue * (int)config('app.fine_per_day');
+                    $fine = Fine::create([
+                        'loan_id' => $loan->id,
+                        'borrower_id' => $sub,
+                        'amount' => $fineAmount
+                    ]);
+
+                    $fineData = [
+                        'actor_id' => $sub,
+                        'service' => 'library-core',
+                        'action' => 'fine.create',
+                        'resource_type' => 'fine',
+                        'resource_id' => $fine->id,
+                        'ip_address' => $request->ip(),
+                        'metadata' => [
+                            'user_agent' => $request->userAgent(),
+                            'borrower_id'=>$fine->borrower_id,
+                            'amount'=>$fine->amount,
+                            ],
+                    ];
+
+                    AuditLog::create($fineData);
+                    
+                }
+            });
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Failed to returned book'], 503);
+        }
+
+        $token = $this->authvault->getTokenService();
+                
+        $this->auditlog->sendLog($token,$loanData);
+        if($fineData !== null){
+            $this->auditlog->sendLog($token,$fineData);
+            return response()->json([
+                'message'=>'Loan returned',
+                'fine_generated'=>true,
+                'fine_amount'=>(float)$fineAmount
+                ],200);
+        }
+
+        return response()->json(['message'=>'Loan returned'],200);
+
     }
 }
