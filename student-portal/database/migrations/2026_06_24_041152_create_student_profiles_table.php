@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('current_semester')->nullable(false);
             $table->enum('status',['active','inactive','graduated']);
             $table->boolean('has_debt')->default(false);
+            $table->tinyInteger('debt_count')->default(0);
             $table->timestamps();
         });
     }

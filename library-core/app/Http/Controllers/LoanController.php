@@ -191,8 +191,9 @@ class LoanController extends Controller
         $fineData=null;
         $loanData=[];
         $fineAmount =0;
+        $fine = null;
         try {
-            DB::transaction(function () use ($request, $loan, $sub, $days_overdue, &$fineData, &$loanData, &$fineAmount) {
+            DB::transaction(function () use ($request, $loan, $sub, $days_overdue, &$fineData, &$loanData, &$fineAmount,&$fine) {
 
                 $loan->update([
                     'status' => 'returned',
@@ -243,8 +244,16 @@ class LoanController extends Controller
             return response()->json(['message' => 'Failed to returned book'], 503);
         }
 
+
         $token = $this->authvault->getTokenService();
-                
+        if($fine !== null){
+            $notified = $this->studentportal->updateDebt($token,$sub,true);
+            $fine->update([
+                'debt_notified'=>$notified
+            ]);
+        }
+        
+
         $this->auditlog->sendLog($token,$loanData);
         if($fineData !== null){
             $this->auditlog->sendLog($token,$fineData);

@@ -36,6 +36,9 @@ Route::middleware(['service.check:internal:student-status:read'])->group(functio
     Route::get('/internal/students/{id}/status',[InternalController::class,'student_status']);
 });
 
+Route::patch('/internal/students/{id}/debt-status',[InternalController::class,'updateDebt'])
+        ->middleware(['service.check:internal:student-debt:write']);
+
 
 Route::get('/health',function(){
     return response()->json(['message'=>'Im alive from Student Portal']);

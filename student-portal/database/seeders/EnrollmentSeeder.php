@@ -20,7 +20,7 @@ class EnrollmentSeeder extends Seeder
         $periodId = AcademicPeriod::where('is_active',true)->value('id');
         $subjects = Subject::pluck('id','code');
         $sections = Section::where('academic_period_id',$periodId)->pluck('id','subject_id');
-        $user = StudentProfile::where('student_id','01kvmbb1km2r6mmma5bd5x790n')->first();
+        $user = StudentProfile::where('student_id','01kx58x0cd2ntv3bzy65c6qfrg')->first();
 
 
         $enrollments = [

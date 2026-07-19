@@ -28,5 +28,26 @@ class StudentPortalServiceClient{
 
     }
 
+    public function updateDebt(string $token, string $id,bool $hasDebt):bool{
+        
+        try {
+            $response = Http::withToken($token)
+                ->patch(config('services.studentportal.base_url')
+                . str_replace('{id}',$id,config('services.studentportal.student_debt_update_url')),
+                ['has_debt'=>$hasDebt]);
+        } catch (ConnectionException $e) {   
+            Log::alert('Couldnt connect to StudentPortal',['error'=>$e->getMessage()]);
+            return false;
+            
+        }
+        
+        if($response->successful()){
+            return true;
+        }
+        dd($response->status());
+        return false;
+
+    }
+
 
 }

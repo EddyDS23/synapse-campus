@@ -17,7 +17,7 @@ class StudentProfileSeeder extends Seeder
     {
         $careerId = Career::where('code','ISC')->value('id');
         $data = [
-            'student_id'=>'01kvmbb1km2r6mmma5bd5x790n',
+            'student_id'=>'01kx58x0cd2ntv3bzy65c6qfrg',
             'career_id'=>$careerId,
             'student_number'=>'2026ISC001',
             'current_semester'=>1,

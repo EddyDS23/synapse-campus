@@ -43,7 +43,8 @@ return [
 
     'studentportal'=>[
         'base_url'=>env('STUDENTPORTAL_BASE_URL'),
-        'student_status_url'=>'/api/internal/students/{id}/status'
+        'student_status_url'=>'/api/internal/students/{id}/status',
+        'student_debt_update_url'=>'/api/internal/students/{id}/debt-status',
     ],
 
     'auditlog'=>[

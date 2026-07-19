@@ -38,6 +38,7 @@ class ScopeSeeder extends Seeder
             'internal:security_status:read',
             'internal:student-status:read',
             'internal:users:basic-info:read',
+            'internal:student-debt:write',
             'user:security_status:read'
         ];
 

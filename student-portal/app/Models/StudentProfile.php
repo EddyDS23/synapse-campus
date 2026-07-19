@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Carbon\Doctrine\CarbonTypeConverter;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Model;
 use Override;
 
-#[Fillable(['student_id','career_id','student_number','current_semester','status','has_debt'])]
+#[Fillable(['student_id','career_id','student_number','current_semester','status','has_debt','debt_count'])]
+#[Hidden(['created_at','debt_count'])]
 class StudentProfile extends Model
 {
 
