@@ -21,7 +21,7 @@ class InternalController extends Controller
     {
 
         $student_profile = StudentProfile::with('career')->find($studentId);
-
+        
         if ($student_profile === null) {
             return response()->json([], 404);
         }

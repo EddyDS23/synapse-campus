@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\FineController;
 use App\Http\Controllers\LoanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::post('/loans/{id}/renew',[LoanController::class,'renew'])->middleware(['j
 
 Route::post('/loans/{id}/return', [LoanController::class,'returnBook'])->middleware(['jwt_check']);
 
+Route::get('/fines/my', [FineController::class,'getFinesByStudent'])->middleware(['jwt_check','check.scope:library:fines:read']);
+Route::post('/fines/{id}/pay',[FineController::class,'pay'])->middleware(['jwt_check','check.scope:library:fines:pay']);

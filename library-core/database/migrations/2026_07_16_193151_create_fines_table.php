@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('paid_at')->nullable();
             $table->enum('status',['pending','paid'])->default('pending');
             $table->boolean('debt_notified')->default(false);
+            $table->boolean('paid_notified')->default(false);
             $table->timestamps();
         });
     }

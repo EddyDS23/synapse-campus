@@ -233,6 +233,7 @@ class LoanController extends Controller
                             'user_agent' => $request->userAgent(),
                             'borrower_id'=>$fine->borrower_id,
                             'amount'=>$fine->amount,
+                            'days_overdue'=>$days_overdue
                             ],
                     ];
 
