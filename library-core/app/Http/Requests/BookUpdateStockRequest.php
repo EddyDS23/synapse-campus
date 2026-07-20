@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoanRequest extends FormRequest
+class BookUpdateStockRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class LoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'stock_total'=>['required','integer','not_in:0']
         ];
     }
 }
