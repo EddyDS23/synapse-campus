@@ -46,7 +46,6 @@ class BookController extends Controller
         $query->select(['id','title','author','category']);
 
         $books = $query->paginate($perPage);
-        
         return response()->json([
             'meta'=>[
                 'perPage'=>$books->perPage(),
