@@ -28,6 +28,7 @@ php artisan migrate --force
 php artisan vendor:publish --provider="Dedoc\Scramble\ScrambleServiceProvider"
 php artisan config:clear
 php artisan cache:clear
+php artisan schedule:work &
 exec php-fpm
 
 fi
