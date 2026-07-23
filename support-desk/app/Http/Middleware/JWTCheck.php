@@ -16,8 +16,7 @@ use App\Services\AuthVaultKeyProvider;
 use Exception;
 use Throwable;
 
-
-class ServiceAuth
+class JWTCheck
 {
 
     public function __construct(private AuthVaultKeyProvider $authkey){}
@@ -27,13 +26,13 @@ class ServiceAuth
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next,string $scope): Response
+    public function handle(Request $request, Closure $next): Response
     {
 
         $token = $request->bearerToken();
 
         if($token === null){
-            return response()->json(['message'=>'Bearer token not send',401]);
+            return response()->json(['message'=>'Bearer token not send'],401);
         }
 
         try {
@@ -52,16 +51,16 @@ class ServiceAuth
         }catch (UnexpectedValueException $e){
             return response()->json(['message'=>"Format's token invalid"],400);
         }catch (Throwable $th){
-            return response()->json(['message'=>'Error'],401);
+            return response()->json(['message'=>$th->getMessage()],401);
         }
 
-        $type = $payload->type ?? null;
-        if($type !== 'service'){
-            return response()->json([],403);
+        
+        if($payload->aud !== 'support-desk'){
+            return response()->json(['message'=>'Token invalid to this service'],403);
         }
 
-        if(empty($payload->scopes) || !in_array($scope,$payload->scopes,true)){
-            return response()->json([],403);
+        if($payload->sub === null){
+            return response()->json(['message'=>'Token incompleted'],403);
         }
 
         $request->attributes->set('jwt_payload',$payload);

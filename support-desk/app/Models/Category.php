@@ -16,4 +16,8 @@ class Category extends Model
 
     public $timestamps = true;
 
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
+    }
+
 }

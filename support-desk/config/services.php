@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'authvault'=>[
+        'base_url'=>env('AUTHVAULT_BASE_URL'),
+        'public_key_url'=>'/api/auth/public-key',
+        'token_service_url'=>'/api/service/token',
+        'user_security_status_url'=>'/api/internal/users/{id}/security-status,',
+    ],
+
+    'auditlog'=>[
+        'base_url'=>env('AUDITLOG_BASE_URL'),
+        'send_events_url'=>'/api/internal/events'
+    ]
+
 ];

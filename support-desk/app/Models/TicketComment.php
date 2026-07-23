@@ -23,4 +23,8 @@ class TicketComment extends Model
             'is_internal'=>'boolean'
         ];
     }
+
+    public function ticket(){
+        return $this->belongsTo(Ticket::class);
+    }
 }

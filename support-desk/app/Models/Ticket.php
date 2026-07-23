@@ -26,4 +26,12 @@ class Ticket extends Model
         ];
     }
 
+
+    public function comments(){
+        return $this->belongsTo(TicketComment::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

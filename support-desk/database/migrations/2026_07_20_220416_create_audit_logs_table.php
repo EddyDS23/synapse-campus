@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('action')->nullable(false);
             $table->string('resource_type')->nullable(false);
             $table->string('resource_id')->nullable(false);
+            $table->string('ip_address')->nullable(false);
             $table->json('metadata')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

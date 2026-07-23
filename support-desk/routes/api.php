@@ -1,8 +1,19 @@
 <?php
 
+use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+Route::middleware(['jwt_check','check.scope:support:tickets:read'])->group(function(){
+    Route::get('/tickets/my',[TicketController::class, 'getMyTickets']);
+    Route::get('/tickets',[TicketController::class,'getAll']);
+    Route::get('/tickets/{id}',[TicketController::class,'getOne']);
+    
+});
+
+Route::post('/tickets', [TicketController::class,'create'])->middleware(['jwt_check','check.scope:support:tickets:create']);
