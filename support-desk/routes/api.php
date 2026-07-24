@@ -17,3 +17,4 @@ Route::middleware(['jwt_check','check.scope:support:tickets:read'])->group(funct
 });
 
 Route::post('/tickets', [TicketController::class,'create'])->middleware(['jwt_check','check.scope:support:tickets:create']);
+Route::post('/tickets/{id}/comments',[TicketController::class,'comment'])->middleware(['jwt_check','check.scope:support:tickets:comment']);

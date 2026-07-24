@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\StoreTicketRequest;
 use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 use App\Models\Ticket;
+use App\Models\TicketComment;
 use App\Services\AuditLogServiceClient;
 use App\Services\AuthVaultServiceClient;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isEmpty;
 
 class TicketController extends Controller
 {
@@ -186,5 +190,71 @@ class TicketController extends Controller
         $roles = (array) $payload->roles ?? [];
 
         return array_intersect($roles, ['support_agent', 'super_admin', 'academic_admin', 'security_admin']) !== [];
+    }
+
+    public function comment(StoreCommentRequest $request, string $id):JsonResponse{
+
+        $payload = $request->attributes->get('jwt_payload');
+        $sub = $payload->sub;
+        $isAgent = $this->isAgent($payload);
+
+        $data = $request->validated();
+        $is_internal = $data['is_internal'];
+        $ticket = Ticket::where('id',$id)->first();
+
+        if($ticket === null){
+            return response()->json(['message'=>'Not found'],404);
+        }
+
+        if($ticket->status === 'closed'){
+            return response()->json(['message'=>"Ticket closed can't comment"],422);
+        }
+
+        if(!$isAgent){
+            $is_internal=false;
+            if($ticket->requester_id !== $sub){
+                return response()->json(['message'=>'Now Allowed'],403);
+            }
+        }
+
+        $ticketCommentDataLog = [];
+        try {
+            DB::transaction(function() use ($request,$sub,$ticket,$is_internal,$data, &$ticketCommentDataLog){
+
+                $comment = TicketComment::create([
+                    'ticket_id'=>$ticket->id,
+                    'author_id'=>$sub,
+                    'body'=>$data['body'],
+                    'is_internal'=>$is_internal
+                ]);
+
+                $ticketCommentDataLog = [
+                    'actor_id'=>$sub,
+                    'service'=>'support-desk',
+                    'action'=>'ticket.comment.created',
+                    'resource_type'=>'ticket_comment',
+                    'resource_id'=>$comment->id,
+                    'ip_address'=>$request->ip(),
+                    'metadata'=>[
+                        'user_agent'=>$request->userAgent(),
+                        'is_internal'=>$is_internal,
+                    ]
+                ];
+
+                AuditLog::create($ticketCommentDataLog);
+
+            });
+        } catch (\Throwable $th) {
+            return response()->json(['message'=>'Cannot comment in ticket'],503);
+        }
+
+        $token = $this->authvault->getTokenService();
+        if(!isEmpty($ticketCommentDataLog) || $token !== null){
+            $this->auditlog->sendLog($token,$ticketCommentDataLog);
+        }
+
+        
+
+        return response()->json(['message'=>'Comment added'],200);
     }
 }

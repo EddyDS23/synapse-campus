@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Override;
 
 #[Fillable(['ticket_id','author_id','body','is_internal'])]
-#[Hidden(['is_internal'])]
+#[Hidden(['is_internal','ticket_id','updated_at','created_at'])]
 class TicketComment extends Model
 {
     use HasUlids;
