@@ -27,7 +27,7 @@ class AuthVaultServiceClient
         try {
             $response = Http::post(
                 config('services.authvault.base_url') . config('services.authvault.token_service_url'),
-                ['client_id' => config('app.client_id'), 'client_secret' => config('app.client_secret')]
+                ["client_id" => config('app.client_id'), "client_secret" => config('app.client_secret')]
             );
         } catch (ConnectionException $e) {
             Log::alert('Timeout connection to AuthVault', ['message' => $e->getMessage()]);
