@@ -35,11 +35,11 @@ class ScopeSeeder extends Seeder
             'support:tickets:close',
             'audit:events:write',
             'audit:events:read',
-            'internal:security_status:read',
+            'internal:security-status:read',
             'internal:student-status:read',
             'internal:users:basic-info:read',
             'internal:student-debt:write',
-            'user:security_status:read'
+            'user:security-status:read'
         ];
 
         foreach($scopes_data as $scope_name){

@@ -57,7 +57,7 @@ Route::middleware(['auth:api','jwt_check','scope:user:security_status:read'])->g
 
 
 #Endpoint Protegido Servicios
-Route::middleware(['service.auth:internal:security-status:read'])->group(function(){
+Route::middleware(['service.auth:internal:security_status:read'])->group(function(){
     Route::get('internal/users/{id}/security-status',[InternalController::class,'security_status']);
 });
 

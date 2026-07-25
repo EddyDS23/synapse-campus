@@ -62,12 +62,12 @@ class AuthVaultServiceClient
             Log::alert('TimeOut from authvaul', ['message' => $e->getMessage()]);
             return [];
         }
-
+    
         if (!$response->successful()) {
             Log::alert('Cannot get security status in authvaul', ['message' => $response->body()]);
             return [];
         }
-
+       
         return $response->json();
     }
 }

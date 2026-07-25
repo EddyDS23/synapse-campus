@@ -450,11 +450,48 @@ class TicketController extends Controller
 
     }
 
+    public function security_context(Request $request,string $id):JsonResponse{
+            
+            $payload = $request->attributes->get('jwt_payload');
+
+            $ticket = Ticket::find($id);
+
+            if($ticket === null){
+                return response()->json(['mesage'=>'Not found'],404);
+            }
+            
+            if(!$this->isAgent($payload)){
+                return response()->json(['message'=>'Not allowed'],403);
+            }
+
+            if(!$this->isSecurityAdmin($payload)){
+                return response()->json(['message'=>'Only security admin'],403);
+            }
+
+            $response = $this->authvault->getUserSecurityStatus($ticket->requester_id);
+           
+            if(!isEmpty($response)){
+                return response()->json(['message'=>'User not obteined'],503);
+            }
+        
+
+
+            return response()->json([
+                'ticket'=>$ticket,
+                'security_context'=>$response
+            ],200);
+    }
+
     private function isAgent(object $payload): bool
     {
 
         $roles = (array) $payload->roles ?? [];
 
         return array_intersect($roles, ['support_agent', 'super_admin', 'academic_admin', 'security_admin']) !== [];
+    }
+
+    private function isSecurityAdmin(object $payload):bool{
+        $roles = (array) ($payload->roles ?? []);
+        return in_array('security_admin', $roles,true);
     }
 }

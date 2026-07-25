@@ -39,7 +39,7 @@ return [
         'base_url'=>env('AUTHVAULT_BASE_URL'),
         'public_key_url'=>'/api/auth/public-key',
         'token_service_url'=>'/api/service/token',
-        'user_security_status_url'=>'/api/internal/users/{id}/security-status,',
+        'user_security_status_url'=>'/api/internal/users/{id}/security-status',
     ],
 
     'auditlog'=>[
