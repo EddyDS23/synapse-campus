@@ -474,7 +474,25 @@ class TicketController extends Controller
                 return response()->json(['message'=>'User not obteined'],503);
             }
         
+            $auditLogData = [
+                'actor_id'=>$payload->sub,
+                'service'=>'support-desk',
+                'action'=>'ticket.security_context.viewed',
+                'resource_type'=>'tickets',
+                'resource_id'=>$ticket->id,
+                'ip_address'=>$request->ip(),
+                'metadata'=>[
+                    'user_agent'=>$request->userAgent(),
+                ]
+            ];
 
+            AuditLog::create($auditLogData);
+
+            $token =$this->authvault->getTokenService();
+            
+            if($auditLogData !== null && $token !== null){
+                $this->auditlog->sendLog($token,$auditLogData);
+            }
 
             return response()->json([
                 'ticket'=>$ticket,
