@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'authvault'=>[
+        'base_url' => env('AUTHVAULT_BASE_URL'),
+        'login_url' => '/api/login',
+        'logout_url' => '/api/logout',
+        'exchange_token_url' => '/api/token/exchange',
+        'refresh_url' => '/api/token/refresh-with-token',
+    ],
+
+    'studentportal'=>[
+        'base_url'=>env('STUDENTPORTAL_BASE_URL'),
+        'profile_url'=>'/api/profile',
+        'schedule_url'=>'/api/schedule',
+        'subjects_url'=>'/api/subjects',
+        'academic_status_url'=>'/api/academic-status'
+    ],
 ];

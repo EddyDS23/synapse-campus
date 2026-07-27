@@ -307,7 +307,7 @@ class AuthController extends Controller
             ],
         ]);
 
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => 'Logged out'],200);
     }
 
     public function logoutAll(Request $request): JsonResponse
@@ -383,7 +383,7 @@ class AuthController extends Controller
         return response()->json([
             "token" => $new_token_access,
             "refresh_token" => $new_token_refresh
-        ]);
+        ],200);
     }
 
     public function exchangeToken(JWTExchangeRequest $request): JsonResponse
