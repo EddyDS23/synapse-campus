@@ -23,10 +23,26 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login',function(Request $request){
-            return Limit::perMinute(5)->by($request->input('email'.'|'.$request->ip()));
+            return Limit::perMinute(5)->by($request->input('email') .'|'.$request->ip());
         });
 
         RateLimiter::for('register',function(Request $request){
+            return Limit::perMinute(10)->by($request->ip());
+        });
+
+        RateLimiter::for("2fa_login", function(Request $request){
+            return Limit::perMinute(5)->by($request->input("email"));
+        });
+
+        RateLimiter::for("refresh_token",function(Request $request){
+            return Limit::perMinute(20)->by($request->ip());
+        });
+
+        RateLimiter::for("exchange_token",function(Request $request){
+            return Limit::perMinute(30)->by($request->ip());
+        });
+
+        RateLimiter::for("service_token",function(Request $request){
             return Limit::perMinute(10)->by($request->ip());
         });
 

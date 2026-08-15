@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'service.check'=>ServiceCheck::class,
             'scope.check'=>CheckScope::class,
         ]);
+        $middleware->throttleApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

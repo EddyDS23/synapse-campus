@@ -23,12 +23,12 @@ Route::get('/user', function (Request $request) {
 //Endpoints Publicos
 Route::post('/register',[AuthController::class, 'register'])->middleware('throttle:register');
 Route::post('/login', [AuthController::class,'login'])->middleware('throttle:login');
-Route::post('/login/2fa', [AuthController::class, 'login2fa']);
-Route::post('/token/refresh-with-token',[AuthController::class,'refreshWithToken']);
+Route::post('/login/2fa', [AuthController::class, 'login2fa'])->middleware('throttle:2fa_login');
+Route::post('/token/refresh-with-token',[AuthController::class,'refreshWithToken'])->middleware('throttle:refresh_token');
 Route::get('/auth/{provider}/redirect',[OAuthController::class,'redirect']);
 Route::get('/auth/{provider}/callback',[OAuthController::class,'callback']);
 Route::get('/auth/public-key', [JWKSController::class,'publicKey']);
-Route::post('/service/token', [ServiceTokenController::class,'token']);
+Route::post('/service/token', [ServiceTokenController::class,'token'])->middleware('throttle:service_token');
 
 //Endpoints Protegidos Usuario
 Route::middleware(['auth:api','jwt_check'])->group(function(){
@@ -41,7 +41,7 @@ Route::middleware(['auth:api','jwt_check'])->group(function(){
     Route::get('/session',[SessionController::class, 'get']);
     Route::delete('/session/{id}',[SessionController::class, 'delete']);
     Route::get('/audit-logs', [AuditLogController::class, 'get_audit_user']);
-    Route::post('/token/exchange',[AuthController::class, 'exchangeToken']);
+    Route::post('/token/exchange',[AuthController::class, 'exchangeToken'])->middleware('throttle:exchange_token');
 });
 
 #Endpoint Protegido Administrador
