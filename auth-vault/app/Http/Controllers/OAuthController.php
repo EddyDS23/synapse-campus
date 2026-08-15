@@ -23,7 +23,9 @@ class OAuthController extends Controller
 
     public function redirect(Request $request, string $provider)
     {
-        return Socialite::driver($provider)->stateless()->redirect();
+        $url = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+
+        return response()->json(["url"=>$url],200);
     }
 
     public function callback(Request $request, string $provider)

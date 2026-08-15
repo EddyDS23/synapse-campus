@@ -11,7 +11,7 @@ class InternalController extends Controller
 {
     
     public function security_status(Request $request, string $id): JsonResponse{
-
+        Log::alert("Open",['message'=>"Iniciando proceso..."]);
         $user = User::where('id',$id)->first();
 
         if($user === null){
@@ -24,6 +24,11 @@ class InternalController extends Controller
             ->first();
 
         $active_sessions = $user->apiSessions()->count();
+        Log::alert("DATA",['user_id'=>$user->id,
+            'two_factor_enabled'=>$user->two_factor_enabled,
+            'active_sessions'=> $active_sessions,
+            'last_login'=> $last_login->created_at,
+            'account_blocked'=> $user->unblocked_at !== null && $user->unblocked_at > now(),]);
 
         return response()->json([
             'user_id'=>$user->id,

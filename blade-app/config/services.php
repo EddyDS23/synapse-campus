@@ -35,19 +35,41 @@ return [
         ],
     ],
 
-    'authvault'=>[
-        'base_url' => env('AUTHVAULT_BASE_URL'),
-        'login_url' => '/api/login',
-        'logout_url' => '/api/logout',
+    // ─── AuthVault ────────────────────────────────────────────────────────────
+    'authvault' => [
+        'base_url'           => env('AUTHVAULT_BASE_URL'),
+        'login_url'          => '/api/login',
+        'logout_url'         => '/api/logout',
         'exchange_token_url' => '/api/token/exchange',
-        'refresh_url' => '/api/token/refresh-with-token',
+        'refresh_url'        => '/api/token/refresh-with-token',
+        // Nuevas URLs
+        'session_url'        => '/api/session',
+        'audit_logs_url'     => '/api/audit-logs',
+        '2fa_enable_url'     => '/api/2fa/enable',
+        '2fa_verify_url'     => '/api/2fa/verify',
+        '2fa_disable_url'    => '/api/2fa/disable',
+        'login_2fa_url'      => '/api/login/2fa',
+        'assign_role_url'    => '/api/users/{id}/roles',
+        'revoke_role_url'    => '/api/users/{id}/roles/{role}',
+        'security_status_url' => '/api/users/{id}/security-status',
     ],
 
-    'studentportal'=>[
-        'base_url'=>env('STUDENTPORTAL_BASE_URL'),
-        'profile_url'=>'/api/profile',
-        'schedule_url'=>'/api/schedule',
-        'subjects_url'=>'/api/subjects',
-        'academic_status_url'=>'/api/academic-status'
+    // ─── StudentPortal ────────────────────────────────────────────────────────
+    'studentportal' => [
+        'base_url' => env('STUDENTPORTAL_BASE_URL'),
+        'profile_url' => '/api/profile',
+        'schedule_url' => '/api/schedule',
+        'subjects_url' => '/api/subjects',
+        'academic_status_url' => '/api/academic-status'
+    ],
+
+    // ─── LibraryCore ──────────────────────────────────────────────────────────
+    'librarycore' => [
+        'base_url' => env('LIBRARYCORE_BASE_URL'),
+    ],
+
+    // ─── SupportDesk ──────────────────────────────────────────────────────────
+    'supportdesk' => [
+        'base_url' => env('SUPPORTDESK_BASE_URL'),
     ],
 ];

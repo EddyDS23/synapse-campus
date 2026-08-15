@@ -31,7 +31,7 @@ class ServiceAuth
         }
 
         if(!in_array($scope,$payload->get('scopes'))){
-            return response()->json(['message'=>'Invalid service token'],403);
+            return response()->json(['message'=>'Scope not enought'],403);
         }
 
         return $next($request);

@@ -43,7 +43,7 @@ class BookController extends Controller
             $query->where('stock_available','>','0');
         }
 
-        $query->select(['id','title','author','category']);
+        $query->select(['id','title','author','category','stock_available']);
 
         $books = $query->paginate($perPage);
         return response()->json([

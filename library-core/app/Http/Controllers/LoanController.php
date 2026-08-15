@@ -15,6 +15,7 @@ use App\Models\Renewal;
 use App\Services\AuditLogServiceClient;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Psr\SimpleCache\CacheInterface;
 
 class LoanController extends Controller
@@ -200,6 +201,10 @@ class LoanController extends Controller
                     'returned_at' => now(),
                 ]);
 
+                $book = Book::where("id",$loan->book_id);
+
+                $book->increment('stock_available',1);
+                
                 $loanData = [
                     'actor_id' => $sub,
                     'service' => 'library-core',

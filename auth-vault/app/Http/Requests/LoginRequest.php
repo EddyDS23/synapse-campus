@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         throw new \Illuminate\Http\Exceptions\HttpResponseException(
-            response()->json(['message' => 'Credentials invalid'])
+            response()->json(['message' => 'Credentials invalid'],422)
         );
     }
 }

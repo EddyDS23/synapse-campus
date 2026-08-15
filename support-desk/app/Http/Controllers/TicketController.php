@@ -15,6 +15,7 @@ use App\Models\TicketComment;
 use App\Services\AuditLogServiceClient;
 use App\Services\AuthVaultServiceClient;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -112,13 +113,19 @@ class TicketController extends Controller
     public function getMyTickets(Request $request): JsonResponse
     {
 
+        Log::alert('SupportDesk request', [
+        'full_url' => $request->fullUrl(),
+        'query' => $request->query(),
+        'status' => $request->query('status'),
+    ]);
+
         $perPage = 15;
 
         $payload = $request->attributes->get('jwt_payload');
         $sub = $payload->sub;
 
         $status = $request->query('status');
-
+        
         $query = Ticket::query();
 
         if ($status !== null) {
@@ -128,6 +135,7 @@ class TicketController extends Controller
         $query->where('requester_id', $sub);
 
         $query->select([
+            'id',
             'priority',
             'status',
             'title',
