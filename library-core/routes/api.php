@@ -5,6 +5,7 @@ use App\Http\Controllers\FineController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LoanController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['jwt_check','check.scope:library:books:read'])->group(function(){
@@ -30,4 +31,31 @@ Route::middleware(['jwt_check','check.scope:library:inventory:manage'])->group(f
     Route::post('/books',[InventoryController::class,'createBook']);
     Route::patch('/books/{id}', [InventoryController::class,'updateBook']);
     Route::patch('/books/{id}/stock', [InventoryController::class,'updateBookStock']);
+});
+
+Route::get("/health",function(Request $request){
+    
+    try {
+        DB::connection()->getPdo();
+        $db=true;
+    } catch (\Throwable $th) {
+        $db=false;
+    }
+
+    if($db){
+        $code = 200;
+        $status = "ok";
+        $db_status = "connected";
+    }else{
+        $code = 503;
+        $status = "degraded";
+        $db_status = "disconnected";
+    }
+
+    return response()->json([
+        'status'=>$status,
+        'service'=>config("app.name"),
+        'db'=> $db_status
+    ],$code);
+
 });

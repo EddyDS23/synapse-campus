@@ -13,7 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceTokenController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TwoFactorController;
-
+use Illuminate\Support\Facades\DB;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -63,4 +63,32 @@ Route::middleware(['service.auth:internal:security-status:read'])->group(functio
 
 Route::middleware(['service.auth:internal:users:basic-info:read'])->group(function(){
     Route::get('internal/users/{id}/basic-info', [InternalController::class,'basic_info']);
+});
+
+
+Route::get("/health",function(Request $request){
+    
+    try {
+        DB::connection()->getPdo();
+        $db=true;
+    } catch (\Throwable $th) {
+        $db=false;
+    }
+
+    if($db){
+        $code = 200;
+        $status = "ok";
+        $db_status = "connected";
+    }else{
+        $code = 503;
+        $status = "degraded";
+        $db_status = "disconnected";
+    }
+
+    return response()->json([
+        'status'=>$status,
+        'service'=>config("app.name"),
+        'db'=> $db_status
+    ],$code);
+
 });

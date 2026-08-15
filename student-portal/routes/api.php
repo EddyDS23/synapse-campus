@@ -3,6 +3,7 @@
 use App\Http\Controllers\InternalController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['authvault.jwt'])->group(function(){
@@ -40,7 +41,30 @@ Route::patch('/internal/students/{id}/debt-status',[InternalController::class,'u
         ->middleware(['service.check:internal:student-debt:write']);
 
 
-Route::get('/health',function(){
-    return response()->json(['message'=>'Im alive from Student Portal']);
+Route::get("/health",function(Request $request){
+    
+    try {
+        DB::connection()->getPdo();
+        $db=true;
+    } catch (\Throwable $th) {
+        $db=false;
+    }
+
+    if($db){
+        $code = 200;
+        $status = "ok";
+        $db_status = "connected";
+    }else{
+        $code = 503;
+        $status = "degraded";
+        $db_status = "disconnected";
+    }
+
+    return response()->json([
+        'status'=>$status,
+        'service'=>config("app.name"),
+        'db'=> $db_status
+    ],$code);
+
 });
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TicketController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -27,3 +28,31 @@ Route::patch('/tickets/{id}/status', [TicketController::class,'status'])->middle
 
 // Endpoint for agent with role security_admin
 Route::get('/tickets/{id}/security-status', [TicketController::class,'security_context'])->middleware(['jwt_check','check.scope:support:tickets:read']);
+
+
+Route::get("/health",function(Request $request){
+    
+    try {
+        DB::connection()->getPdo();
+        $db=true;
+    } catch (\Throwable $th) {
+        $db=false;
+    }
+
+    if($db){
+        $code = 200;
+        $status = "ok";
+        $db_status = "connected";
+    }else{
+        $code = 503;
+        $status = "degraded";
+        $db_status = "disconnected";
+    }
+
+    return response()->json([
+        'status'=>$status,
+        'service'=>config("app.name"),
+        'db'=> $db_status
+    ],$code);
+
+});
