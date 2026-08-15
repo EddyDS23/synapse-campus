@@ -72,4 +72,8 @@ return [
     'supportdesk' => [
         'base_url' => env('SUPPORTDESK_BASE_URL'),
     ],
+
+    'auditlog' => [
+        'base_url'=> env('AUDITLOG_BASE_URL'),
+    ]
 ];

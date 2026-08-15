@@ -89,3 +89,13 @@ Route::middleware('auth.session')->group(function () {
     Route::get('/admin/security-status', [AdminController::class, 'userSecurityStatus'])->name('admin.security-status');
     Route::get('/admin/audit', [AdminController::class, 'audit'])->name('admin.audit');
 });
+
+Route::get('/health', function () {
+    $writable = is_writable(storage_path('framework/sessions'));
+
+    return response()->json([
+        'status'  => $writable ? 'ok' : 'degraded',
+        'service' => config('app.name'),
+        'storage' => $writable ? 'writable' : 'unwritable',
+    ], $writable ? 200 : 503);
+});
