@@ -1,0 +1,67 @@
+services:
+
+  mariadb:
+    image: mariadb:11.4
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    expose:
+      - "3306"
+    networks:
+      - auth-vault-network
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    expose:
+      - "6379"
+    networks:
+      - auth-vault-network
+    deploy:
+      resources:
+        limits:
+          memory: 258M
+        reservations:
+          memory: 128M
+    restart: unless-stopped
+
+  app:
+    image: eddyds23/auth-vault:1.0
+    env_file:
+      - .env.prod
+    networks:
+      - auth-vault-network
+      - synapse-campus-network
+    expose:
+      - "9000"
+    depends_on:
+      - mariadb
+      - redis
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: auth_vault_nginx
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - auth-vault-network
+      - synapse-campus-network
+      - proxy_network
+    depends_on:
+      - app
+    restart: unless-stopped
+
+networks:
+  auth-vault-network:
+  synapse-campus-network:
+    external: true
+  proxy_network:
+    external: true
+
+volumes:
+  mariadb_data:

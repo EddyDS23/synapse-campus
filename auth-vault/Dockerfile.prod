@@ -1,0 +1,40 @@
+#Stage 1 - Dependens
+
+FROM composer:2 as deps
+
+WORKDIR /app
+
+COPY  composer.json composer.lock ./
+
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-scripts \
+    --prefer-dist
+
+# Stage 2 - Final Image
+FROM php:8.3-fpm-alpine
+
+RUN apk add --no-cache \
+    libzip-dev \
+    onigurama-dev \
+    libexif-dev \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && rm -rf /tmp/pear
+
+WORKDIR /var/www/html
+
+COPY --from=deps /app/vendor ./vendor
+COPY . .
+
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+COPY entrypoint.prod.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php-fpm"]
