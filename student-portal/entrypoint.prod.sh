@@ -22,6 +22,7 @@ if [ "$1" = '/usr/bin/supervisord' ] || [ -z "$1" ]; then
 
     php artisan config:cache
     php artisan route:cache
+    php artisan view:cache
     php artisan migrate --force
 
 fi

@@ -1,0 +1,30 @@
+services:
+  app:
+    image: eddyds23/blade-app:2.1
+    container_name: nginx_blade_app
+    env_file:
+      - .env.prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.blade-app.rule=Host(`synapse.zerofall.qzz.io`)"
+      - "traefik.http.routers.blade-app.entrypoints=websecure"
+      - "traefik.http.routers.blade-app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.blade-app.loadbalancer.server.port=80"
+    networks:
+      - blade-app-network
+      - synapse-campus-network
+      - proxy_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  blade-app-network:
+  synapse-campus-network:
+    external: true
+  proxy_network:
+    external: true

@@ -10,7 +10,7 @@ services:
     expose:
       - "3306"
     networks:
-      - auth-vault-network
+      - support-desk-network
     volumes:
       - mariadb_data:/var/lib/mysql
     healthcheck:
@@ -20,25 +20,14 @@ services:
       retries: 5
       start_period: 30s
 
-  redis:
-    image: redis:alpine
-    expose:
-      - "6379"
-    networks:
-      - auth-vault-network
-    restart: unless-stopped
-
   app:
-    image: eddyds23/auth-vault:2.1
-    container_name: auth_vault_nginx
+    image: eddyds23/support-desk:2.1
+    container_name: support_desk_nginx
     env_file:
       - .env.prod
-    volumes:
-      - ./storage/certs:/var/www/html/storage/certs:ro
     networks:
-      - auth-vault-network
+      - support-desk-network
       - synapse-campus-network
-      - proxy_network
     depends_on:
       mariadb:
         condition: service_healthy
@@ -51,10 +40,8 @@ services:
       start_period: 30s
 
 networks:
-  auth-vault-network:
+  support-desk-network:
   synapse-campus-network:
-    external: true
-  proxy_network:
     external: true
 
 volumes:
