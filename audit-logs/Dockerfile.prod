@@ -29,6 +29,9 @@ WORKDIR /var/www/html
 COPY --from=deps /app/vendor ./vendor
 COPY . .
 
+RUN rm -f bootstrap/cache/packages.php \
+    && rm -f bootstrap/cache/services.php
+
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
