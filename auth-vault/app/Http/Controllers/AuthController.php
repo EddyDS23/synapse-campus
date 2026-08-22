@@ -27,6 +27,8 @@ class AuthController extends Controller
         private AuditLogServiceClient $auditLog
     ) {}
 
+    //codigo sin uso cambio de registar el usuario a que lo registre un administrador
+    /*
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create($request->validated());
@@ -70,6 +72,7 @@ class AuthController extends Controller
 
         return response()->json(['token' => $token, 'refresh_token' => $refreshTokenPlain], 201);
     }
+    */
 
     public function login(LoginRequest $request): JsonResponse
     {
@@ -131,6 +134,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Credentials Invalided'], 422);
         }
 
+        $this->jwt->factory()->setTTL(15);
         $jti = $this->jwt->setToken($token)->getPayload()->get('jti');
         $exp = $this->jwt->setToken($token)->getPayload()->get('exp');
         $sub = $this->jwt->setToken($token)->getPayload()->get('sub');
@@ -217,6 +221,7 @@ class AuthController extends Controller
             }
         }
 
+        $this->jwt->factory()->setTTL(15);
         $token = $this->jwt->fromUser($user_db);
         $jti = $this->jwt->setToken($token)->getPayload()->get('jti');
         $exp = $this->jwt->setToken($token)->getPayload()->get('exp');
@@ -351,6 +356,7 @@ class AuthController extends Controller
         $user = $session->user;
         $old_jti = $session->jti;
 
+        $this->jwt->factory()->setTTL(15);
         $new_token_access = $this->jwt->fromUser($user);
         $new_jti = $this->jwt->setToken($new_token_access)->getPayload()->get('jti');
         $new_exp = $this->jwt->setToken($new_token_access)->getPayload()->get('exp');
@@ -395,6 +401,7 @@ class AuthController extends Controller
         $jti = $payload->get('jti');
         $sub = $payload->get('sub');
 
+        $this->jwt->factory()->setTTL(15);
         $token_exchange = $this->jwt->claims(['aud' => $audience])->fromUser($user);
         $new_jti = $this->jwt->setToken($token_exchange)->getPayload()->get('jti');
         $scopes = $this->jwt->setToken($token_exchange)->getPayload()->get('scopes');

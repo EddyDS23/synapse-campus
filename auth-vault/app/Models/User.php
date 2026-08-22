@@ -13,8 +13,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Override;
 
-#[Fillable(['name', 'email', 'password','banned_at','unblocked_at','two_factor_secret','two_factor_enabled','two_factor_recovery_codes','provider','provider_id','tokens_invalidated_at'])]
-#[Hidden(['banned_at','unblocket_at','two_factor_secret','two_factor_enabled','password', 'remember_token','two_factor_recovery_codes','provider','provider_id','tokens_invalidated_at'])]
+#[Fillable(['name', 'email', 'password','banned_at','unblocked_at','two_factor_secret','two_factor_enabled','two_factor_recovery_codes','provider','provider_id','tokens_invalidated_at','must_change_password'])]
+#[Hidden(['banned_at','unblocket_at','two_factor_secret','two_factor_enabled','password', 'remember_token','two_factor_recovery_codes','provider','provider_id','tokens_invalidated_at','must_change_password'])]
 class User extends Authenticatable implements JWTSubject
 {
 

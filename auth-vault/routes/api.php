@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuditLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,9 @@ Route::get('/user', function (Request $request) {
 
 
 //Endpoints Publicos
-Route::post('/register',[AuthController::class, 'register'])->middleware('throttle:register');
+
+//Registro pasara a de publico a solo administradores podran crear usuarios
+//Route::post('/register',[AuthController::class, 'register'])->middleware('throttle:register');
 Route::post('/login', [AuthController::class,'login'])->middleware('throttle:login');
 Route::post('/login/2fa', [AuthController::class, 'login2fa'])->middleware('throttle:2fa_login');
 Route::post('/token/refresh-with-token',[AuthController::class,'refreshWithToken'])->middleware('throttle:refresh_token');
@@ -48,6 +51,7 @@ Route::middleware(['auth:api','jwt_check'])->group(function(){
 Route::middleware(['auth:api','jwt_check','role:security_admin,super_admin'])->group(function(){
     Route::post('/users/{id}/roles',[RoleController::class,'assign']);
     Route::delete('/users/{id}/roles/{role}',[RoleController::class,'revoke']);
+    Route::post('/admin/users',[AdminController::class,'createUser']);
 });
 
 #Endpoint Protegido por Scope de Usuario

@@ -24,6 +24,7 @@ class ServiceTokenController extends Controller
             return response()->json(['message'=>'Invalid client credentials'],401);
         }
 
+        $this->jwt->factory()->setTTL(15);
         $token = $this->jwt->fromUser($serviceClient);
 
         return response()->json(['token'=>$token],200);

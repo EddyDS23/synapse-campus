@@ -46,6 +46,7 @@ class OAuthController extends Controller
             $user = $user_db;
         }
 
+        $this->jwt->factory()->setTTL(15);
         $token = $this->jwt->fromUser($user);
         $jti = $this->jwt->setToken($token)->getPayload()->get('jti');
         $exp = $this->jwt->setToken($token)->getPayload()->get('exp');
