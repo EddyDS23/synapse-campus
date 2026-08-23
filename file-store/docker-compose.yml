@@ -33,7 +33,7 @@ services:
       - .env
     volumes:
       - .:/var/www/html
-      - filestore_data:/var/www/html/storage/app
+      - filestore_data:/var/www/html/storage/app/files
     networks:
       - file-store-network
       - synapse-campus-network

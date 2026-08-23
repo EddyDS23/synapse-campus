@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'max_file_size_kb'=>env('MAX_FILE_SIZE_KB',5120)
 ];

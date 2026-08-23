@@ -16,12 +16,12 @@ class RoleScopeSeeder extends Seeder
     public function run(): void
 {
     $assignments = [
-        'student' => ['profile:read', 'student:profile:read', 'student:status:read', 'student:schedule:read', 'student:subjects:read', 'library:books:read', 'library:loans:create', 'library:loans:read', 'library:loans:renew', 'library:fines:read', 'library:fines:pay', 'support:tickets:create', 'support:tickets:read', 'support:tickets:comment'],
-        'teacher' => ['profile:read', 'student:profile:read', 'student:status:read', 'library:books:read', 'library:loans:create', 'library:loans:read', 'support:tickets:create', 'support:tickets:read'],
-        'librarian' => ['profile:read', 'library:books:read', 'library:loans:read', 'library:loans:renew', 'library:fines:read', 'library:fines:pay', 'library:inventory:manage'],
-        'support_agent' => ['profile:read', 'support:tickets:read', 'support:tickets:comment', 'support:tickets:assign', 'support:tickets:close'],
-        'academic_admin' => ['profile:read', 'student:profile:read', 'student:status:read', 'student:schedule:read', 'student:subjects:read'],
-        'security_admin' => ['profile:read', 'audit:events:read','user:security_status:read'],
+        'student' => ['profile:read', 'student:profile:read', 'student:status:read', 'student:schedule:read', 'student:subjects:read', 'library:books:read', 'library:loans:create', 'library:loans:read', 'library:loans:renew', 'library:fines:read', 'library:fines:pay', 'support:tickets:create', 'support:tickets:read', 'support:tickets:comment','files:read','files:upload'],
+        'teacher' => ['profile:read', 'student:profile:read', 'student:status:read', 'library:books:read', 'library:loans:create', 'library:loans:read', 'support:tickets:create', 'support:tickets:read','files:read','files:upload'],
+        'librarian' => ['profile:read', 'library:books:read', 'library:loans:read', 'library:loans:renew', 'library:fines:read', 'library:fines:pay', 'library:inventory:manage','files:read','files:upload'],
+        'support_agent' => ['profile:read', 'support:tickets:read', 'support:tickets:comment', 'support:tickets:assign', 'support:tickets:close','files:read','files:upload'],
+        'academic_admin' => ['profile:read', 'student:profile:read', 'student:status:read', 'student:schedule:read', 'student:subjects:read','files:read','files:upload','files:delete'],
+        'security_admin' => ['profile:read', 'audit:events:read','user:security_status:read','files:read','files:upload','files:delete'],
     ];
 
     foreach ($assignments as $roleName => $scopeNames) {

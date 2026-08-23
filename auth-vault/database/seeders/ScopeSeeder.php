@@ -39,7 +39,10 @@ class ScopeSeeder extends Seeder
             'internal:student-status:read',
             'internal:users:basic-info:read',
             'internal:student-debt:write',
-            'user:security-status:read'
+            'user:security-status:read',
+            'files:upload',
+            'files:read',
+            'files:delete',
         ];
 
         foreach($scopes_data as $scope_name){

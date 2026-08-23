@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Override;
 
-class JWTExchangeRequest extends FormRequest
+class UploadFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +26,20 @@ class JWTExchangeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'audience'=>['required','string','in:student-portal,library-core,support-desk,audit-logs,file-store'],
+            'file'=>[
+                'required',
+                'file',
+                'mimes:jpg,jpeg,png,pdf,webp',
+                'max:'. config('app.max_file_size_kb',5120)
+            ]
         ];
     }
 
-
     #[Override]
-    public function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json(['errors'=>$validator->errors()],422));
-        
+        throw new HttpResponseException(
+            response()->json(['errors'=>$validator->errors()],422)
+        );
     }
 }
