@@ -1,0 +1,51 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    expose:
+      - "3306"
+    networks:
+      - file-store-network
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "-p${DB_ROOT_PASSWORD}", "ping", "-h", "localhost"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    image: eddyds23/file-store:2.1
+    container_name: file_store_nginx
+    env_file:
+      - .env.prod
+    volumes:
+      - filestore_data:/var/www/html/storage/app/files
+    networks:
+      - file-store-network
+      - synapse-campus-network
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  file-store-network:
+  synapse-campus-network:
+    external: true
+
+volumes:
+  mariadb_data:
+  filestore_data:

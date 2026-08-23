@@ -1,0 +1,51 @@
+# Stage 1 — dependencias
+FROM composer:2 AS deps
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-scripts \
+    --prefer-dist
+
+# Stage 2 — imagen final con PHP-FPM + Nginx
+FROM php:8.3-fpm-alpine
+
+RUN apk add --no-cache \
+    nginx \
+    supervisor \
+    libzip-dev \
+    oniguruma-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libexif-dev \
+    autoconf \
+    g++ \
+    make \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath \
+    && apk del autoconf g++ make \
+    && rm -rf /tmp/pear
+
+WORKDIR /var/www/html
+
+COPY --from=deps /app/vendor ./vendor
+COPY . .
+
+RUN rm -f bootstrap/cache/packages.php \
+    && rm -f bootstrap/cache/services.php
+
+RUN mkdir -p storage/app/files \
+    && mkdir -p storage/framework/{sessions,views,cache/data} \
+    && mkdir -p storage/logs \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+COPY docker/nginx/default.prod.conf /etc/nginx/http.d/default.conf
+COPY docker/supervisord.conf /etc/supervisord.conf
+
+COPY entrypoint.prod.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
