@@ -36,7 +36,7 @@ class ServiceCheck
         }
 
         try {
-            $payload = JWT::decode($token, new Key($publicKey, 'RS256'));
+            $payload = JWT::decode($token, new Key($publicKey, 'RS512'));
         } catch (ExpiredException $e) {
             return response()->json(['message' => 'Token expirado'], 401);
         } catch (SignatureInvalidException $e) {

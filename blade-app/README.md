@@ -1,58 +1,120 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Synapse Campus — Blade BFF
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Frontend del ecosistema Synapse Campus. Es un **Backend for Frontend**: el navegador solo habla con esta app, y ella habla con los microservicios. Los tokens JWT viven en la sesión PHP y **nunca llegan al browser**.
 
-## About Laravel
+**No usa base de datos.** Sesiones y caché van en archivos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Tecnología | Uso |
+|---|---|
+| PHP 8.3 + Laravel 13 | Framework (fijado a `^13.0`; 13.8+ exige PHP 8.4) |
+| Blade | Vistas |
+| Sesión `file` | Almacena tokens JWT por servicio |
+| Caché `file` | Health checks (30 s) y tokens |
+| Docker | Contenedor unificado PHP-FPM + Nginx (supervisord) |
+| Traefik | Reverse proxy + TLS (producción) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Qué hace
 
-## Learning Laravel
+- Login contra AuthVault (email/password, 2FA TOTP y OAuth GitHub)
+- Token Exchange automático al entrar a cada sección (un token por servicio, cacheado en sesión)
+- Menú y rutas por rol (`student`, `teacher`, `librarian`, `support_agent`, `academic_admin`, `security_admin`, `super_admin`)
+- Secciones: perfil/horario/materias (StudentPortal), biblioteca (LibraryCore), tickets (SupportDesk), auditoría (AuditLog)
+- Sidebar con estado real de los servicios (`HealthService`, `Http::pool()`, caché 30 s)
+- Modo oscuro/claro persistente
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Dependencias del ecosistema
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+El BFF necesita que estén corriendo (o al menos accesibles) estos servicios en la red `synapse-campus-network`:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+| Servicio | Contenedor nginx | Puerto dev |
+|---|---|---|
+| AuthVault | `auth_vault_nginx` | 9001 |
+| StudentPortal | `nginx-student-portal` | 9002 |
+| LibraryCore | `library_core_nginx` | 9003 |
+| SupportDesk | `support_desk_nginx` | 9004 |
+| AuditLog | `audit_logs_nginx` | 9005 |
+| **Blade BFF** | `nginx-blade-app` | **9006** |
 
-## Agentic Development
+AuthVault es imprescindible: sin él no hay login. Los demás pueden estar caídos; el sidebar los marcará como `offline`.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Cómo levantarlo
+
+### 1. Redes Docker (una sola vez)
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+docker network create synapse-campus-network
+docker network create proxy_network
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Variables de entorno
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Edita `.env` y revisa:
 
-## Code of Conduct
+- `APP_KEY` — genérala (ver paso 4). Nunca vacía.
+- `*_BASE_URL` — deben coincidir **exactamente** con el nombre del contenedor nginx de cada servicio.
+- `APP_URL` — `http://localhost:9006` en dev; tu dominio en producción.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Levantar
 
-## Security Vulnerabilities
+```bash
+docker compose up -d --build
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Primera vez
 
-## License
+Dentro del contenedor `app`:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Generar la clave: `php artisan key:generate`
+- Limpiar config: `php artisan config:clear`
+- Asegurar permisos de `storage` y `bootstrap/cache` para `www-data` (aquí se guardan las sesiones en archivos)
+
+Después de **cualquier cambio al `.env`**: `config:clear` y reiniciar el contenedor.
+
+### 5. Verificar
+
+Abre `http://localhost:9006` e inicia sesión con un usuario existente en AuthVault.
+
+## Variables de entorno
+
+| Variable | Valor | Nota |
+|---|---|---|
+| `SESSION_DRIVER` | `file` | **Crítico.** Con `database` falla buscando `sessions` en SQLite |
+| `CACHE_STORE` | `file` | **Crítico.** Default `database` rompe el HealthService |
+| `QUEUE_CONNECTION` | `sync` | No hay colas |
+| `SESSION_ENCRYPT` | `true` | Los tokens JWT viven en la sesión |
+| `AUTHVAULT_BASE_URL` | `http://auth_vault_nginx` | Nombre literal del contenedor |
+| `STUDENTPORTAL_BASE_URL` | `http://nginx-student-portal` | Ojo: guiones medios |
+| `LIBRARYCORE_BASE_URL` | `http://library_core_nginx` | |
+| `SUPPORTDESK_BASE_URL` | `http://support_desk_nginx` | |
+| `AUDITLOG_BASE_URL` | `http://audit_logs_nginx` | |
+
+> Los nombres exactos de las variables `*_BASE_URL` deben coincidir con lo que lee `config/services.php`. Verifícalo antes de dar por buena esta lista.
+
+## Problemas conocidos
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| `Database file ... database.sqlite does not exist` | `SESSION_DRIVER` o `CACHE_STORE` en `database` | Ponerlos en `file`, `config:clear`, reiniciar |
+| Sidebar muestra servicios `offline` | Nombre de contenedor mal escrito o fuera de la red | Revisar `*_BASE_URL` y que `app` esté en `synapse-campus-network` |
+| Cambié `.env` y no pasa nada | Config cacheada | `config:clear` + reiniciar contenedor |
+| Error de permisos al guardar sesión | `storage` sin permisos | `chown` a `www-data` en `storage` y `bootstrap/cache` |
+| Cualquier ruta da 404 tras recrear contenedores | DNS interno desincronizado | Reiniciar el nginx del servicio |
+
+## Producción
+
+- Imagen: `eddyds23/blade-app:2.1` (PHP-FPM + Nginx vía supervisord)
+- Dominio: `synapse.zerofall.qzz.io`, TLS con Let's Encrypt vía Traefik
+- `config:cache`, `route:cache` y `view:cache` corren en el **entrypoint**, no en el Dockerfile
+- `.env` y certificados nunca van dentro de la imagen
+- Activar `SESSION_SECURE_COOKIE=true`, `APP_ENV=production`, `APP_DEBUG=false`
+- GitHub OAuth: la redirect URI `https://<dominio>/auth/github/callback` debe estar en la GitHub OAuth App y en AuthVault
+
+## Convenciones del ecosistema
+
+ULID en todos los IDs · alias de middleware con nombre de dominio · tres redes por servicio · auditoría híbrida (local + best-effort a AuditLog) · YAGNI.

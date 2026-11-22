@@ -3,10 +3,10 @@ services:
   mariadb:
     image: mariadb:11.4
     environment:
-      - MARIADB_ROOT_PASSWORD=12345678
-      - MARIADB_DATABASE=support_desk_system
-      - MARIADB_USER=support_desk_user
-      - MARIADB_PASSWORD=12345678
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
     expose:
       - "3306"
     volumes:
@@ -50,7 +50,6 @@ services:
     networks:
       - support_desk_network
       - synapse-campus-network
-      - proxy_network
     depends_on:
         app:
           condition: service_started
@@ -66,8 +65,6 @@ services:
 networks:
   support_desk_network:
   synapse-campus-network:
-      external: true
-  proxy_network:
       external: true
 
 

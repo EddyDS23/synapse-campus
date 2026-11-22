@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 use App\Models\AuditLog;
+use Illuminate\Support\Facades\Log;
 
 class SessionController extends Controller
 {

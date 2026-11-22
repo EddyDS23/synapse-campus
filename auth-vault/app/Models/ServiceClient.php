@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Override;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-#[Fillable(['id','client_id','client_secret','name'])]
+#[Fillable(['client_id','client_secret','name'])]
 class ServiceClient extends Model implements JWTSubject
 {
 

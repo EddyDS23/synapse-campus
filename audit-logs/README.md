@@ -1,58 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AuditLog — Auditoría centralizada de Synapse Campus
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Microservicio que recibe y almacena de forma **inmutable** los eventos importantes de todo el ecosistema. Solo escriben los servicios; leen servicios y roles privilegiados.
 
-## About Laravel
+- **Puerto dev:** 9005
+- **Base de datos:** `audit_logs_system` (MariaDB)
+- **Sin Redis**, sin colas, sin sesión web
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Tecnología | Uso |
+|---|---|
+| PHP 8.3 + Laravel 13 (`^13.0`) | Framework |
+| MariaDB 11.4 | Tabla `audit_logs` |
+| `firebase/php-jwt` | Validación local del JWT con la clave pública de AuthVault |
+| Scramble | Documentación de API (`api/internal` excluido) |
+| Docker + Nginx propio | Infraestructura |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Qué hace
 
-## Learning Laravel
+- Registra eventos: actor, servicio de origen, acción, recurso, IP y metadata (JSON).
+- Tabla inmutable: sin `updated_at`, solo `created_at`.
+- Consulta con filtros combinables: `actor_id`, `service`, `action`, `from`, `to`, `per_page`.
+- **No es service client**: no pide tokens a AuthVault. Solo valida los JWT que recibe.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Endpoints
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Método | Ruta | Middleware | Quién |
+|---|---|---|---|
+| POST | `/api/internal/events` | `service.check:audit:events:write` | Servicios (token de servicio) |
+| GET | `/api/internal/events` | `service.check:audit:events:read` | Servicios |
+| GET | `/api/events` | `scope.check:audit:events:read` | Humanos (`security_admin`, `super_admin`) vía Token Exchange con `aud: audit-log` |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Cómo levantarlo
 
-## Agentic Development
+1. **Redes Docker** (si no existen): `synapse-campus-network` y `proxy_network`.
+2. **Variables:** `cp .env.example .env` y rellenar (ver abajo). Revisa `DB_*` y `AUTHVAULT_BASE_URL`.
+3. **Levantar:** `docker compose up -d --build`.
+4. **Clave de aplicación:** `php artisan key:generate` dentro del contenedor `app`.
+5. **Migraciones:** las corre el entrypoint (espera a MariaDB). No hay seeders obligatorios.
+6. **Recrear `app` y reiniciar nginx** si cambiaste el `.env`.
+7. **Verificar:** haz un login en el Blade y comprueba que aparece un evento de `auth-vault` en la tabla.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Prerrequisito en AuthVault
 
-```bash
-composer require laravel/boost --dev
+Los servicios que reportan (AuthVault, StudentPortal, LibraryCore, SupportDesk, FileStore) necesitan el scope `audit:events:write` en su service client. Eso se asigna con el seeder de service clients de AuthVault.
 
-php artisan boost:install
-```
+## Variables de entorno
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+| Variable | Valor | Nota |
+|---|---|---|
+| `DB_CONNECTION` | `mariadb` | No `sqlite` |
+| `DB_HOST` | nombre del servicio `mariadb` | |
+| `DB_DATABASE` / `DB_USERNAME` / `DB_PASSWORD` | los mismos del compose | Ver sección siguiente |
+| `SESSION_DRIVER` | `file` | `database` provoca error de `database.sqlite` |
+| `CACHE_STORE` | `file` | Guarda la clave pública de AuthVault |
+| `QUEUE_CONNECTION` | `sync` | |
+| `AUTHVAULT_BASE_URL` | nombre literal del nginx de AuthVault | Dev: `http://auth-vault-nginx` |
+| `AUTHVAULT_PUBLIC_KEY_CACHE_TTL` | `3600` | Segundos |
 
-## Contributing
+No lleva `AUTHVAULT_CLIENT_ID` ni `AUTHVAULT_CLIENT_SECRET`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Docker Compose: usar las variables del `.env`
 
-## Code of Conduct
+Para no repetir credenciales en dos sitios, el `docker-compose.yml` debe leerlas del `.env`:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Servicio `mariadb`:** sus variables de inicialización (`MARIADB_DATABASE`, `MARIADB_USER`, `MARIADB_PASSWORD`, `MARIADB_ROOT_PASSWORD`) se alimentan con interpolación `${DB_DATABASE}`, `${DB_USERNAME}`, `${DB_PASSWORD}`. Compose lee automáticamente el `.env` de la carpeta del proyecto para esa interpolación.
+- **Servicio `app`:** usa `env_file: .env` para recibir el resto de variables.
 
-## Security Vulnerabilities
+**Trampas:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Las variables `MARIADB_*` solo se aplican la primera vez** que se crea el volumen de datos. Si cambias usuario o contraseña después, MariaDB las ignora y el login falla con `Access denied`. Solución en desarrollo: `docker compose down -v` (borra el volumen) y volver a levantar. Con datos que importan, cambia las credenciales desde dentro de MariaDB.
+- **`env_file` e interpolación son cosas distintas.** `env_file` inyecta variables al contenedor al **crearlo**; la interpolación `${VAR}` se resuelve al leer el compose. En ambos casos, tras cambiar el `.env` hay que **recrear** el contenedor, no basta reiniciar.
+- **Valores con `$`** en una contraseña deben escaparse como `$$` en el compose.
 
-## License
+## Caché: qué limpiar y cuándo
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Cambiaste el `.env`: `config:clear` y recrear `app`.
+- Rutas nuevas que no aparecen: `route:clear`.
+- **Clave pública en caché vacía o inválida:** si el primer intento de obtenerla falló y se cacheó vacía, todos los requests siguientes fallan con *OpenSSL unable to validate key*. Solución: `cache:clear`. Aquí es seguro porque la caché es `file` y solo contiene eso.
+- Producción: `config:cache`, `route:cache` y `view:cache` en el entrypoint, nunca en el Dockerfile.
+
+## Errores conocidos y solución
+
+| Síntoma | Causa | Solución |
+|---|---|---|
+| `Database file ... database.sqlite does not exist` | `DB_CONNECTION`, `SESSION_DRIVER` o `CACHE_STORE` en `sqlite`/`database` | Poner `mariadb`, `file`, `file`; `config:clear`; recrear |
+| `MissingAppKeyException` | `APP_KEY` vacía | `key:generate`, recrear contenedor |
+| `Access denied for user` en migraciones | Credenciales del `.env` distintas a las con las que se creó el volumen de MariaDB | `down -v` y levantar de nuevo, o alinear credenciales |
+| 502 en su nginx tras recrear `app` | Nginx conserva la IP vieja | Reiniciar solo el nginx |
+| 500 y no existe `storage/logs/laravel.log` | Permisos de `storage` | `chown -R www-data:www-data storage bootstrap/cache` en el entrypoint (como root, antes de artisan) |
+| `OpenSSL unable to validate key` | Clave pública cacheada vacía | `cache:clear` |
+| 503 al llamar con token | AuthVault no responde o URL mal escrita | Revisar `AUTHVAULT_BASE_URL` contra `docker ps`; probar `public-key` con curl/wget entre contenedores |
+| 401 con token válido | `aud` distinto de `audit-log` o token de usuario en ruta interna | Hacer Token Exchange con `audience: audit-log`; las rutas internas exigen token de servicio |
+| 403 al escribir un evento | El service client no tiene `audit:events:write` | Añadir el scope en el seeder de AuthVault y volver a correrlo |
+| `Field 'ip_address' doesn't have a default value` | `ip_address` falta en las reglas del `FormRequest` | Añadirlo a las reglas de validación |
+| Los servicios no pueden llegar a AuditLog | Nombre del contenedor distinto al de su URL, o falta `synapse-campus-network` | `docker ps` y comparar con `AUDITLOG_BASE_URL` del servicio que reporta |
+
+## Notas de diseño
+
+- **Patrón híbrido:** cada servicio guarda su auditoría local y reporta aquí en modo best-effort. Si AuditLog cae, el evento sigue en la tabla local del servicio.
+- **Inmutable por diseño:** no hay endpoints de edición ni borrado.
+- **Pendiente antes de producción real:** política de retención (comando schedulado que purgue o archive logs antiguos) e índices en `actor_id`, `action`, `service`.
+
+## Producción
+
+- Imagen `eddyds23/audit-log:2.1` (PHP-FPM + Nginx vía supervisord).
+- `.env` nunca en la imagen ni en el repo. `APP_DEBUG=false`.

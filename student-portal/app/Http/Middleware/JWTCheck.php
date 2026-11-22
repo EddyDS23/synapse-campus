@@ -46,7 +46,7 @@ class JWTCheck
         } catch (SignatureInvalidException $e){
             return response()->json(['message'=>"Signature's bearer token invalid"],401);
         } catch (UnexpectedValueException $e){
-            return response()->json(['message'=>"Format's bearer token invalid "],400);
+            return response()->json(['message'=>"Format's bearer token invalid ",'error'=>$e->getMessage()],400);
         } catch(\Throwable $t){
             return response()->json(['message'=>'Error'],401);
         }

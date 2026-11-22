@@ -42,7 +42,7 @@ return [
     ],
 
     'audit_log'=>[
-        'base_url'=>env('AUDITLOGS_BASE_URL'),
+        'base_url'=>env('AUDITLOG_BASE_URL'),
         'events_url'=>'/api/internal/events',
     ]
 

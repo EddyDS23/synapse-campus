@@ -3,10 +3,10 @@ services:
   mariadb:
     image: mariadb:11.4
     environment:
-      - MARIADB_DATABASE=audit_logs_system
-      - MARIADB_ROOT_PASSWORD=12345678
-      - MARIADB_USER=audit_logs_user
-      - MARIADB_PASSWORD=12345678
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
     expose:
       - "3306"
     networks:
@@ -41,7 +41,6 @@ services:
     networks:
       - audit_logs_network
       - synapse-campus-network
-      - proxy_network
     expose:
       - "80"
     depends_on:
@@ -54,8 +53,7 @@ networks:
   audit_logs_network:
   synapse-campus-network:
     external: true
-  proxy_network:
-    external: true
+
 
 volumes:
   mariadb_data:

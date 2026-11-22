@@ -28,6 +28,8 @@ php artisan migrate --force
 php artisan vendor:publish --provider="DeDoc\Scramble\ScrambleServiceProvider"
 php artisan config:clear
 php artisan cache:clear
+
+chown -R www-data:www-data storage bootstrap/cache
 exec php-fpm
 
 fi

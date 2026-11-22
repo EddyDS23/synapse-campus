@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\InvalidRequestException;
 use App\Exceptions\ServiceUnavailableException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 
 class StudentPortalService
@@ -45,15 +46,18 @@ class StudentPortalService
         return $this->request('get', config('services.studentportal.profile_url'));
     }
 
-    public function getSchedule(): array{
+    public function getSchedule(): array
+    {
         return $this->request('get', config('services.studentportal.schedule_url'));
     }
 
-    public function getSubject(): array{
+    public function getSubject(): array
+    {
         return $this->request('get', config('services.studentportal.subjects_url'));
     }
 
-    public function getAcademicStatus(): array{
+    public function getAcademicStatus(): array
+    {
         return $this->request('get', config('services.studentportal.academic_status_url'));
     }
 
@@ -61,7 +65,6 @@ class StudentPortalService
     {
 
         $token = $this->getToken();
-
         $response = Http::withToken($token)
             ->{$method}(config('services.studentportal.base_url') . $path);
 
@@ -75,10 +78,14 @@ class StudentPortalService
             } catch (\Throwable $th) {
                 throw new ServiceUnavailableException("StudentPortal no disponible");
             }
-            
         }
 
         if (!$response->successful()) {
+            Log::warning('StudentPortal respondió con error', [
+                'path'   => $path,
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
             throw new ServiceUnavailableException("StudentPortal no disponible");
         }
 

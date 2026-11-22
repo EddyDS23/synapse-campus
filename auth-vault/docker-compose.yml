@@ -54,7 +54,7 @@
       networks:
         - auth-value-network
         - synapse-campus-network
-        - proxy_network
+        - proxy
       depends_on:
         - app
 
@@ -62,7 +62,7 @@
     auth-value-network:
     synapse-campus-network:
       external: true
-    proxy_network:
+    proxy:
       external: true
 
   volumes:

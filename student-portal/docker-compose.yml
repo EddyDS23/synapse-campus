@@ -4,10 +4,10 @@ services:
   mariadb:
     image: mariadb:11.4
     environment:
-      - MARIADB_ROOT_PASSWORD=12345678
-      - MARIADB_DATABASE=student_portal_system
-      - MARIADB_USER=student_portal_user
-      - MARIADB_PASSWORD=12345678
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
     expose:
       - "3306" 
     volumes:
@@ -41,15 +41,12 @@ services:
     networks:
       - student-portal-network
       - synapse-campus-network
-      - proxy_network
     depends_on:
       - app
 
 networks:
   student-portal-network:
   synapse-campus-network:
-    external: true
-  proxy_network:
     external: true
 
 volumes:

@@ -29,6 +29,7 @@ php artisan vendor:publish --provider="Dedoc\Scramble\ScrambleServiceProvider"
 php artisan config:clear
 php artisan cache:clear
 php artisan schedule:work &
+chown -R www-data:www-data storage bootstrap/cache
 exec php-fpm
 
 fi

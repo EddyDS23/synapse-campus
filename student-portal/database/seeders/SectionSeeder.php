@@ -18,7 +18,7 @@ class SectionSeeder extends Seeder
     {   
         $periodId = AcademicPeriod::where('is_active',true)->value('id');
         $subjects = Subject::pluck('id','code');
-        $teacherId = '01kx58x0jmjvmk47dktsk9fy48';
+        $teacherId = '01m7ykn2410qq7ymcj2c7rk3kt';
         
         $sections = [
             ['subject_id' => $subjects['MAT101'], 'academic_period_id' => $periodId, 'teacher_id' => $teacherId, 'group_label' => 'A'],

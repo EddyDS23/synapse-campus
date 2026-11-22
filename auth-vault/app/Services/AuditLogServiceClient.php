@@ -6,6 +6,7 @@ use App\Models\ServiceClient;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use PHPOpenSourceSaver\JWTAuth\JWTAuth;
 
 class AuditLogServiceClient
@@ -18,13 +19,16 @@ class AuditLogServiceClient
     {
         $tokenService = Cache::get(self::CACHE_KEY_TOKEN);
 
+        Log::info($tokenService);
         if ($tokenService === null) {
             $serviceClient = ServiceClient::where('client_id', 'auth-vault')->first();
+            $this->jwt->factory()->emptyClaims();
             $tokenService = $this->jwt->fromUser($serviceClient);
             Cache::put(self::CACHE_KEY_TOKEN, $tokenService, now()->addMinutes(58));
         }
 
         try {
+            Log::info($tokenService);
             $response = Http::withToken($tokenService)
                 ->post(
                     config('services.audit_log.base_url') . config('services.audit_log.events_url'),
@@ -37,7 +41,7 @@ class AuditLogServiceClient
         if (!$response->successful()) {
             return false;
         }
-
+      
         return true;
     }
 }
