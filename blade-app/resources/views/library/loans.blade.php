@@ -3,57 +3,7 @@
 @section('title', 'Mis Préstamos | Synapse')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-    body {
-        background-color: #020617; /* Slate 950 */
-        color: #f1f5f9;
-    }
-    .synapse-card {
-        background: rgba(30, 41, 59, 0.4);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-        transition: all 0.3s ease;
-    }
-    .synapse-card:hover {
-        border-color: #6366f1;
-        background: rgba(30, 41, 59, 0.6);
-    }
-    .status-badge {
-        font-size: 0.65rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0.25rem 0.75rem;
-        border-radius: 99px;
-    }
-    .btn-action {
-        padding: 0.6rem 1rem;
-        border-radius: 0.75rem;
-        font-weight: 700;
-        font-size: 0.875rem;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .progress-bar {
-        height: 6px;
-        background: #1e293b;
-        border-radius: 99px;
-        overflow: hidden;
-    }
-    .chart-container {
-        position: relative;
-        height: 180px;
-        width: 100%;
-    }
-</style>
-
-<div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+<x-page>
     
     <!-- Header de Gestión -->
     <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -195,7 +145,7 @@
             @endforeach
         </div>
     @endif
-</div>
+</x-page>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

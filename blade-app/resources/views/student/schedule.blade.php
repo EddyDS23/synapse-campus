@@ -5,42 +5,7 @@
 @section('content')
 <!-- Recursos para Gráficos y Estilo -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-    body {
-        background-color: #020617; /* Slate-950 */
-        color: #f8fafc;
-    }
-    .glass-card {
-        background: rgba(30, 41, 59, 0.5);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: all 0.3s ease;
-    }
-    .glass-card:hover {
-        border-color: #6366f1;
-        transform: translateY(-2px);
-    }
-    .day-btn.active {
-        background-color: #4f46e5;
-        color: white;
-        box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
-    }
-    .chart-container {
-        position: relative;
-        width: 100%;
-        max-width: 400px;
-        height: 200px;
-        margin: 0 auto;
-    }
-    /* Scrollbar estilizada para modo oscuro */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-</style>
-
-<div class="max-w-7xl mx-auto p-6 lg:p-12 min-h-screen">
+<x-page>
     
     <!-- Encabezado de Página -->
     <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -138,7 +103,7 @@
             @endforeach
         </div>
     @endif
-</div>
+</x-page>
 
 <script>
     // Gráfico de Carga Semanal

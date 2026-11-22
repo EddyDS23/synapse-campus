@@ -3,30 +3,7 @@
 @section('title', 'Auditoría | AuthVault')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.5);
-        --accent: #6366f1;
-    }
-
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .synapse-glass {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-    }
-</style>
-
-<div class="max-w-7xl mx-auto px-4 py-8">
+<x-page>
     
     <!-- Header Area -->
     <header class="mb-10">
@@ -131,5 +108,5 @@
             </div>
         @endif
     </div>
-</div>
+</x-page>
 @endsection

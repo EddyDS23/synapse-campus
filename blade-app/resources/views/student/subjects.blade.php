@@ -6,35 +6,7 @@
 <!-- Fuentes y Estilos para Modo Nocturno -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-    body {
-        background-color: #020617; /* Slate-950 */
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #f8fafc;
-    }
-    .glass-card {
-        background: rgba(30, 41, 59, 0.5);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .semester-btn.active {
-        background: linear-gradient(to right, #6366f1, #a855f7);
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        border-color: transparent;
-    }
-    .subject-node {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .subject-node:hover {
-        transform: scale(1.02) translateY(-5px);
-        border-color: #22d3ee;
-        box-shadow: 0 10px 30px -10px rgba(34, 211, 238, 0.3);
-    }
-</style>
-
-<div class="max-w-[1600px] mx-auto p-4 md:p-10">
+<x-page>
     
     <!-- Cabecera: Analítica de Carrera -->
     <header class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
@@ -141,7 +113,7 @@
             </main>
         </div>
     @endif
-</div>
+</x-page>
 
 <script>
     // Lógica de Navegación de Semestres unificada (Sincroniza Móvil y Escritorio)

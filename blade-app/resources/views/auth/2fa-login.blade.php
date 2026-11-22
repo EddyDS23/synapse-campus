@@ -3,43 +3,6 @@
 @section('title', 'Verificación 2FA | Synapse Campus')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-
-<style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.5);
-        --accent: #6366f1;
-    }
-
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .synapse-glass {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        transition: all 0.2s ease;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.6);
-    }
-</style>
-
 <div class="w-full max-w-md mx-auto p-4">
     <!-- Tarjeta Glassmorphism -->
     <div class="synapse-glass p-8 shadow-2xl border-t-2 border-t-indigo-500">
@@ -101,5 +64,5 @@
         </div>
 
     </div>
-</div>
+</x-page>
 @endsection

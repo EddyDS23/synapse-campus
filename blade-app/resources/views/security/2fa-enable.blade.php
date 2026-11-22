@@ -70,5 +70,5 @@
         <a href="{{ route('security.index') }}" style="font-size:12px; color:var(--text-sub);">Cancelar</a>
     </div>
 
-</div>
+</x-page>
 @endsection

@@ -57,5 +57,5 @@
         </div>
     </div>
 
-</div>
+</x-page>
 @endsection

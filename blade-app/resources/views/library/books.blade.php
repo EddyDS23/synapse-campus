@@ -3,75 +3,7 @@
 @section('title', 'Catálogo de Libros | Synapse')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-    body {
-        background-color: #020617; /* Slate 950 */
-        color: #f1f5f9;
-    }
-    .synapse-card {
-        background: rgba(30, 41, 59, 0.5); /* Slate 800 con opacidad */
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.25rem;
-        transition: all 0.3s ease;
-    }
-    .synapse-card:hover {
-        border-color: #6366f1;
-        background: rgba(30, 41, 59, 0.8);
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    }
-    .chart-container {
-        position: relative;
-        width: 100%;
-        max-width: 100%;
-        height: 200px;
-        margin: 0 auto;
-    }
-    .input-premium {
-        height: 3rem;
-        padding: 0 1rem;
-        background: #0f172a;
-        border: 1px solid #334155;
-        border-radius: 0.75rem;
-        color: #f8fafc;
-        transition: all 0.2s;
-    }
-    .input-premium:focus {
-        outline: none;
-        border-color: #6366f1;
-        background: #1e293b;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
-    }
-    .btn-loan {
-        background: #6366f1;
-        color: white;
-        font-weight: 700;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        transition: all 0.2s;
-        width: 100%;
-    }
-    .btn-loan:hover {
-        background: #4f46e5;
-        transform: translateY(-1px);
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-    }
-    .btn-disabled {
-        background: #1e293b;
-        color: #64748b;
-        cursor: not-allowed;
-        font-weight: 700;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        width: 100%;
-        border: 1px solid #334155;
-    }
-</style>
-
-<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+<x-page>
     
     <!-- Encabezado con Feedback -->
     <header class="mb-10">
@@ -229,7 +161,7 @@
             </div>
         </div>
     @endif
-</div>
+</x-page>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

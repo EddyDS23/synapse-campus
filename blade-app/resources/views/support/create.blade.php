@@ -3,7 +3,6 @@
 @section('title', 'Nuevo Ticket | Synapse Support')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Chosen Palette: Synapse Midnight (Dark Slate, Indigo & Amber) -->
@@ -21,52 +20,7 @@
     - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
 -->
 
-<style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.4);
-        --accent: #6366f1;
-        --amber: #f59e0b;
-    }
-
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .synapse-glass {
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-    }
-
-    .input-field {
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .input-field:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        outline: none;
-    }
-
-    .btn-submit {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
-    }
-
-    .chart-container {
-        position: relative;
-        width: 100%;
-        height: 180px;
-    }
-</style>
-
-<div class="max-w-6xl mx-auto px-4 py-10">
+<x-page>
     
     <!-- Header Section -->
     <header class="mb-12">
@@ -198,7 +152,7 @@
             </div>
         </div>
     </div>
-</div>
+</x-page>
 
 <script>
     let slaChart;

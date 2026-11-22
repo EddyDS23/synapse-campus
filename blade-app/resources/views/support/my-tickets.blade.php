@@ -3,78 +3,7 @@
 @section('title', 'Mis Tickets | Synapse Support')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Chosen Palette: Synapse Midnight (Dark Slate, Indigo & Amber) -->
-<!-- Application Structure Plan: 
-    1. Header & Quick Actions: Link to create new tickets and system alerts.
-    2. Support Analytics: KPI cards and a Chart.js doughnut to visualize ticket resolution status.
-    3. Advanced Filtering: Integrated search and status filter bar.
-    4. Interactive Ticket List: A refined table with status badges and priority indicators.
--->
-
-<!-- Visualization & Content Choices:
-    - Status Chart -> Goal: Inform -> Breakdown of ticket statuses.
-    - Priority Badges -> Goal: Highlight -> Immediate identification of urgent issues.
-    - KPI Cards -> Goal: Summarize -> Rapid overview of support activity.
-    - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
--->
-
-<style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.5);
-        --accent: #6366f1;
-    }
-
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .synapse-glass {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-    }
-
-    .chart-container {
-        position: relative;
-        width: 100%;
-        height: 220px;
-    }
-
-    .status-badge {
-        font-size: 0.65rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        padding: 0.25rem 0.75rem;
-        border-radius: 99px;
-    }
-
-    .priority-indicator {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 6px;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        transition: all 0.2s ease;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px -5px rgba(99, 102, 241, 0.6);
-    }
-</style>
-
-<div class="max-w-7xl mx-auto px-4 py-8">
+<x-page>
     
     <!-- Header Area -->
     <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -251,7 +180,7 @@
             </div>
         @endif
     </div>
-</div>
+</x-page>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

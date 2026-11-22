@@ -3,63 +3,7 @@
 @section('title', 'Estado de Cuenta | Synapse Library')
 
 @section('content')
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Chosen Palette: Synapse Midnight (Dark Slate & Indigo) -->
-<!-- Application Structure Plan: 
-    1. Header & Feedback: Alertas de éxito/error integradas en el diseño.
-    2. KPI Analytics: Cálculo dinámico de deuda basado en el array $fines.
-    3. Visual Insights: Gráfico de donut para ver la proporción de estados.
-    4. Data Table: La tabla funcional del usuario con estilos premium y acciones POST.
--->
-
-<style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.5);
-        --accent: #6366f1;
-    }
-
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .synapse-glass {
-        background: var(--card-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 1.5rem;
-    }
-
-    .chart-container {
-        position: relative;
-        width: 100%;
-        height: 250px;
-    }
-
-    .status-badge {
-        font-size: 0.7rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        padding: 0.25rem 0.75rem;
-        border-radius: 99px;
-    }
-
-    .btn-action {
-        transition: all 0.2s ease;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    }
-
-    .btn-action:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px -5px rgba(99, 102, 241, 0.5);
-    }
-</style>
-
-<div class="max-w-7xl mx-auto px-4 py-8">
+<x-page>
     
     <!-- Header & Feedback -->
     <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -201,7 +145,7 @@
             @endif
         </div>
     </div>
-</div>
+</x-page>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
