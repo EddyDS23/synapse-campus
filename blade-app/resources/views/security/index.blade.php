@@ -3,19 +3,13 @@
 @section('title', 'Seguridad')
 
 @section('content')
+<x-page>
 <div class="page-header">
     <div>
         <div class="page-title">Seguridad de la cuenta</div>
         <div class="page-subtitle">Gestiona tus sesiones activas, autenticación de dos factores y actividad reciente.</div>
     </div>
 </div>
-
-@if($errors->any())
-    <div class="alert alert-error">{{ $errors->first() }}</div>
-@endif
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
 
 <div class="grid-2">
 
@@ -159,5 +153,5 @@
             </tbody>
         </table>
     </div>
-</div>
+</x-page>
 @endsection

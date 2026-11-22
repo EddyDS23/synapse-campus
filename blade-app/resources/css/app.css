@@ -29,6 +29,20 @@
     --radius-xl: var(--radius-xl);
 }
 
+/* ---------- Accessibility: focus rings ---------- */
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 /* ---------- Toasts ---------- */
 .toast-container {
     position: fixed;
