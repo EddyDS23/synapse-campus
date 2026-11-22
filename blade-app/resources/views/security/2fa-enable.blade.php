@@ -13,7 +13,7 @@
     </div>
 
     @if($errors->any())
-        <div class="alert alert-error">{{ $errors->first() }}</div>
+        <x-alert type="error">{{ $errors->first() }}</x-alert>
     @endif
 
     {{-- Paso 1: QR --}}
