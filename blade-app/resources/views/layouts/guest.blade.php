@@ -10,8 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=EB+Garamond:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @include('partials.toasts')
-</head>
-<style>
+    <style>
     :root {
         --color-primary: #1E3A5F; --color-on-primary: #FFFFFF; --color-secondary: #2563EB; --color-accent: #A16207; --color-on-accent: #FFFFFF;
         --color-background: #F8FAFC; --color-foreground: #0F172A; --color-card: #FFFFFF; --color-card-foreground: #0F172A; --color-muted: #E9EEF5; --color-muted-foreground: #475569; --color-border: #CBD5E1;
@@ -33,6 +32,7 @@
         --shadow-lg: 0 12px 32px rgba(0, 0, 0, .55), 0 4px 8px rgba(0, 0, 0, .35);
     }
 </style>
+</head>
 <body class="min-h-screen flex items-center justify-center bg-[var(--color-background)] text-[var(--color-foreground)] font-[family-name:var(--font-sans)] p-4">
     @yield('content')
 </body>
