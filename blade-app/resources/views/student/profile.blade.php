@@ -5,19 +5,8 @@
 @section('content')
 <!-- Recursos para el acabado Nocturno Premium -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    :root {
-        --dark-bg: #020617;
-        --card-bg: #0f172a;
-        --accent: #6366f1;
-        --border: #1e293b;
-    }
-    body {
-        background-color: var(--dark-bg);
-        color: #f1f5f9;
-    }
     .dark-card {
         background: rgba(15, 23, 42, 0.6);
         backdrop-filter: blur(10px);
@@ -148,86 +137,16 @@
                         <h3 class="text-2xl font-bold text-white mb-2">Actividad en Plataforma</h3>
                         <p class="text-slate-500 text-sm">Frecuencia de acceso y participación en el campus virtual.</p>
                     </div>
-                    <div class="bg-indigo-500/20 px-3 py-1 rounded-lg text-indigo-400 text-[10px] font-mono tracking-tighter">
-                        SYNC_ID_0562
-                    </div>
+
                 </div>
                 
-                <!-- El gráfico aporta el "wow factor" y llena el diseño de forma profesional -->
-                <div class="chart-container flex-grow">
-                    <canvas id="profileActivityChart"></canvas>
-                </div>
+                <p class="text-slate-500 text-sm">Los datos de actividad se mostrarán cuando estén disponibles desde el servicio académico.</p>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10 pt-10 border-t border-white/5 text-center">
-                    <div>
-                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-2">Promedio Gral</p>
-                        <p class="text-2xl font-bold text-white">9.4</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-2">Créditos</p>
-                        <p class="text-2xl font-bold text-white">184</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-2">Asistencia</p>
-                        <p class="text-2xl font-bold text-white">98%</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-500 text-[10px] font-bold uppercase mb-2">Eficiencia</p>
-                        <p class="text-2xl font-bold text-teal-400">100%</p>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('profileActivityChart').getContext('2d');
-        
-        const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.4)');
-        gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul'],
-                datasets: [{
-                    label: 'Interacciones',
-                    data: [65, 78, 72, 95, 85, 110, 105],
-                    borderColor: '#6366f1',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#020617',
-                    pointBorderColor: '#6366f1',
-                    pointBorderWidth: 3,
-                    pointRadius: 6,
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: gradient
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { 
-                        display: false 
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { 
-                            color: '#64748b', 
-                            font: { 
-                                family: 'Plus Jakarta Sans',
-                                weight: 'bold' 
-                            } 
-                        }
-                    }
-                }
-            }
-        });
-    });
-</script>
 @endsection

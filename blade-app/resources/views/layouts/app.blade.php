@@ -9,74 +9,44 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=EB+Garamond:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
     <style>
         :root {
             --sidebar-w: 240px;
-            --topbar-h: 52px;
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 14px;
+            --topbar-h: 56px;
+            /* radius inherited from tokens.css */
             --t: 160ms ease;
-            --mono: 'JetBrains Mono', monospace;
-            --sans: 'Inter', sans-serif;
-        }
+            --mono: var(--font-mono);
+            --sans: var(--font-sans);
+            --serif: var(--font-serif);
 
-        [data-theme="dark"] {
-            --bg: #0D0F14;
-            --surface: #141720;
-            --elevated: #1B1F2E;
-            --hover: #1E2438;
-            --border: #252A3A;
-            --border-mid: #2E3450;
-            --text: #E4E7F0;
-            --text-sub: #7B839E;
-            --text-muted: #454D6A;
-            --accent: #4F7EF7;
-            --accent-dim: rgba(79, 126, 247, .12);
-            --accent-glow: rgba(79, 126, 247, .22);
-            --ok: #2ECC82;
-            --ok-dim: rgba(46, 204, 130, .11);
-            --warn: #F0A946;
-            --warn-dim: rgba(240, 169, 70, .11);
-            --danger: #E05353;
-            --danger-dim: rgba(224, 83, 83, .11);
-            --c-auth: #7C5CFC;
-            --c-student: #4F7EF7;
-            --c-library: #2AB5AA;
-            --c-support: #E07D3A;
-            --c-audit: #8891AA;
-            --shadow: 0 8px 32px rgba(0, 0, 0, .45);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .28);
-        }
-
-        [data-theme="light"] {
-            --bg: #ECEEF6;
-            --surface: #F5F6FA;
-            --elevated: #FFFFFF;
-            --hover: #E3E6F0;
-            --border: #D2D7E8;
-            --border-mid: #C0C7DC;
-            --text: #181B2A;
-            --text-sub: #5A6180;
-            --text-muted: #A8AECA;
-            --accent: #3A6CE8;
-            --accent-dim: rgba(58, 108, 232, .09);
-            --accent-glow: rgba(58, 108, 232, .18);
-            --ok: #18A85C;
-            --ok-dim: rgba(24, 168, 92, .09);
-            --warn: #C47A10;
-            --warn-dim: rgba(196, 122, 16, .09);
-            --danger: #C93A3A;
-            --danger-dim: rgba(201, 58, 58, .08);
-            --c-auth: #6340E8;
-            --c-student: #3A6CE8;
-            --c-library: #1A9E94;
-            --c-support: #C46820;
-            --c-audit: #6C7494;
-            --shadow: 0 8px 32px rgba(0, 0, 0, .09);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, .05);
+            /* Mapped to design tokens (light/dark resolved by tokens.css) */
+            --bg: var(--color-background);
+            --surface: var(--color-card);
+            --elevated: var(--color-muted);
+            --hover: var(--color-muted);
+            --border: var(--color-border);
+            --border-mid: var(--color-border);
+            --text: var(--color-foreground);
+            --text-sub: var(--color-muted-foreground);
+            --text-muted: var(--color-muted-foreground);
+            --accent: var(--color-primary);
+            --accent-dim: color-mix(in srgb, var(--color-primary) 12%, transparent);
+            --accent-glow: color-mix(in srgb, var(--color-primary) 22%, transparent);
+            --ok: var(--color-success);
+            --ok-dim: color-mix(in srgb, var(--color-success) 11%, transparent);
+            --warn: var(--color-warning);
+            --warn-dim: color-mix(in srgb, var(--color-warning) 11%, transparent);
+            --danger: var(--color-destructive);
+            --danger-dim: color-mix(in srgb, var(--color-destructive) 11%, transparent);
+            --c-auth: var(--color-primary);
+            --c-student: var(--color-secondary);
+            --c-library: var(--color-success);
+            --c-support: var(--color-accent);
+            --c-audit: var(--color-muted-foreground);
+            --shadow: var(--shadow-md);
+            --shadow-sm: var(--shadow-sm);
         }
 
         *,
@@ -1255,6 +1225,7 @@
 
         @yield('styles')
     </style>
+    @include('partials.toasts')
 </head>
 
 <body>
@@ -1607,13 +1578,6 @@
             </header>
 
             <main class="content">
-                @if ($errors->any())
-                    <div class="alert alert-error">{{ $errors->first() }}</div>
-                @endif
-                @if (session('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
-                @endif
-
                 @yield('content')
             </main>
 

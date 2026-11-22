@@ -5,20 +5,8 @@
 @section('content')
 <!-- Importación de recursos para el acabado premium -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-    :root {
-        --bg: #020617;
-        --card-bg: rgba(30, 41, 59, 0.5);
-    }
-    
-    body {
-        background-color: var(--bg);
-        color: #f1f5f9;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
     .synapse-glass {
         background: var(--card-bg);
         backdrop-filter: blur(12px);
@@ -109,18 +97,16 @@
                         <p class="text-xs font-medium text-slate-400 mt-1">Progreso acumulado del semestre actual</p>
                     </div>
                     <div class="flex gap-3">
-                        <a href="/profile" class="action-button btn-primary text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg">
+                        <a href="{{ route('student.profile') }}" class="action-button btn-primary text-white px-6 py-3 rounded-xl text-sm font-bold shadow-lg">
                             Perfil Alumno
                         </a>
-                        <a href="/schedule" class="action-button bg-slate-800 text-slate-300 border border-slate-700 px-6 py-3 rounded-xl text-sm font-bold hover:bg-slate-700 hover:text-white">
+                        <a href="{{ route('student.schedule') }}" class="action-button bg-slate-800 text-slate-300 border border-slate-700 px-6 py-3 rounded-xl text-sm font-bold hover:bg-slate-700 hover:text-white">
                             Horario
                         </a>
                     </div>
                 </div>
                 
-                <div class="chart-container">
-                    <canvas id="performanceChart"></canvas>
-                </div>
+                <p class="text-sm text-slate-400">Consulta tus materias y horario en las secciones correspondientes.</p>
             </div>
 
             <!-- Módulo: Biblioteca (Vertical) -->
@@ -134,12 +120,12 @@
                 </div>
                 
                 <div class="p-8 flex-grow space-y-4">
-                    <a href="/library/loans" class="group flex items-center justify-between p-4 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-teal-500/50 transition-all">
+                    <a href="{{ route('library.loans') }}" class="group flex items-center justify-between p-4 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-teal-500/50 transition-all">
                         <span class="font-bold text-slate-300 group-hover:text-teal-400 text-sm">Mis Préstamos</span>
                         <span class="bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">3 Activos</span>
                     </a>
                     
-                    <a href="/library/fines" class="group flex items-center justify-between p-4 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-red-500/50 transition-all">
+                    <a href="{{ route('library.fines') }}" class="group flex items-center justify-between p-4 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-red-500/50 transition-all">
                         <span class="font-bold text-slate-300 group-hover:text-red-400 text-sm">Multas</span>
                         <span class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full">Ninguna</span>
                     </a>
@@ -161,10 +147,10 @@
                         <p class="text-sm font-medium text-slate-400">¿Tienes problemas técnicos o dudas académicas? Nuestro equipo está listo para ayudarte.</p>
                     </div>
                     <div class="flex gap-4 w-full md:w-auto">
-                        <a href="/support/tickets" class="flex-1 md:flex-none text-center px-8 py-3.5 bg-slate-800 text-slate-300 border border-slate-700 rounded-xl text-sm font-bold hover:bg-slate-700 hover:text-white transition-colors">
+                        <a href="{{ route('support.my-tickets') }}" class="flex-1 md:flex-none text-center px-8 py-3.5 bg-slate-800 text-slate-300 border border-slate-700 rounded-xl text-sm font-bold hover:bg-slate-700 hover:text-white transition-colors">
                             Mis Tickets
                         </a>
-                        <a href="/support/tickets/new" class="flex-1 md:flex-none text-center px-8 py-3.5 btn-primary text-white rounded-xl text-sm font-bold shadow-lg">
+                        <a href="{{ route('support.create') }}" class="flex-1 md:flex-none text-center px-8 py-3.5 btn-primary text-white rounded-xl text-sm font-bold shadow-lg">
                             + Abrir Ticket
                         </a>
                     </div>
@@ -180,25 +166,12 @@
                         <h3 class="text-3xl font-black text-white tracking-tight">Consola de Agente</h3>
                         <p class="text-sm font-medium text-slate-400 mt-1">Mesa de ayuda Synapse</p>
                     </div>
-                    <a href="/soporte/tickets" class="w-full md:w-auto text-center px-8 py-3.5 bg-slate-800 text-indigo-300 border border-slate-700 rounded-xl text-sm font-bold hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition-colors shadow-sm">
+                    <a href="{{ route('support.all-tickets') }}" class="w-full md:w-auto text-center px-8 py-3.5 bg-slate-800 text-indigo-300 border border-slate-700 rounded-xl text-sm font-bold hover:bg-indigo-600 hover:text-white hover:border-indigo-500 transition-colors shadow-sm">
                         Gestionar Todos los Tickets
                     </a>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 text-center hover:border-indigo-500/30 transition-colors">
-                        <p class="text-indigo-400 text-[10px] font-bold uppercase tracking-widest mb-2">Pendientes</p>
-                        <p class="text-4xl font-black text-white">12</p>
-                    </div>
-                    <div class="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 text-center hover:border-emerald-500/30 transition-colors">
-                        <p class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-2">Resueltos Hoy</p>
-                        <p class="text-4xl font-black text-white">45</p>
-                    </div>
-                    <div class="p-6 bg-slate-900/50 rounded-2xl border border-slate-800 text-center hover:border-red-500/30 transition-colors">
-                        <p class="text-red-400 text-[10px] font-bold uppercase tracking-widest mb-2">SLA Crítico</p>
-                        <p class="text-4xl font-black text-white animate-pulse">2</p>
-                    </div>
-                </div>
+                <p class="text-sm text-slate-400">Gestiona los tickets asignados desde la sección correspondiente.</p>
             </div>
         @endif
 
@@ -215,7 +188,7 @@
                             <p class="text-sm font-medium text-slate-400 mt-1">Administración de inventario y préstamos globales.</p>
                         </div>
                     </div>
-                    <a href="/biblioteca/inventario" class="w-full md:w-auto px-8 py-3.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl text-sm font-bold hover:bg-teal-500 hover:text-white transition-colors text-center">
+                    <a href="{{ route('library.inventory') }}" class="w-full md:w-auto px-8 py-3.5 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl text-sm font-bold hover:bg-teal-500 hover:text-white transition-colors text-center">
                         Entrar al Inventario
                     </a>
                 </div>
@@ -225,67 +198,5 @@
     </div>
 </div>
 
-<script>
-    // Inicialización del gráfico de rendimiento adaptado al modo oscuro
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('performanceChart').getContext('2d');
-        
-        // Gradiente ajustado para modo nocturno
-        const gradient = ctx.createLinearGradient(0, 0, 0, 240);
-        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.4)'); // indigo-500 más visible
-        gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5', 'Semana 6', 'Semana 7', 'Semana 8'],
-                datasets: [{
-                    label: 'Promedio de Calificaciones',
-                    data: [82, 85, 84, 88, 92, 90, 94, 96],
-                    borderColor: '#6366f1', // indigo-500
-                    borderWidth: 4,
-                    pointBackgroundColor: '#0f172a', // slate-900 (coincide con el fondo oscuro)
-                    pointBorderColor: '#818cf8', // indigo-400
-                    pointBorderWidth: 2,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: gradient
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)', // slate-900
-                        titleColor: '#cbd5e1', // slate-300
-                        bodyColor: '#ffffff',
-                        borderColor: 'rgba(99, 102, 241, 0.3)',
-                        borderWidth: 1,
-                        padding: 12,
-                        displayColors: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 70,
-                        grid: { 
-                            color: 'rgba(255, 255, 255, 0.05)', // Líneas súper tenues
-                            drawBorder: false
-                        },
-                        ticks: { font: { weight: 'bold', size: 11 }, color: '#64748b' } // slate-500
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { font: { weight: 'bold', size: 11 }, color: '#64748b' }
-                    }
-                }
-            }
-        });
-    });
-</script>
 @endsection
