@@ -1229,6 +1229,7 @@
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
     <div class="app">
 
         <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
@@ -1246,7 +1247,7 @@
                 {{-- ── Dashboard (todos) ── --}}
                 <div class="sb-group">
                     <a href="{{ route('dashboard') }}" class="sb-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                        <span class="sb-icon"><svg viewBox="0 0 24 24">
+                        <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                 <rect x="3" y="3" width="7" height="7" rx="1" />
                                 <rect x="14" y="3" width="7" height="7" rx="1" />
                                 <rect x="3" y="14" width="7" height="7" rx="1" />
@@ -1264,7 +1265,7 @@
 
                         <a href="{{ route('student.profile') }}"
                             class="sb-item {{ request()->is('profile') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
                                     <circle cx="12" cy="7" r="4" />
                                 </svg></span>
@@ -1272,7 +1273,7 @@
                         </a>
                         <a href="{{ route('student.schedule') }}"
                             class="sb-item {{ request()->is('schedule') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <rect x="3" y="4" width="18" height="18" rx="2" />
                                     <line x1="16" y1="2" x2="16" y2="6" />
                                     <line x1="8" y1="2" x2="8" y2="6" />
@@ -1282,7 +1283,7 @@
                         </a>
                         <a href="{{ route('student.subjects') }}"
                             class="sb-item {{ request()->is('subjects') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
                                     <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
                                 </svg></span>
@@ -1296,7 +1297,7 @@
 
                         <a href="{{ route('library.books') }}"
                             class="sb-item {{ request()->is('library/books*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
                                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
                                 </svg></span>
@@ -1304,7 +1305,7 @@
                         </a>
                         <a href="{{ route('library.loans') }}"
                             class="sb-item {{ request()->is('library/loans') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <polyline points="9 11 12 14 22 4" />
                                     <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
                                 </svg></span>
@@ -1312,7 +1313,7 @@
                         </a>
                         <a href="{{ route('library.fines') }}"
                             class="sb-item {{ request()->is('library/fines') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <line x1="12" y1="1" x2="12" y2="23" />
                                     <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
                                 </svg></span>
@@ -1326,14 +1327,14 @@
 
                         <a href="{{ route('support.my-tickets') }}"
                             class="sb-item {{ request()->is('support/tickets') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                                 </svg></span>
                             Mis Tickets
                         </a>
                         <a href="{{ route('support.create') }}"
                             class="sb-item {{ request()->is('support/tickets/new') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <line x1="12" y1="5" x2="12" y2="19" />
                                     <line x1="5" y1="12" x2="19" y2="12" />
                                 </svg></span>
@@ -1350,7 +1351,7 @@
 
                         <a href="{{ route('library.inventory') }}"
                             class="sb-item {{ request()->is('library/inventory*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <line x1="8" y1="6" x2="21" y2="6" />
                                     <line x1="8" y1="12" x2="21" y2="12" />
                                     <line x1="8" y1="18" x2="21" y2="18" />
@@ -1362,7 +1363,7 @@
                         </a>
                         <a href="{{ route('library.books') }}"
                             class="sb-item {{ request()->is('library/books*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
                                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
                                 </svg></span>
@@ -1380,7 +1381,7 @@
 
                         <a href="{{ route('support.all-tickets') }}"
                             class="sb-item {{ request()->is('support/all-tickets*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M15 5H9a2 2 0 00-2 2v14l5-3 5 3V7a2 2 0 00-2-2z" />
                                 </svg></span>
                             Todos los Tickets
@@ -1391,7 +1392,7 @@
                             @endisset
                         </a>
                         <a href="{{ route('support.all-tickets') }}?status=open" class="sb-item">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <circle cx="12" cy="12" r="10" />
                                     <polyline points="12 6 12 12 16 14" />
                                 </svg></span>
@@ -1410,7 +1411,7 @@
 
                         <a href="{{ route('admin.users') }}"
                             class="sb-item {{ request()->is('admin/users*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                                     <circle cx="9" cy="7" r="4" />
                                     <path d="M23 21v-2a4 4 0 00-3-3.87" />
@@ -1420,7 +1421,7 @@
                         </a>
                         <a href="{{ route('admin.audit') }}"
                             class="sb-item {{ request()->is('admin/audit*') ? 'active' : '' }}">
-                            <span class="sb-icon"><svg viewBox="0 0 24 24">
+                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
                                     <polyline points="14 2 14 8 20 8" />
                                     <line x1="16" y1="13" x2="8" y2="13" />
@@ -1433,7 +1434,7 @@
                         @if (RoleHelper::hasAnyRole(['security_admin', 'super_admin']))
                             <a href="{{ route('admin.security-status') }}"
                                 class="sb-item {{ request()->is('admin/security-status*') ? 'active' : '' }}">
-                                <span class="sb-icon"><svg viewBox="0 0 24 24">
+                                <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                                     </svg></span>
                                 Estado de Seguridad
@@ -1451,7 +1452,7 @@
 
                     <a href="{{ route('security.index') }}"
                         class="sb-item {{ request()->is('security*') ? 'active' : '' }}">
-                        <span class="sb-icon"><svg viewBox="0 0 24 24">
+                        <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                                 <path d="M7 11V7a5 5 0 0110 0v4" />
                             </svg></span>
@@ -1483,7 +1484,7 @@
                     <div class="sb-user-role">{{ implode(', ', session('roles', [])) }}</div>
                 </div>
                 <div class="sb-user-menu">
-                    <svg viewBox="0 0 24 24">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
                         <circle cx="12" cy="5" r="1" />
                         <circle cx="12" cy="12" r="1" />
                         <circle cx="12" cy="19" r="1" />
@@ -1493,14 +1494,14 @@
                 <div class="user-dropdown" id="userDropdown">
                     <div class="ud-email">{{ session('email', '') }}</div>
                     <a href="{{ route('student.profile') }}" class="ud-item">
-                        <svg viewBox="0 0 24 24">
+                        <svg aria-hidden="true" viewBox="0 0 24 24">
                             <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
                         Mi Perfil
                     </a>
                     <a href="{{ route('security.index') }}" class="ud-item">
-                        <svg viewBox="0 0 24 24">
+                        <svg aria-hidden="true" viewBox="0 0 24 24">
                             <rect x="3" y="11" width="18" height="11" rx="2" />
                             <path d="M7 11V7a5 5 0 0110 0v4" />
                         </svg>
@@ -1510,7 +1511,7 @@
                     <form action="{{ route('logout') }}" method="post" id="logoutForm">
                         @csrf
                         <div class="ud-item danger" onclick="document.getElementById('logoutForm').submit()">
-                            <svg viewBox="0 0 24 24">
+                            <svg aria-hidden="true" viewBox="0 0 24 24">
                                 <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
                                 <polyline points="16 17 21 12 16 7" />
                                 <line x1="21" y1="12" x2="9" y2="12" />
@@ -1528,7 +1529,7 @@
 
             <header class="topbar">
                 <button class="hamburger" id="hamburger" onclick="openSidebar()" type="button" aria-label="Abrir menú">
-                    <svg viewBox="0 0 24 24">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
                         <line x1="3" y1="6" x2="21" y2="6" />
                         <line x1="3" y1="12" x2="21" y2="12" />
                         <line x1="3" y1="18" x2="21" y2="18" />
@@ -1538,12 +1539,12 @@
                 <div class="breadcrumb">
                     <a href="{{ route('dashboard') }}">Synapse Campus</a>
                     @hasSection('breadcrumb-parent')
-                        <svg viewBox="0 0 24 24">
+                        <svg aria-hidden="true" viewBox="0 0 24 24">
                             <polyline points="9 18 15 12 9 6" />
                         </svg>
                         @yield('breadcrumb-parent')
                     @endif
-                    <svg viewBox="0 0 24 24">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
                         <polyline points="9 18 15 12 9 6" />
                     </svg>
                     <span class="breadcrumb-current">@yield('title', 'Dashboard')</span>
@@ -1553,7 +1554,7 @@
 
                 <div class="topbar-actions">
                     <button class="icon-btn" title="Notificaciones" aria-label="Notificaciones">
-                        <svg viewBox="0 0 24 24">
+                        <svg aria-hidden="true" viewBox="0 0 24 24">
                             <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
                             <path d="M13.73 21a2 2 0 01-3.46 0" />
                         </svg>
@@ -1577,7 +1578,7 @@
                 </div>
             </header>
 
-            <main class="content">
+            <main id="main-content" class="content" tabindex="-1">
                 @yield('content')
             </main>
 

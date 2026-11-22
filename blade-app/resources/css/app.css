@@ -29,6 +29,24 @@
     --radius-xl: var(--radius-xl);
 }
 
+/* ---------- Accessibility: skip link ---------- */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: 0.5rem 1rem;
+    z-index: 2000;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: top 0.2s ease;
+}
+.skip-link:focus {
+    top: 0;
+}
+
 /* ---------- Accessibility: focus rings ---------- */
 :focus-visible {
     outline: 2px solid var(--color-primary);
