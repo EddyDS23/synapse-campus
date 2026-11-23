@@ -5,11 +5,11 @@
 
 :root {
     /* ---------- Color: light (default) ---------- */
-    --color-primary: #B91C1C;
+    --color-primary: #991B1B;
     --color-on-primary: #FFFFFF;
-    --color-secondary: #EA580C;
+    --color-secondary: #C2410C;
     --color-on-secondary: #FFFFFF;
-    --color-accent: #D97706;
+    --color-accent: #B45309;
     --color-on-accent: #FFFFFF;
 
     --color-background: #FFFFFF;
