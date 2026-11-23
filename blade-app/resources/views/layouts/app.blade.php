@@ -20,13 +20,13 @@
             --color-secondary: #F97316;
             --color-accent: #F59E0B;
             --color-on-accent: #1F2937;
-            --color-background: #FEF2F2;
+            --color-background: #FFFFFF;
             --color-foreground: #1F2937;
             --color-card: #FFFFFF;
             --color-card-foreground: #1F2937;
-            --color-muted: #FEE2E2;
+            --color-muted: #F3F4F6;
             --color-muted-foreground: #6B7280;
-            --color-border: #FECACA;
+            --color-border: #E5E7EB;
             --color-destructive: #991B1B;
             --color-success: #16A34A;
             --color-warning: #D97706;
@@ -132,7 +132,7 @@
         /* ── SIDEBAR ── */
         .sidebar {
             width: var(--sidebar-w);
-            background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 12%, var(--color-card)) 0%, var(--color-card) 100%);
+            background: var(--color-card);
             border-right: 1px solid var(--color-border);
             display: flex;
             flex-direction: column;
@@ -522,12 +522,15 @@
             flex-direction: column;
             overflow: hidden;
             min-width: 0;
+            background: var(--color-primary);
+            color: var(--color-on-primary);
         }
 
         .topbar {
             height: var(--topbar-h);
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
+            background: var(--color-primary);
+            border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 80%, black);
+            color: var(--color-on-primary);
             padding: 0 24px;
             display: flex;
             align-items: center;
@@ -541,12 +544,12 @@
             width: 34px;
             height: 34px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--elevated);
+            border: 1px solid color-mix(in srgb, var(--color-on-primary) 30%, transparent);
+            background: color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--text-sub);
+            color: var(--color-on-primary);
             transition: all var(--t);
             flex-shrink: 0;
         }
@@ -571,13 +574,15 @@
             align-items: center;
             gap: 6px;
             font-size: 13px;
-            color: var(--text-sub);
+            color: var(--color-on-primary);
+            opacity: 0.9;
         }
 
         .breadcrumb svg {
             width: 12px;
             height: 12px;
-            stroke: var(--text-muted);
+            stroke: var(--color-on-primary);
+            opacity: 0.7;
             fill: none;
             stroke-width: 2;
             stroke-linecap: round;
@@ -586,8 +591,8 @@
         }
 
         .breadcrumb-current {
-            color: var(--text);
-            font-weight: 500;
+            color: var(--color-on-primary);
+            font-weight: 600;
         }
 
         .topbar-spacer {
@@ -604,13 +609,13 @@
             width: 34px;
             height: 34px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--elevated);
+            border: 1px solid color-mix(in srgb, var(--color-on-primary) 30%, transparent);
+            background: color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--text-sub);
+            color: var(--color-on-primary);
             transition: all var(--t);
             position: relative;
             flex-shrink: 0;
@@ -650,12 +655,12 @@
             padding: 0 13px;
             height: 34px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--elevated);
+            border: 1px solid color-mix(in srgb, var(--color-on-primary) 30%, transparent);
+            background: color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             cursor: pointer;
             font-size: 12px;
             font-weight: 500;
-            color: var(--text-sub);
+            color: var(--color-on-primary);
             font-family: var(--sans);
             transition: all var(--t);
         }
