@@ -241,7 +241,8 @@
         }
         .sidebar .user-dropdown .ud-item:hover {
             color: var(--color-foreground);
-            background: var(--color-muted);
+            background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+            transition: background 0.15s ease, color 0.15s ease;
         }
 
         .sb-nav::-webkit-scrollbar {
