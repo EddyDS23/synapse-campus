@@ -32,6 +32,9 @@
         --shadow-md: 0 4px 12px rgba(0, 0, 0, .45), 0 2px 4px rgba(0, 0, 0, .3);
         --shadow-lg: 0 12px 32px rgba(0, 0, 0, .55), 0 4px 8px rgba(0, 0, 0, .35);
     }
+    [data-theme="dark"] .login-brand-panel {
+        background: linear-gradient(to bottom right, #1D1771, #4F46E5);
+    }
 </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-[var(--color-background)] text-[var(--color-foreground)] font-[family-name:var(--font-sans)] p-4">
