@@ -15,18 +15,18 @@
     <style>
         /* Fallback tokens (in case Vite assets are missing) */
         :root {
-            --color-primary: #1E3A5F;
+            --color-primary: #E11D48;
             --color-on-primary: #FFFFFF;
             --color-secondary: #2563EB;
             --color-accent: #A16207;
             --color-on-accent: #FFFFFF;
-            --color-background: #F8FAFC;
-            --color-foreground: #0F172A;
-            --color-card: #FFFFFF;
-            --color-card-foreground: #0F172A;
-            --color-muted: #E9EEF5;
-            --color-muted-foreground: #475569;
-            --color-border: #CBD5E1;
+            --color-background: #F2EFE8;
+            --color-foreground: #1C1917;
+            --color-card: #FAF7F2;
+            --color-card-foreground: #1C1917;
+            --color-muted: #E8E3D9;
+            --color-muted-foreground: #57534E;
+            --color-border: #D6D0C4;
             --color-destructive: #DC2626;
             --color-success: #16A34A;
             --color-warning: #D97706;
@@ -42,8 +42,8 @@
             --font-mono: 'JetBrains Mono', ui-monospace, monospace;
         }
         [data-theme="dark"] {
-            --color-primary: #93C5FD;
-            --color-on-primary: #0F172A;
+            --color-primary: #FB7185;
+            --color-on-primary: #1F2937;
             --color-secondary: #60A5FA;
             --color-accent: #FBBF24;
             --color-on-accent: #1E293B;
