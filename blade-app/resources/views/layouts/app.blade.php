@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=EB+Garamond:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
     <meta name="color-scheme" content="light dark" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Fallback tokens (in case Vite assets are missing) */
         :root {

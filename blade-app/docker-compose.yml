@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - "9000"
+    ports:
+      - "5173:5173"
     env_file:
       - .env
     volumes:
