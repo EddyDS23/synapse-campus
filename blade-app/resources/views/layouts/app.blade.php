@@ -11,6 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=EB+Garamond:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet" />
+    <meta name="color-scheme" content="light dark" />
     <style>
         /* Fallback tokens (in case Vite assets are missing) */
         :root {
@@ -1276,7 +1277,6 @@
 </head>
 
 <body>
-    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
     <div class="app">
 
         <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
@@ -1625,7 +1625,7 @@
                 </div>
             </header>
 
-            <main id="main-content" class="content" tabindex="-1">
+            <main class="content">
                 @yield('content')
             </main>
 
@@ -1635,7 +1635,13 @@
     <script>
         (function() {
             const saved = localStorage.getItem('sc-theme');
-            if (saved) document.documentElement.setAttribute('data-theme', saved);
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', saved);
+            } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
         })();
 
         function toggleTheme() {
