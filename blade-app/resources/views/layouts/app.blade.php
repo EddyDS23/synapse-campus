@@ -1651,16 +1651,12 @@
                 </button>
 
                 <div class="breadcrumb">
-                    <a href="{{ route('dashboard') }}">Synapse Campus</a>
                     @hasSection('breadcrumb-parent')
+                        @yield('breadcrumb-parent')
                         <svg aria-hidden="true" viewBox="0 0 24 24">
                             <polyline points="9 18 15 12 9 6" />
                         </svg>
-                        @yield('breadcrumb-parent')
                     @endif
-                    <svg aria-hidden="true" viewBox="0 0 24 24">
-                        <polyline points="9 18 15 12 9 6" />
-                    </svg>
                     <span class="breadcrumb-current">@yield('title', 'Dashboard')</span>
                 </div>
 
@@ -1675,7 +1671,7 @@
                         <span class="notif-dot"></span>
                     </button>
 
-                    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" type="button">
+                    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" type="button" title="Cambiar tema" aria-label="Cambiar tema">
                         <svg id="themeIcon" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="5" />
                             <line x1="12" y1="1" x2="12" y2="3" />
@@ -1687,7 +1683,6 @@
                             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                         </svg>
-                        <span id="themeLabel">Modo claro</span>
                     </button>
                 </div>
             </header>
@@ -1722,14 +1717,16 @@
 
         function updateThemeBtn(theme) {
             const icon = document.getElementById('themeIcon');
-            const label = document.getElementById('themeLabel');
+            const btn = document.getElementById('themeBtn');
             if (theme === 'light') {
                 icon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-                label.textContent = 'Modo oscuro';
+                btn.setAttribute('title', 'Cambiar a modo oscuro');
+                btn.setAttribute('aria-label', 'Cambiar a modo oscuro');
             } else {
                 icon.innerHTML =
                     '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-                label.textContent = 'Modo claro';
+                btn.setAttribute('title', 'Cambiar a modo claro');
+                btn.setAttribute('aria-label', 'Cambiar a modo claro');
             }
         }
         updateThemeBtn(document.documentElement.getAttribute('data-theme') || 'dark');
