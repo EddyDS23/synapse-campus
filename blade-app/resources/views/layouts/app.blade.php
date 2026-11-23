@@ -129,6 +129,13 @@
             overflow: hidden;
         }
 
+        /* Dark mode: sidebar & topbar use deep indigo #1D1771 */
+        [data-theme="dark"] .sidebar,
+        [data-theme="dark"] .topbar {
+            background: #1D1771;
+            border-color: #15104f;
+        }
+
         /* ── SIDEBAR ── */
         .sidebar {
             width: var(--sidebar-w);
