@@ -13,8 +13,8 @@
     @include('partials.toasts')
     <style>
     :root {
-        --color-primary: #E11D48; --color-on-primary: #FFFFFF; --color-secondary: #2563EB; --color-accent: #F59E0B; --color-on-accent: #1F2937;
-        --color-background: #FFF1F2; --color-foreground: #1F2937; --color-card: #FFFFFF; --color-card-foreground: #1F2937; --color-muted: #FCE7F3; --color-muted-foreground: #6B7280; --color-border: #FECDD3;
+        --color-primary: #BE185D; --color-on-primary: #FFFFFF; --color-secondary: #EC4899; --color-accent: #F59E0B; --color-on-accent: #1F2937;
+        --color-background: #FFFFFF; --color-foreground: #111827; --color-card: #FFFFFF; --color-card-foreground: #111827; --color-muted: #F3F4F6; --color-muted-foreground: #6B7280; --color-border: #E5E7EB;
         --color-destructive: #DC2626; --color-success: #16A34A; --color-warning: #D97706;
         --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px;
         --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);

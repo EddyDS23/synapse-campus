@@ -15,18 +15,18 @@
     <style>
         /* Fallback tokens (in case Vite assets are missing) */
         :root {
-            --color-primary: #E11D48;
+            --color-primary: #BE185D;
             --color-on-primary: #FFFFFF;
-            --color-secondary: #2563EB;
+            --color-secondary: #EC4899;
             --color-accent: #F59E0B;
             --color-on-accent: #1F2937;
-            --color-background: #FFF1F2;
-            --color-foreground: #1F2937;
+            --color-background: #FFFFFF;
+            --color-foreground: #111827;
             --color-card: #FFFFFF;
-            --color-card-foreground: #1F2937;
-            --color-muted: #FCE7F3;
+            --color-card-foreground: #111827;
+            --color-muted: #F3F4F6;
             --color-muted-foreground: #6B7280;
-            --color-border: #FECDD3;
+            --color-border: #E5E7EB;
             --color-destructive: #DC2626;
             --color-success: #16A34A;
             --color-warning: #D97706;
@@ -132,7 +132,7 @@
         /* ── SIDEBAR ── */
         .sidebar {
             width: var(--sidebar-w);
-            background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 6%, var(--color-card)) 0%, var(--color-card) 100%);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 12%, var(--color-card)) 0%, var(--color-card) 100%);
             border-right: 1px solid var(--color-border);
             display: flex;
             flex-direction: column;
