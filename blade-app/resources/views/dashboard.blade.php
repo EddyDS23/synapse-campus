@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - Synapse Campus')
+@section('title', 'Dashboard')
 
 @section('content')
 <x-page>
