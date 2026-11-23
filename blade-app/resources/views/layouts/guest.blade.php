@@ -13,8 +13,8 @@
     @include('partials.toasts')
     <style>
     :root {
-        --color-primary: #E11D48; --color-on-primary: #FFFFFF; --color-secondary: #2563EB; --color-accent: #A16207; --color-on-accent: #FFFFFF;
-        --color-background: #F2EFE8; --color-foreground: #1C1917; --color-card: #FAF7F2; --color-card-foreground: #1C1917; --color-muted: #E8E3D9; --color-muted-foreground: #57534E; --color-border: #D6D0C4;
+        --color-primary: #E11D48; --color-on-primary: #FFFFFF; --color-secondary: #2563EB; --color-accent: #F59E0B; --color-on-accent: #1F2937;
+        --color-background: #FFF1F2; --color-foreground: #1F2937; --color-card: #FFFFFF; --color-card-foreground: #1F2937; --color-muted: #FCE7F3; --color-muted-foreground: #6B7280; --color-border: #FECDD3;
         --color-destructive: #DC2626; --color-success: #16A34A; --color-warning: #D97706;
         --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 20px;
         --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);
@@ -25,7 +25,7 @@
         --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
     [data-theme="dark"] {
-        --color-primary: #FB7185; --color-on-primary: #1F2937; --color-secondary: #60A5FA; --color-accent: #FBBF24; --color-on-accent: #1E293B;
+        --color-primary: #3B82F6; --color-on-primary: #FFFFFF; --color-secondary: #22D3EE; --color-accent: #FBBF24; --color-on-accent: #1F2937;
         --color-background: #0B1120; --color-foreground: #E2E8F0; --color-card: #111827; --color-card-foreground: #E2E8F0; --color-muted: #1E293B; --color-muted-foreground: #94A3B8; --color-border: #1F2937;
         --color-destructive: #F87171; --color-success: #4ADE80; --color-warning: #FBBF24;
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 3px rgba(0, 0, 0, .3);

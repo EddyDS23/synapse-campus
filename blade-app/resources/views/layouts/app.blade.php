@@ -18,15 +18,15 @@
             --color-primary: #E11D48;
             --color-on-primary: #FFFFFF;
             --color-secondary: #2563EB;
-            --color-accent: #A16207;
-            --color-on-accent: #FFFFFF;
-            --color-background: #F2EFE8;
-            --color-foreground: #1C1917;
-            --color-card: #FAF7F2;
-            --color-card-foreground: #1C1917;
-            --color-muted: #E8E3D9;
-            --color-muted-foreground: #57534E;
-            --color-border: #D6D0C4;
+            --color-accent: #F59E0B;
+            --color-on-accent: #1F2937;
+            --color-background: #FFF1F2;
+            --color-foreground: #1F2937;
+            --color-card: #FFFFFF;
+            --color-card-foreground: #1F2937;
+            --color-muted: #FCE7F3;
+            --color-muted-foreground: #6B7280;
+            --color-border: #FECDD3;
             --color-destructive: #DC2626;
             --color-success: #16A34A;
             --color-warning: #D97706;
@@ -42,11 +42,12 @@
             --font-mono: 'JetBrains Mono', ui-monospace, monospace;
         }
         [data-theme="dark"] {
-            --color-primary: #FB7185;
-            --color-on-primary: #1F2937;
-            --color-secondary: #60A5FA;
+            --color-primary: #3B82F6;
+            --color-on-primary: #FFFFFF;
+            --color-secondary: #22D3EE;
+            --color-on-secondary: #0F172A;
             --color-accent: #FBBF24;
-            --color-on-accent: #1E293B;
+            --color-on-accent: #1F2937;
             --color-background: #0B1120;
             --color-foreground: #E2E8F0;
             --color-card: #111827;
@@ -131,8 +132,8 @@
         /* ── SIDEBAR ── */
         .sidebar {
             width: var(--sidebar-w);
-            background: var(--surface);
-            border-right: 1px solid var(--border);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 6%, var(--color-card)) 0%, var(--color-card) 100%);
+            border-right: 1px solid var(--color-border);
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
@@ -1509,7 +1510,8 @@
 
             </nav>
 
-            {{-- Estado del ecosistema --}}
+            {{-- Estado del ecosistema (solo admins) --}}
+            @if (RoleHelper::hasAnyRole(['security_admin', 'super_admin', 'academic_admin']))
             <div class="sb-ecosystem">
                 <div class="sb-eco-label">Ecosistema</div>
                 @foreach ($ecosystemHealth as $service => $status)
@@ -1520,6 +1522,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
 
             {{-- Usuario + dropdown --}}
             <div class="sb-user" onclick="toggleUserMenu()">
