@@ -163,7 +163,8 @@
         }
 
         .sb-wordmark span {
-            color: var(--accent);
+            color: var(--color-on-primary);
+            opacity: 0.7;
         }
 
         .sb-env {
@@ -205,11 +206,13 @@
         }
         .sidebar .sb-item:hover {
             opacity: 1;
+            color: var(--color-on-primary);
             background: color-mix(in srgb, var(--color-on-primary) 12%, transparent);
         }
         .sidebar .sb-item.active {
             background: color-mix(in srgb, var(--color-on-primary) 18%, transparent);
             opacity: 1;
+            color: var(--color-on-primary);
         }
         .sidebar .sb-group-label,
         .sidebar .sb-eco-label {
@@ -342,14 +345,14 @@
 
         .sb-divider {
             height: 1px;
-            background: var(--border);
+            background: color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             margin: 4px 10px;
         }
 
         /* Ecosystem */
         .sb-ecosystem {
             padding: 11px 14px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             flex-shrink: 0;
         }
 
@@ -430,7 +433,7 @@
         /* User */
         .sb-user {
             padding: 10px 12px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid color-mix(in srgb, var(--color-on-primary) 15%, transparent);
             display: flex;
             align-items: center;
             gap: 9px;
@@ -741,7 +744,7 @@
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 26px 28px;
+            padding: 20px 24px;
             scrollbar-width: thin;
             scrollbar-color: var(--border) transparent;
         }
@@ -772,7 +775,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             gap: 16px;
             flex-wrap: wrap;
         }
@@ -804,7 +807,7 @@
         }
 
         .card-header {
-            padding: 16px 20px 0;
+            padding: 14px 18px 0;
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -823,7 +826,7 @@
         }
 
         .card-body {
-            padding: 16px 20px;
+            padding: 14px 18px;
         }
 
         .card-link {
