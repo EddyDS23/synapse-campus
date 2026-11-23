@@ -132,8 +132,9 @@
         /* ── SIDEBAR ── */
         .sidebar {
             width: var(--sidebar-w);
-            background: var(--color-card);
-            border-right: 1px solid var(--color-border);
+            background: var(--color-primary);
+            border-right: 1px solid color-mix(in srgb, var(--color-primary) 80%, black);
+            color: var(--color-on-primary);
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
@@ -183,6 +184,62 @@
             overflow-y: auto;
             padding: 10px 0;
             scrollbar-width: none;
+        }
+
+        /* Sidebar on colored background: white text */
+        .sidebar .sb-group-label,
+        .sidebar .sb-item,
+        .sidebar .sb-wordmark,
+        .sidebar .sb-env,
+        .sidebar .sb-eco-label,
+        .sidebar .eco-name,
+        .sidebar .eco-state,
+        .sidebar .sb-user-name,
+        .sidebar .sb-user-role,
+        .sidebar .ud-email,
+        .sidebar .ud-item {
+            color: var(--color-on-primary);
+        }
+        .sidebar .sb-item {
+            opacity: 0.85;
+        }
+        .sidebar .sb-item:hover {
+            opacity: 1;
+            background: color-mix(in srgb, var(--color-on-primary) 12%, transparent);
+        }
+        .sidebar .sb-item.active {
+            background: color-mix(in srgb, var(--color-on-primary) 18%, transparent);
+            opacity: 1;
+        }
+        .sidebar .sb-group-label,
+        .sidebar .sb-eco-label {
+            opacity: 0.6;
+        }
+        .sidebar .sb-env,
+        .sidebar .eco-name {
+            opacity: 0.7;
+        }
+        .sidebar .sb-avatar {
+            background: var(--color-on-primary);
+            color: var(--color-primary);
+        }
+        .sidebar .sb-icon svg {
+            stroke: var(--color-on-primary);
+        }
+        .sidebar .sb-user-menu svg {
+            stroke: var(--color-on-primary);
+        }
+        .sidebar .user-dropdown {
+            background: var(--color-card);
+            color: var(--color-foreground);
+        }
+        .sidebar .user-dropdown .ud-item,
+        .sidebar .user-dropdown .ud-email {
+            color: var(--color-muted-foreground);
+        }
+        .sidebar .user-dropdown .ud-item:hover {
+            color: var(--color-foreground);
+            background: var(--color-muted);
         }
 
         .sb-nav::-webkit-scrollbar {
@@ -522,8 +579,8 @@
             flex-direction: column;
             overflow: hidden;
             min-width: 0;
-            background: var(--color-primary);
-            color: var(--color-on-primary);
+            background: var(--color-background);
+            color: var(--color-foreground);
         }
 
         .topbar {
