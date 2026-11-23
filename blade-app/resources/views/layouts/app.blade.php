@@ -15,19 +15,19 @@
     <style>
         /* Fallback tokens (in case Vite assets are missing) */
         :root {
-            --color-primary: #DC2626;
+            --color-primary: #B91C1C;
             --color-on-primary: #FFFFFF;
-            --color-secondary: #F97316;
-            --color-accent: #F59E0B;
-            --color-on-accent: #1F2937;
-            --color-background: #FFFFFF;
+            --color-secondary: #EA580C;
+            --color-accent: #D97706;
+            --color-on-accent: #FFFFFF;
+            --color-background: #FEF2F2;
             --color-foreground: #1F2937;
             --color-card: #FFFFFF;
             --color-card-foreground: #1F2937;
-            --color-muted: #F3F4F6;
+            --color-muted: #FEE2E2;
             --color-muted-foreground: #6B7280;
-            --color-border: #E5E7EB;
-            --color-destructive: #991B1B;
+            --color-border: #FECACA;
+            --color-destructive: #DC2626;
             --color-success: #16A34A;
             --color-warning: #D97706;
             --radius-sm: 6px;

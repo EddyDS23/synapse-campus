@@ -5,12 +5,12 @@
 
 :root {
     /* ---------- Color: light (default) ---------- */
-    --color-primary: #DC2626;
+    --color-primary: #B91C1C;
     --color-on-primary: #FFFFFF;
-    --color-secondary: #F97316;
+    --color-secondary: #EA580C;
     --color-on-secondary: #FFFFFF;
-    --color-accent: #F59E0B;
-    --color-on-accent: #1F2937;
+    --color-accent: #D97706;
+    --color-on-accent: #FFFFFF;
 
     --color-background: #FFFFFF;
     --color-foreground: #1F2937;
