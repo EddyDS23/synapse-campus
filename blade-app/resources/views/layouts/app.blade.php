@@ -748,7 +748,7 @@
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 24px;
+            padding: 24px 28px;
             scrollbar-width: thin;
             scrollbar-color: var(--border) transparent;
         }
@@ -779,7 +779,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             gap: 16px;
             flex-wrap: wrap;
         }
@@ -811,7 +811,7 @@
         }
 
         .card-header {
-            padding: 14px 18px 0;
+            padding: 16px 20px 0;
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -830,7 +830,7 @@
         }
 
         .card-body {
-            padding: 14px 18px;
+            padding: 16px 20px;
         }
 
         .card-link {
