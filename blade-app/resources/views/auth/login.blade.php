@@ -3,10 +3,10 @@
 @section('title', 'Iniciar sesión | Synapse Campus')
 
 @section('content')
-<div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-lg)] border border-[var(--color-border)]">
+<div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-lg)] border border-[var(--color-border)]">
 
     <!-- Panel izquierdo: Branding (oculto en móvil) -->
-    <div class="hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[var(--color-on-primary)] relative overflow-hidden">
+    <div class="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[var(--color-on-primary)] relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-10 -mb-10 blur-2xl"></div>
 
@@ -61,8 +61,14 @@
     </div>
 
     <!-- Panel derecho: Formulario -->
-    <div class="flex items-center justify-center p-8 md:p-12 bg-[var(--color-card)]">
+    <div class="flex items-center justify-center p-12 md:p-16 bg-[var(--color-background)]">
         <div class="w-full max-w-sm">
+            <!-- Logo visible solo en móvil -->
+            <div class="md:hidden text-center mb-6">
+                <h1 class="text-2xl font-bold tracking-tight font-[family-name:var(--font-serif)]">
+                    Synapse<span class="text-[var(--color-primary)]">Campus</span>
+                </h1>
+            </div>
             <h2 class="text-2xl font-bold tracking-tight text-[var(--color-foreground)] font-[family-name:var(--font-serif)] mb-1">
                 Iniciar sesión
             </h2>
