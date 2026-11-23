@@ -591,11 +591,11 @@
         }
 
         .topbar {
-            height: var(--topbar-h);
+            height: 64px;
             background: var(--color-primary);
             border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 80%, black);
             color: var(--color-on-primary);
-            padding: 0 24px;
+            padding: 0 32px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -748,7 +748,7 @@
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 28px;
+            padding: 32px 40px;
             scrollbar-width: thin;
             scrollbar-color: var(--border) transparent;
         }
@@ -779,7 +779,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 32px;
             gap: 16px;
             flex-wrap: wrap;
         }
@@ -811,7 +811,7 @@
         }
 
         .card-header {
-            padding: 16px 20px 0;
+            padding: 20px 24px 0;
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
@@ -830,7 +830,7 @@
         }
 
         .card-body {
-            padding: 16px 20px;
+            padding: 20px 24px;
         }
 
         .card-link {
