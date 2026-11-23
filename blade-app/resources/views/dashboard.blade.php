@@ -32,6 +32,12 @@
         </div>
     </header>
 
+    @if(config('app.debug'))
+        <div class="mb-4 px-4 py-2 rounded-[var(--radius-md)] bg-[var(--color-muted)] text-[var(--color-muted-foreground)] text-xs font-mono">
+            Roles en sesión: {{ implode(', ', session('roles', ['(vacío)'])) }}
+        </div>
+    @endif
+
     @if (RoleHelper::hasRole('student'))
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <x-card title="Académico" subtitle="Tu información académica">
@@ -179,6 +185,18 @@
                 </div>
             </x-card>
         </div>
+    @endif
+
+    {{-- Fallback para roles no reconocidos --}}
+    @if (!RoleHelper::hasRole('student') && !RoleHelper::hasRole('teacher') && !RoleHelper::isLibrarian() && !RoleHelper::isAgent() && !RoleHelper::hasAnyRole(['academic_admin', 'security_admin', 'super_admin']))
+        <x-card title="Sin secciones asignadas" subtitle="Tu cuenta no tiene secciones configuradas para este portal.">
+            <p class="text-sm text-[var(--color-muted-foreground)] mt-2">
+                Contacta al administrador para que te asignen los roles correspondientes.
+            </p>
+            <div class="mt-4">
+                <x-button href="{{ route('security.index') }}" variant="ghost" size="sm">Ver mi perfil de seguridad</x-button>
+            </div>
+        </x-card>
     @endif
 </x-page>
 @endsection
