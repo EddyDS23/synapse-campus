@@ -444,7 +444,7 @@
         }
 
         .sb-user:hover {
-            background: var(--hover);
+            background: color-mix(in srgb, var(--color-on-primary) 12%, transparent);
         }
 
         .sb-avatar {
