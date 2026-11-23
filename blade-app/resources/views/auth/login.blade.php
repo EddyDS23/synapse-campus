@@ -6,7 +6,7 @@
 <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 rounded-[var(--radius-xl)] overflow-hidden shadow-[var(--shadow-lg)] border border-[var(--color-border)]">
 
     <!-- Panel izquierdo: Branding (oculto en móvil) -->
-    <div class="hidden md:flex flex-col justify-between p-12 bg-[#4F46E5] text-white relative overflow-hidden">
+    <div class="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[var(--color-on-primary)] relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-10 -mb-10 blur-2xl"></div>
 
