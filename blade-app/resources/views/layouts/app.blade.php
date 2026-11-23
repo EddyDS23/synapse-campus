@@ -50,12 +50,14 @@
             --shadow-sm: var(--shadow-sm);
         }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        @layer base {
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
         }
 
         html,
@@ -70,9 +72,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        @layer base {
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
         }
 
         .app {
