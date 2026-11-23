@@ -149,16 +149,15 @@
             padding: 0 18px;
             display: flex;
             align-items: center;
+            justify-content: center;
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
-            gap: 10px;
         }
 
         .sb-wordmark {
-            font-size: 15px;
+            font-size: 20px;
             font-weight: 700;
-            letter-spacing: -0.4px;
-            flex: 1;
+            letter-spacing: -0.5px;
             white-space: nowrap;
         }
 
@@ -1352,7 +1351,6 @@
 
             <div class="sb-brand">
                 <a href="{{ route('dashboard') }}" class="sb-wordmark">Synapse<span>Campus</span></a>
-                <span class="sb-env">v1.0</span>
             </div>
 
             <nav class="sb-nav">
