@@ -358,25 +358,17 @@
 
         /* Ecosystem */
         .sb-ecosystem {
-            padding: 11px 14px;
-            border-top: 1px solid color-mix(in srgb, var(--color-on-primary) 15%, transparent);
+            padding: 6px 14px 8px;
+            border-top: 1px solid color-mix(in srgb, var(--color-on-primary) 10%, transparent);
             flex-shrink: 0;
-        }
-
-        .sb-eco-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 8px;
         }
 
         .sb-eco-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 3px 0;
+            gap: 6px;
+            padding: 2px 0;
+            cursor: default;
         }
 
         .eco-dot {
@@ -387,16 +379,16 @@
         }
 
         .eco-dot.online {
-            background: var(--ok);
+            background: #4ADE80;
             animation: ecoPulse 2.5s ease-in-out infinite;
         }
 
         .eco-dot.degraded {
-            background: var(--warn);
+            background: #FBBF24;
         }
 
         .eco-dot.offline {
-            background: var(--danger);
+            background: #F87171;
         }
 
         @keyframes ecoPulse {
@@ -413,9 +405,13 @@
 
         .eco-name {
             font-family: var(--mono);
-            font-size: 10px;
-            color: var(--text-sub);
+            font-size: 9px;
+            color: var(--color-on-primary);
+            opacity: 0.7;
             flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .eco-state {
@@ -1584,12 +1580,10 @@
             {{-- Estado del ecosistema (solo admins) --}}
             @if (RoleHelper::hasAnyRole(['security_admin', 'super_admin', 'academic_admin']))
             <div class="sb-ecosystem">
-                <div class="sb-eco-label">Ecosistema</div>
                 @foreach ($ecosystemHealth as $service => $status)
-                    <div class="sb-eco-row">
+                    <div class="sb-eco-row" title="{{ $status }}">
                         <div class="eco-dot {{ $status }}"></div>
                         <span class="eco-name">{{ $service }}</span>
-                        <span class="eco-state {{ $status }}">{{ $status }}</span>
                     </div>
                 @endforeach
             </div>
