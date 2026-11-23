@@ -25,7 +25,7 @@
         --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
     [data-theme="dark"] {
-        --color-primary: #F87171; --color-on-primary: #1F2937; --color-secondary: #FB923C; --color-accent: #FBBF24; --color-on-accent: #1F2937;
+        --color-primary: #3B82F6; --color-on-primary: #FFFFFF; --color-secondary: #22D3EE; --color-accent: #FBBF24; --color-on-accent: #1F2937;
         --color-background: #0B1120; --color-foreground: #E2E8F0; --color-card: #111827; --color-card-foreground: #E2E8F0; --color-muted: #1E293B; --color-muted-foreground: #94A3B8; --color-border: #1F2937;
         --color-destructive: #FCA5A5; --color-success: #4ADE80; --color-warning: #FBBF24;
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 3px rgba(0, 0, 0, .3);

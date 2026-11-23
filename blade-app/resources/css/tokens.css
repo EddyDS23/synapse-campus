@@ -50,9 +50,9 @@
 }
 
 [data-theme="dark"] {
-    --color-primary: #F87171;
-    --color-on-primary: #1F2937;
-    --color-secondary: #FB923C;
+    --color-primary: #3B82F6;
+    --color-on-primary: #FFFFFF;
+    --color-secondary: #22D3EE;
     --color-on-secondary: #0F172A;
     --color-accent: #FBBF24;
     --color-on-accent: #1F2937;
