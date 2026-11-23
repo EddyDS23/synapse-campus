@@ -42,9 +42,9 @@
             --font-mono: 'JetBrains Mono', ui-monospace, monospace;
         }
         [data-theme="dark"] {
-            --color-primary: #3B82F6;
+            --color-primary: #6366F1;
             --color-on-primary: #FFFFFF;
-            --color-secondary: #22D3EE;
+            --color-secondary: #818CF8;
             --color-on-secondary: #0F172A;
             --color-accent: #FBBF24;
             --color-on-accent: #1F2937;
