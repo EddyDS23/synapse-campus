@@ -1582,8 +1582,8 @@
             <div class="sb-ecosystem">
                 @foreach ($ecosystemHealth as $service => $status)
                     <div class="sb-eco-row" title="{{ $status }}">
-                        <div class="eco-dot {{ $status }}"></div>
                         <span class="eco-name">{{ $service }}</span>
+                        <div class="eco-dot {{ $status }}"></div>
                     </div>
                 @endforeach
             </div>
