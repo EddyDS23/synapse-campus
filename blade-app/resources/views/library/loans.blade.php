@@ -3,179 +3,176 @@
 @section('title', 'Mis Préstamos | Synapse')
 
 @section('content')
+@php
+    $activeLoans = collect($loans)->filter(fn ($loan) => ($loan['status'] ?? null) === 'active');
+    $overdueLoans = $activeLoans->filter(fn ($loan) => \Carbon\Carbon::parse($loan['due_at'])->isPast());
+    $nextDue = $activeLoans
+        ->map(fn ($loan) => \Carbon\Carbon::parse($loan['due_at']))
+        ->filter(fn ($due) => $due->isFuture())
+        ->sort()
+        ->first();
+@endphp
+
 <x-page>
-    
-    <!-- Header de Gestión -->
-    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-            <h1 class="text-4xl font-black text-white tracking-tight">Mis <span class="text-indigo-400">Préstamos</span></h1>
-            <p class="text-slate-400 mt-2">Gestiona tus plazos de devolución y solicitudes de renovación.</p>
-        </div>
-
-        <div class="flex flex-col gap-3 min-w-[320px]">
-            @if ($errors->any())
-                <div class="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 animate-pulse">
-                    <span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">!</span>
-                    {{ $errors->first('error') }}
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3">
-                    <span class="bg-emerald-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">✓</span>
-                    {{ session('success') }}
-                </div>
-            @endif
-        </div>
+    <header class="mb-8">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">Biblioteca</p>
+        <h1 class="mt-2 text-3xl font-semibold leading-tight tracking-tight text-[var(--color-foreground)] font-[family-name:var(--font-serif)]">
+            Mis préstamos
+        </h1>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+            Consulta los ejemplares que tienes en préstamo, sus fechas de devolución y tu saldo de renovaciones.
+        </p>
     </header>
 
-    @if(empty($loans))
-        <div class="synapse-card p-20 text-center flex flex-col items-center">
-            <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mb-6">
-                <span class="text-4xl">📚</span>
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-2">Tu estante está vacío</h3>
-            <p class="text-slate-500 mb-8 max-w-sm">No tienes préstamos activos en este momento. Explora nuestro catálogo para comenzar a aprender.</p>
-            <a href="{{ route('library.books') }}" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-black transition-all shadow-xl shadow-indigo-900/20">
-                Explorar Catálogo →
-            </a>
-        </div>
+    @if ($errors->any())
+        <x-alert type="error" class="mb-6">{{ $errors->first('error') }}</x-alert>
+    @endif
+
+    @if (session('success'))
+        <x-alert type="success" class="mb-6">{{ session('success') }}</x-alert>
+    @endif
+
+    @if ($activeLoans->isEmpty())
+        <x-card>
+            <x-empty-state
+                title="No tienes préstamos activos"
+                description="Cuando solicites un ejemplar del catálogo aparecerá aquí con su fecha de devolución."
+            >
+                <x-slot:action>
+                    <x-button :href="route('library.books')" variant="primary" size="sm">
+                        <x-icon name="book-open" class="h-4 w-4" />
+                        Explorar catálogo
+                    </x-button>
+                </x-slot:action>
+            </x-empty-state>
+        </x-card>
     @else
-        <!-- Dashboard de Estado de Préstamos -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-            <div class="synapse-card p-6">
-                <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">Tiempo de Entrega Promedio</h3>
-                <div class="chart-container">
-                    <canvas id="loanTimeChart"></canvas>
-                </div>
-            </div>
+        {{-- Resumen real de la cuenta --}}
+        <section aria-label="Resumen de préstamos" class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <x-stat label="Préstamos activos" :value="$activeLoans->count()" tone="primary" />
+            <x-stat
+                label="Fuera de plazo"
+                :value="$overdueLoans->count()"
+                :tone="$overdueLoans->isNotEmpty() ? 'danger' : 'success'"
+                :meta="$overdueLoans->isNotEmpty() ? 'Regulariza la devolución para evitar multas.' : 'Todos tus préstamos están en tiempo.'"
+            />
+            <x-stat
+                label="Próxima devolución"
+                :value="$nextDue ? $nextDue->translatedFormat('d M') : '—'"
+                tone="accent"
+                :meta="$nextDue ? $nextDue->translatedFormat('l, d \d\e F') : 'Sin devoluciones pendientes.'"
+            />
+        </section>
 
-            <div class="lg:col-span-2 synapse-card p-8 flex flex-col md:flex-row items-center gap-8">
-                <div class="text-center md:text-left">
-                    <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-1">Resumen de Cuenta</p>
-                    <h2 class="text-3xl font-black text-white mb-4">Estado de Salud</h2>
-                    <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
-                            <p class="text-[10px] font-bold text-slate-500 uppercase">Libros Activos</p>
-                            <p class="text-2xl font-black text-indigo-400">{{ count($loans) }}</p>
-                        </div>
-                        <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
-                            <p class="text-[10px] font-bold text-slate-500 uppercase">Crédito Disponible</p>
-                            <p class="text-2xl font-black text-emerald-400">{{ 5 - count($loans) }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-grow w-full">
-                    <div class="p-6 bg-indigo-600/10 border border-indigo-500/20 rounded-3xl">
-                        <p class="text-sm font-bold text-indigo-200 mb-2 italic">"El conocimiento es la única herramienta que crece cuando se comparte."</p>
-                        <p class="text-xs text-indigo-400/60 font-bold">— Synapse Philosophy</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <section aria-labelledby="loans-heading">
+            <h2 id="loans-heading" class="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--color-muted-foreground)]">
+                Ejemplares en tu cuenta
+            </h2>
 
-        <!-- Lista de Préstamos -->
-        <div class="grid grid-cols-1 gap-4">
-            @foreach($loans as $loan)
-                @php
-                    $dueAt = \Carbon\Carbon::parse($loan['due_at']);
-                    $daysRemaining = now()->diffInDays($dueAt, false);
-                    $percentage = max(0, min(100, (now()->diffInDays(\Carbon\Carbon::parse($loan['borrowed_at'])) / \Carbon\Carbon::parse($loan['borrowed_at'])->diffInDays($dueAt)) * 100));
-                    $isOverdue = $daysRemaining < 0;
-                @endphp
+            <div class="grid grid-cols-1 gap-4">
+                @foreach ($loans as $loan)
+                    @php
+                        $borrowedAt = \Carbon\Carbon::parse($loan['borrowed_at']);
+                        $dueAt = \Carbon\Carbon::parse($loan['due_at']);
+                        $daysRemaining = (int) floor(now()->startOfDay()->diffInDays($dueAt->copy()->startOfDay(), false));
+                        $isOverdue = $daysRemaining < 0;
+                        $totalDays = max(1, (int) floor($borrowedAt->startOfDay()->diffInDays($dueAt->copy()->startOfDay())));
+                        $elapsedDays = (int) floor($borrowedAt->startOfDay()->diffInDays(now()->startOfDay()));
+                        $percentage = (int) max(0, min(100, ($elapsedDays / $totalDays) * 100));
+                        $isActive = ($loan['status'] ?? null) === 'active';
+                        $renewalsLeft = max(0, 3 - (int) ($loan['renew_count'] ?? 0));
+                    @endphp
 
-                <div class="synapse-card p-6 flex flex-col md:flex-row items-center gap-6 group">
-                    <!-- Icono/Libro -->
-                    <div class="w-16 h-20 bg-gradient-to-br from-slate-700 to-slate-900 rounded-lg flex flex-col items-center justify-center border border-slate-700 shadow-lg shrink-0">
-                        <span class="text-[10px] font-black text-slate-500 uppercase">ID</span>
-                        <span class="text-lg font-black text-indigo-400">{{ $loan['book_id'] }}</span>
-                    </div>
-
-                    <!-- Info Principal -->
-                    <div class="flex-grow text-center md:text-left">
-                        <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2 justify-center md:justify-start">
-                            <h4 class="text-xl font-bold text-white group-hover:text-indigo-300 transition-colors">Código de Ejemplar: #{{ $loan['id'] }}</h4>
-                            @if($loan['status'] === 'active')
-                                <span class="status-badge {{ $isOverdue ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' }}">
-                                    {{ $isOverdue ? 'Vencido' : 'En tiempo' }}
+                    <article class="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)] p-5 shadow-[var(--shadow-sm)]">
+                        <div class="flex flex-col gap-5 lg:flex-row lg:items-center">
+                            <div class="flex min-w-0 flex-1 items-start gap-4">
+                                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-primary)]/15 bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                                    <x-icon name="book" class="h-6 w-6" />
                                 </span>
-                            @else
-                                <span class="status-badge bg-slate-700 text-slate-300">{{ $loan['status'] }}</span>
-                            @endif
-                        </div>
-                        
-                        <div class="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-sm">
-                            <p class="text-slate-400"><span class="text-slate-500 font-bold uppercase text-[10px] block">Prestado</span> {{ \Carbon\Carbon::parse($loan['borrowed_at'])->format('d M, Y') }}</p>
-                            <p class="text-slate-400"><span class="text-slate-500 font-bold uppercase text-[10px] block">Devolución</span> {{ $dueAt->format('d M, Y') }}</p>
-                            <p class="text-slate-400"><span class="text-slate-500 font-bold uppercase text-[10px] block">Renovaciones</span> {{ $loan['renew_count'] }} / 3</p>
-                        </div>
-                    </div>
 
-                    <!-- Indicador Visual de Tiempo -->
-                    <div class="w-full md:w-48">
-                        <div class="flex justify-between text-[10px] font-bold uppercase mb-2">
-                            <span class="{{ $isOverdue ? 'text-red-400' : 'text-slate-500' }}">
-                                {{ $isOverdue ? 'Retraso de ' . abs($daysRemaining) . ' días' : 'Faltan ' . $daysRemaining . ' días' }}
-                            </span>
-                            <span class="text-slate-500">{{ round($percentage) }}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="h-full {{ $isOverdue ? 'bg-red-500' : 'bg-indigo-500' }}" style="width: {{ $percentage }}%"></div>
-                        </div>
-                    </div>
+                                <div class="min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <h3 class="font-mono text-sm font-semibold text-[var(--color-foreground)]">
+                                            Ejemplar #{{ $loan['id'] }}
+                                        </h3>
+                                        @if ($isActive)
+                                            <x-badge :variant="$isOverdue ? 'danger' : 'success'">
+                                                {{ $isOverdue ? 'Vencido' : 'En tiempo' }}
+                                            </x-badge>
+                                        @else
+                                            <x-badge variant="neutral">{{ ucfirst(str_replace('_', ' ', $loan['status'] ?? '—')) }}</x-badge>
+                                        @endif
+                                    </div>
 
-                    <!-- Botones de Acción -->
-                    <div class="flex gap-2 shrink-0">
-                        @if($loan['status'] === 'active')
-                            <form method="POST" action="{{ route('library.loan.renew', $loan['id']) }}">
-                                @csrf
-                                <button type="submit" class="btn-action bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700" {{ $loan['renew_count'] >= 3 ? 'disabled' : '' }}>
-                                    <span>🔄</span> Renovar
-                                </button>
-                            </form>
-                            <form method="POST" action="{{ route('library.loan.return', $loan['id']) }}">
-                                @csrf
-                                <button type="submit" class="btn-action bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-500/30">
-                                    <span>📥</span> Devolver
-                                </button>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
-        </div>
+                                    <p class="mt-1 font-mono text-xs text-[var(--color-muted-foreground)]">
+                                        Libro: {{ $loan['book_id'] }}
+                                    </p>
+
+                                    <dl class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs">
+                                        <div>
+                                            <dt class="font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Prestado</dt>
+                                            <dd class="mt-0.5 text-[var(--color-foreground)]">{{ $borrowedAt->translatedFormat('d M Y') }}</dd>
+                                        </div>
+                                        <div>
+                                            <dt class="font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Devolución</dt>
+                                            <dd class="mt-0.5 {{ $isOverdue ? 'font-semibold text-[var(--color-destructive)]' : 'text-[var(--color-foreground)]' }}">
+                                                {{ $dueAt->translatedFormat('d M Y') }}
+                                            </dd>
+                                        </div>
+                                        <div>
+                                            <dt class="font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Renovaciones</dt>
+                                            <dd class="mt-0.5 text-[var(--color-foreground)]">
+                                                {{ $loan['renew_count'] ?? 0 }} / 3
+                                                @if ($isActive)
+                                                    <span class="text-[var(--color-muted-foreground)]">· {{ $renewalsLeft }} disponibles</span>
+                                                @endif
+                                            </dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-center lg:shrink-0">
+                                <div class="w-full sm:w-44">
+                                    <div class="mb-1.5 flex items-center justify-between text-[10px] font-semibold uppercase tracking-wide">
+                                        <span class="{{ $isOverdue ? 'text-[var(--color-destructive)]' : 'text-[var(--color-muted-foreground)]' }}">
+                                            @if ($isOverdue)
+                                                {{ abs($daysRemaining) }} {{ abs($daysRemaining) === 1 ? 'día de retraso' : 'días de retraso' }}
+                                            @else
+                                                {{ $daysRemaining }} {{ $daysRemaining === 1 ? 'día restante' : 'días restantes' }}
+                                            @endif
+                                        </span>
+                                        <span class="text-[var(--color-muted-foreground)]">{{ $percentage }}%</span>
+                                    </div>
+                                    <div class="h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-muted)]">
+                                        <div class="h-full rounded-full {{ $isOverdue ? 'bg-[var(--color-destructive)]' : 'bg-[var(--color-primary)]' }}" style="width: {{ $percentage }}%"></div>
+                                    </div>
+                                </div>
+
+                                @if ($isActive)
+                                    <div class="flex flex-wrap gap-2">
+                                        <form method="POST" action="{{ route('library.loan.renew', $loan['id']) }}">
+                                            @csrf
+                                            <x-button type="submit" variant="ghost" size="sm" :disabled="$renewalsLeft === 0">
+                                                <x-icon name="rotate-cw" class="h-4 w-4" />
+                                                Renovar
+                                            </x-button>
+                                        </form>
+                                        <form method="POST" action="{{ route('library.loan.return', $loan['id']) }}">
+                                            @csrf
+                                            <x-button type="submit" variant="primary" size="sm">
+                                                <x-icon name="corner-down-left" class="h-4 w-4" />
+                                                Devolver
+                                            </x-button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </section>
     @endif
 </x-page>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('loanTimeChart').getContext('2d');
-        
-        // Simulación de datos para el gráfico de tiempo
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
-                datasets: [{
-                    label: 'Páginas Leídas (Est.)',
-                    data: [12, 19, 15, 25, 32, 45, 40],
-                    borderColor: '#6366f1',
-                    borderWidth: 3,
-                    pointRadius: 0,
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)'
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { display: false },
-                    y: { display: false }
-                }
-            }
-        });
-    });
-</script>
 @endsection

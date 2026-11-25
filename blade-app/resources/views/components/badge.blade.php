@@ -8,6 +8,8 @@
         'accent'   => 'bg-[color-mix(in_srgb,var(--color-accent)_12%,transparent)] text-[var(--color-accent)] border border-[color-mix(in_srgb,var(--color-accent)_25%,transparent)]',
         'primary'  => 'bg-[color-mix(in_srgb,var(--color-primary)_12%,transparent)] text-[var(--color-primary)] border border-[color-mix(in_srgb,var(--color-primary)_25%,transparent)]',
         'neutral'  => 'bg-[var(--color-muted)] text-[var(--color-muted-foreground)] border border-[var(--color-border)]',
+        'success'  => 'bg-[color-mix(in_srgb,var(--color-success)_12%,transparent)] text-[var(--color-success)] border border-[color-mix(in_srgb,var(--color-success)_25%,transparent)]',
+        'error'    => 'bg-[color-mix(in_srgb,var(--color-destructive)_12%,transparent)] text-[var(--color-destructive)] border border-[color-mix(in_srgb,var(--color-destructive)_25%,transparent)]',
     ];
     $cls = $variants[$variant] ?? $variants['neutral'];
 @endphp

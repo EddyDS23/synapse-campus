@@ -178,11 +178,11 @@
         }
         .sidebar .sb-group-label,
         .sidebar .sb-eco-label {
-            opacity: 0.6;
+            opacity: 0.85;
         }
         .sidebar .sb-env,
         .sidebar .eco-name {
-            opacity: 0.7;
+            opacity: 0.8;
         }
         .sidebar .sb-avatar {
             background: var(--color-on-primary);
@@ -1462,13 +1462,6 @@
                                 @endif
                             @endisset
                         </a>
-                        <a href="{{ route('support.all-tickets') }}?status=open" class="sb-item">
-                            <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <polyline points="12 6 12 12 16 14" />
-                                </svg></span>
-                            Tickets Abiertos
-                        </a>
                     </div>
 
                 @endif
@@ -1480,6 +1473,7 @@
                     <div class="sb-group">
                         <div class="sb-group-label">Administración</div>
 
+                        @if (RoleHelper::hasAnyRole(['security_admin', 'super_admin']))
                         <a href="{{ route('admin.users') }}"
                             class="sb-item {{ request()->is('admin/users*') ? 'active' : '' }}">
                             <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">
@@ -1490,6 +1484,7 @@
                                 </svg></span>
                             Usuarios y Roles
                         </a>
+                        @endif
                         <a href="{{ route('admin.audit') }}"
                             class="sb-item {{ request()->is('admin/audit*') ? 'active' : '' }}">
                             <span class="sb-icon"><svg aria-hidden="true" viewBox="0 0 24 24">

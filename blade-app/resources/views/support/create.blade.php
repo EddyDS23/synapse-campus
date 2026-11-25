@@ -1,249 +1,135 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Ticket | Synapse Support')
+@section('title', 'Nuevo Ticket | Synapse')
 
 @section('content')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Chosen Palette: Synapse Midnight (Dark Slate, Indigo & Amber) -->
-<!-- Application Structure Plan: 
-    1. Introduction & Context: Clear guidance on the purpose of the support request.
-    2. Interactive Form: Divided into logical segments (Identity, Issue, Impact).
-    3. Live Preview & SLA Insight: A visual component (Chart.js) showing estimated response times based on selected priority.
-    4. Enhanced Feedback: Dynamic error states and character tracking for better UX.
--->
-
-<!-- Visualization & Content Choices:
-    - Response SLA Chart -> Goal: Inform -> Shows estimated resolution time based on priority selection.
-    - Priority Indicators -> Goal: Highlight -> Visual feedback (colors) reflecting urgency.
-    - Glassmorphism Cards -> Goal: Organize -> Groups form fields into a cohesive, non-overwhelming layout.
-    - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
--->
-
 <x-page>
-    
-    <!-- Header Section -->
-    <header class="mb-12">
-        <div class="flex items-center gap-4 mb-4">
-            <a href="{{ route('support.my-tickets') }}" class="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-500 transition-all">
-                ←
-            </a>
-            <h1 class="text-4xl font-black text-white tracking-tight">Reportar <span class="text-indigo-400">Incidencia</span></h1>
-        </div>
-        <p class="text-slate-400 max-w-2xl">
-            Proporciona los detalles de tu consulta técnica o problema. Nuestro equipo de ingenieros revisará tu caso basándose en la prioridad seleccionada. Por favor, sé lo más descriptivo posible.
+    <header class="mb-8">
+        <a href="{{ route('support.my-tickets') }}" class="mb-4 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-muted-foreground)] transition hover:text-[var(--color-foreground)]">
+            <x-icon name="arrow-left" class="h-3.5 w-3.5" />
+            Volver a mis tickets
+        </a>
+        <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">Soporte</p>
+        <h1 class="mt-2 text-3xl font-semibold leading-tight tracking-tight text-[var(--color-foreground)] font-[family-name:var(--font-serif)]">
+            Reportar una incidencia
+        </h1>
+        <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+            Describe el problema con el mayor detalle posible para que el equipo de soporte pueda atenderlo.
         </p>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Form Column -->
-        <div class="lg:col-span-2">
-            @if ($errors->any())
-                <div class="mb-8 p-5 rounded-2xl bg-red-500/10 border border-red-500/20">
-                    <p class="text-red-400 font-bold mb-2 flex items-center gap-2">
-                        <span>⚠</span> Se encontraron errores:
-                    </p>
-                    <ul class="text-red-300/80 text-sm list-disc pl-5">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('support.create.ticket') }}" class="space-y-6">
-                @csrf
-
-                <div class="synapse-glass p-8 space-y-6">
-                    <!-- Title Input -->
-                    <div>
-                        <label for="title" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Título del Requerimiento *</label>
-                        <input type="text" id="title" name="title" value="{{ old('title') }}" maxlength="255" required 
-                               class="input-field w-full px-5 py-4 rounded-xl text-white placeholder-slate-600 font-medium"
-                               placeholder="Ej: Error de acceso al catálogo virtual">
-                    </div>
-
-                    <!-- Description Input -->
-                    <div>
-                        <label for="description" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Descripción Detallada *</label>
-                        <textarea id="description" name="description" rows="6" required 
-                                  class="input-field w-full px-5 py-4 rounded-xl text-white placeholder-slate-600 font-medium resize-none"
-                                  placeholder="Describe el problema, los pasos para reproducirlo y cualquier código de error que visualices...">{{ old('description') }}</textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Priority Selection -->
-                        <div>
-                            <label for="priority" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Prioridad del Impacto</label>
-                            <select id="priority" name="priority" onchange="updateSLAChart()" 
-                                    class="input-field w-full px-5 py-4 rounded-xl text-white font-medium appearance-none cursor-pointer">
-                                <option value="low" {{ old('priority') === 'low' ? 'selected' : '' }}>Baja - Consulta general</option>
-                                <option value="medium" {{ old('priority', 'medium') === 'medium' ? 'selected' : '' }}>Media - Problema menor</option>
-                                <option value="high" {{ old('priority') === 'high' ? 'selected' : '' }}>Alta - Fallo de servicio</option>
-                                <option value="urgent" {{ old('priority') === 'urgent' ? 'selected' : '' }}>Urgente - Bloqueo total</option>
-                            </select>
-                        </div>
-
-                        <!-- Category ID Input -->
-                        <div>
-                            <label for="category_id" class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">ID de Categoría *</label>
-                            <input type="text" id="category_id" name="category_id" value="{{ old('category_id') }}" required 
-                                   class="input-field w-full px-5 py-4 rounded-xl text-white placeholder-slate-600 font-mono"
-                                   placeholder="CAT-XXXX">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4 pt-4">
-                    <button type="submit" class="btn-submit px-10 py-4 rounded-xl font-bold text-white transition-all hover:scale-105 active:scale-95">
-                        Crear Ticket de Soporte
-                    </button>
-                    <a href="{{ route('support.my-tickets') }}" class="px-8 py-4 rounded-xl font-bold text-slate-400 hover:text-white transition-all">
-                        Cancelar
-                    </a>
-                </div>
-            </form>
-        </div>
-
-        <!-- Guidance Column -->
-        <div class="space-y-6">
-            <!-- SLA Insight Card -->
-            <div class="synapse-glass p-6">
-                <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">Estimación de Respuesta (SLA)</h3>
-                <div class="chart-container">
-                    <canvas id="slaPreviewChart"></canvas>
-                </div>
-                <div id="slaDetail" class="mt-4 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-                    <p class="text-[10px] text-slate-500 uppercase font-black">Compromiso de Atención</p>
-                    <p id="slaText" class="text-sm font-bold text-emerald-400 mt-1">~ 24-48 Horas Laborales</p>
-                </div>
-            </div>
-
-            <!-- Category Info Card -->
-            <div class="synapse-glass p-6 border-l-4 border-l-amber-500">
-                <h3 class="text-sm font-bold text-white mb-2 tracking-tight">¿No conoces tu categoría?</h3>
-                <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                    Para agilizar la resolución, cada ticket debe estar clasificado correctamente. Si no tienes el código CAT, contacta al administrador o utiliza el prefijo <code class="bg-slate-800 px-1 rounded text-amber-400">GEN-01</code> para consultas generales.
-                </p>
-                <div class="flex items-center gap-2 text-[10px] font-bold text-amber-500 uppercase">
-                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
-                    Campo obligatorio
-                </div>
-            </div>
-
-            <!-- Best Practices Card -->
-            <div class="synapse-glass p-6">
-                <h3 class="text-sm font-bold text-white mb-4 tracking-tight">Consejos para un buen ticket</h3>
-                <ul class="space-y-3">
-                    <li class="flex items-start gap-3 text-xs text-slate-400">
-                        <span class="text-indigo-400 font-bold">1.</span>
-                        <span>Sé específico en el título. Evita usar "Ayuda" o "Error".</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-xs text-slate-400">
-                        <span class="text-indigo-400 font-bold">2.</span>
-                        <span>Adjunta pasos exactos para reproducir el fallo.</span>
-                    </li>
-                    <li class="flex items-start gap-3 text-xs text-slate-400">
-                        <span class="text-indigo-400 font-bold">3.</span>
-                        <span>Menciona si el problema afecta a otros usuarios.</span>
-                    </li>
+    @if ($errors->any())
+        <x-alert type="error" class="mb-6">
+            <x-icon name="alert-circle" class="mt-0.5 h-4 w-4 shrink-0" />
+            <div>
+                <p class="font-semibold">Revisa los siguientes campos:</p>
+                <ul class="mt-1 list-disc space-y-0.5 pl-4 text-xs">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
                 </ul>
             </div>
-        </div>
+        </x-alert>
+    @endif
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <form method="POST" action="{{ route('support.create.ticket') }}" class="space-y-5 lg:col-span-2">
+            @csrf
+
+            <x-card>
+                <div class="space-y-5">
+                    <x-field label="Título del requerimiento" :error="$errors->first('title')">
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ old('title') }}"
+                            maxlength="255"
+                            required
+                            placeholder="Ej. Error al abrir el catálogo de la biblioteca"
+                            class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-4 text-sm text-[var(--color-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+                        >
+                    </x-field>
+
+                    <x-field label="Descripción detallada" :error="$errors->first('description')">
+                        <textarea
+                            name="description"
+                            rows="7"
+                            required
+                            placeholder="Explica qué ocurrió, los pasos para reproducirlo y cualquier mensaje de error que hayas visto."
+                            class="w-full resize-y rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-4 py-3 text-sm text-[var(--color-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+                        >{{ old('description') }}</textarea>
+                    </x-field>
+
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <x-field label="Prioridad del impacto" :error="$errors->first('priority')">
+                            <select
+                                name="priority"
+                                class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-3 text-sm text-[var(--color-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+                            >
+                                <option value="low" @selected(old('priority') === 'low')>Baja · Consulta general</option>
+                                <option value="medium" @selected(old('priority', 'medium') === 'medium')>Media · Problema menor</option>
+                                <option value="high" @selected(old('priority') === 'high')>Alta · Fallo de servicio</option>
+                                <option value="urgent" @selected(old('priority') === 'urgent')>Urgente · Bloqueo total</option>
+                            </select>
+                        </x-field>
+
+                        <x-field label="ID de categoría" hint="Código de categoría que corresponde a tu reporte." :error="$errors->first('category_id')">
+                            <input
+                                type="text"
+                                name="category_id"
+                                value="{{ old('category_id') }}"
+                                required
+                                placeholder="CAT-0000"
+                                class="h-11 w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-card)] px-4 font-mono text-sm text-[var(--color-foreground)] focus:border-[var(--color-primary)] focus:outline-none"
+                            >
+                        </x-field>
+                    </div>
+                </div>
+            </x-card>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <x-button type="submit" variant="primary" size="md">
+                    <x-icon name="send" class="h-4 w-4" />
+                    Crear ticket
+                </x-button>
+                <x-button :href="route('support.my-tickets')" variant="ghost" size="md">Cancelar</x-button>
+            </div>
+        </form>
+
+        <aside class="space-y-4">
+            <x-card title="Qué incluir">
+                <ul class="space-y-3 text-sm text-[var(--color-muted-foreground)]">
+                    <li class="flex gap-3">
+                        <span class="mt-0.5 text-[var(--color-primary)]"><x-icon name="check" class="h-4 w-4" /></span>
+                        <span>Un título específico: evita títulos genéricos como “Ayuda” o “Error”.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="mt-0.5 text-[var(--color-primary)]"><x-icon name="check" class="h-4 w-4" /></span>
+                        <span>Los pasos exactos para reproducir el problema.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="mt-0.5 text-[var(--color-primary)]"><x-icon name="check" class="h-4 w-4" /></span>
+                        <span>El mensaje o código de error, si aparece en pantalla.</span>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="mt-0.5 text-[var(--color-primary)]"><x-icon name="check" class="h-4 w-4" /></span>
+                        <span>Si el problema afecta a más usuarios o solo a tu cuenta.</span>
+                    </li>
+                </ul>
+            </x-card>
+
+            <x-card class="border-[var(--color-accent)]/30">
+                <div class="flex gap-3">
+                    <span class="mt-0.5 shrink-0 text-[var(--color-accent)]"><x-icon name="info" class="h-5 w-5" /></span>
+                    <div>
+                        <p class="text-sm font-semibold text-[var(--color-foreground)]">Sobre la prioridad</p>
+                        <p class="mt-1 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
+                            La prioridad orienta al equipo de soporte, pero no garantiza un tiempo de respuesta específico.
+                        </p>
+                    </div>
+                </div>
+            </x-card>
+        </aside>
     </div>
 </x-page>
-
-<script>
-    let slaChart;
-
-    document.addEventListener('DOMContentLoaded', function() {
-        initSLAChart();
-        updateSLAChart();
-    });
-
-    function initSLAChart() {
-        const ctx = document.getElementById('slaPreviewChart').getContext('2d');
-        slaChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Baja', 'Media', 'Alta', 'Urgente'],
-                datasets: [{
-                    label: 'Horas de Respuesta',
-                    data: [48, 24, 4, 1],
-                    backgroundColor: [
-                        'rgba(148, 163, 184, 0.2)',
-                        'rgba(99, 102, 241, 0.2)',
-                        'rgba(245, 158, 11, 0.2)',
-                        'rgba(239, 68, 68, 0.2)'
-                    ],
-                    borderColor: [
-                        '#94a3b8',
-                        '#6366f1',
-                        '#f59e0b',
-                        '#ef4444'
-                    ],
-                    borderWidth: 2,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { 
-                        display: false,
-                        beginAtZero: true 
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#64748b', font: { size: 9, weight: 'bold' } }
-                    }
-                }
-            }
-        });
-    }
-
-    function updateSLAChart() {
-        const priority = document.getElementById('priority').value;
-        const slaText = document.getElementById('slaText');
-        
-        // Reset colors
-        slaChart.data.datasets[0].backgroundColor = slaChart.data.datasets[0].backgroundColor.map(c => c.replace('0.8', '0.2'));
-        
-        let index = 0;
-        let text = "";
-        let color = "";
-
-        switch(priority) {
-            case 'low': 
-                index = 0; text = "~ 48 Horas Laborales"; color = "#94a3b8";
-                break;
-            case 'medium': 
-                index = 1; text = "~ 24 Horas Laborales"; color = "#6366f1";
-                break;
-            case 'high': 
-                index = 2; text = "~ 4 Horas (Mismo día)"; color = "#f59e0b";
-                break;
-            case 'urgent': 
-                index = 3; text = "< 1 Hora (Crítico)"; color = "#ef4444";
-                break;
-        }
-
-        // Highlight selected
-        const bgColors = [
-            'rgba(148, 163, 184, 0.2)',
-            'rgba(99, 102, 241, 0.2)',
-            'rgba(245, 158, 11, 0.2)',
-            'rgba(239, 68, 68, 0.2)'
-        ];
-        bgColors[index] = bgColors[index].replace('0.2', '0.8');
-        slaChart.data.datasets[0].backgroundColor = bgColors;
-        slaChart.update();
-
-        slaText.innerText = text;
-        slaText.style.color = color;
-    }
-</script>
-
 @endsection

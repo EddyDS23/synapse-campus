@@ -7,5 +7,5 @@
 @endphp
 
 <div {{ $attributes->merge(['class' => 'inline-flex items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary)] font-semibold text-[var(--color-on-primary)] ' . $s]) }}>
-    {{ $slot ?: $initials }}
+    {{ $slot->isEmpty() ? $initials : $slot }}
 </div>

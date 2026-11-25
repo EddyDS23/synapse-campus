@@ -1,4 +1,4 @@
-@props(['variant' => 'primary', 'size' => 'md', 'type' => 'button'])
+@props(['variant' => 'primary', 'size' => 'md', 'type' => 'button', 'href' => null])
 
 @php
     $variants = [
@@ -15,8 +15,9 @@
     ];
     $v = $variants[$variant] ?? $variants['primary'];
     $s = $sizes[$size] ?? $sizes['md'];
+    $tag = $href ? 'a' : 'button';
 @endphp
 
-<button type="{{ $type }}" {{ $attributes->merge(['class' => 'inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] disabled:opacity-50 disabled:cursor-not-allowed ' . $v . ' ' . $s]) }}>
+<{{ $tag }} @if ($href) href="{{ $href }}" @else type="{{ $type }}" @endif {{ $attributes->merge(['class' => 'inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)] disabled:opacity-50 disabled:cursor-not-allowed ' . $v . ' ' . $s]) }}>
     {{ $slot }}
-</button>
+</{{ $tag }}>

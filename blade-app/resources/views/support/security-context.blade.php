@@ -1,137 +1,114 @@
 @extends('layouts.app')
 
-@section('title', 'Contexto de Seguridad | Synapse Support')
+@section('title', 'Contexto de Seguridad | Synapse')
 
 @section('content')
 <x-page>
-    
-    <!-- Header Area -->
-    <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <header class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight">Contexto de <span class="text-indigo-400">Seguridad</span></h1>
-            <p class="text-slate-400 mt-1">Análisis de riesgo y estado de autenticación del usuario.</p>
+            <a href="{{ route('support.ticket', $ticket['id'] ?? '') }}" class="mb-4 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-muted-foreground)] transition hover:text-[var(--color-foreground)]">
+                <x-icon name="arrow-left" class="h-3.5 w-3.5" />
+                Volver al ticket
+            </a>
+            <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)]">Soporte · Seguridad</p>
+            <h1 class="mt-2 text-3xl font-semibold leading-tight tracking-tight text-[var(--color-foreground)] font-[family-name:var(--font-serif)]">
+                Contexto de seguridad
+            </h1>
+            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+                Estado de autenticación y sesiones del usuario que reportó el ticket.
+            </p>
         </div>
-
-        <a href="{{ route('support.ticket', $ticket['id'] ?? '') }}" class="bg-slate-800 text-slate-300 border border-slate-700 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-slate-700 hover:text-white transition-all flex items-center gap-2 shadow-lg">
-            <span>←</span> Volver al Ticket
-        </a>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- Columna Izquierda: Información del Ticket -->
-        <div class="lg:col-span-1">
-            <div class="synapse-glass p-6 sticky top-6">
-                <h2 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-5 border-b border-slate-800/50 pb-3">Referencia</h2>
-                
-                <div class="space-y-5">
-                    <div>
-                        <span class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Título del Ticket</span>
-                        <span class="text-sm font-medium text-white">{{ $ticket['title'] ?? '—' }}</span>
-                    </div>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <x-card title="Referencia del ticket" class="lg:col-span-1">
+            <dl class="space-y-4 text-sm">
+                <div>
+                    <dt class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Asunto</dt>
+                    <dd class="mt-1 font-medium text-[var(--color-foreground)]">{{ $ticket['title'] ?? '—' }}</dd>
+                </div>
+                <div>
+                    <dt class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Estado</dt>
+                    <dd class="mt-1"><x-badge variant="neutral">{{ ucfirst(str_replace('_', ' ', $ticket['status'] ?? '—')) }}</x-badge></dd>
+                </div>
+                <div>
+                    <dt class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">ID del solicitante</dt>
+                    <dd class="mt-1 inline-flex items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-muted)] px-2.5 py-1 font-mono text-xs text-[var(--color-foreground)]">
+                        <x-icon name="user" class="h-3.5 w-3.5 text-[var(--color-muted-foreground)]" />
+                        {{ $ticket['requester_id'] ?? '—' }}
+                    </dd>
+                </div>
+            </dl>
+        </x-card>
 
-                    <div>
-                        <span class="block text-[10px] text-slate-500 uppercase font-bold mb-1">Estado</span>
-                        <span class="inline-block bg-slate-800 text-slate-300 text-[10px] font-extrabold uppercase px-3 py-1 rounded-full border border-slate-700">
-                            {{ $ticket['status'] ?? '—' }}
-                        </span>
-                    </div>
-
-                    <div>
-                        <span class="block text-[10px] text-slate-500 uppercase font-bold mb-1">ID Solicitante</span>
-                        <div class="inline-flex items-center gap-2 bg-indigo-950/30 border border-indigo-500/20 px-3 py-1.5 rounded-lg">
-                            <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
-                            <span class="text-indigo-300 text-xs font-mono font-bold">{{ $ticket['requester_id'] ?? '—' }}</span>
+        <x-card title="Auditoría de la cuenta" subtitle="Datos reportados por el servicio de autenticación." class="lg:col-span-2">
+            @if (empty($securityContext))
+                <x-empty-state
+                    title="Contexto no disponible"
+                    description="El servicio de auditoría no devolvió información para este usuario. Puede estar temporalmente fuera de línea."
+                />
+            @else
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div class="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-4">
+                        <div class="flex items-center justify-between">
+                            <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Autenticación 2FA</p>
+                            <x-icon :name="$securityContext['two_factor_enabled'] ? 'lock' : 'unlock'" class="h-4 w-4 {{ $securityContext['two_factor_enabled'] ? 'text-[var(--color-success)]' : 'text-[var(--color-warning)]' }}" />
                         </div>
+                        <p class="mt-2 text-lg font-semibold {{ $securityContext['two_factor_enabled'] ? 'text-[var(--color-success)]' : 'text-[var(--color-warning)]' }}">
+                            {{ $securityContext['two_factor_enabled'] ? 'Activo' : 'Inactivo' }}
+                        </p>
+                        <p class="mt-1 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
+                            {{ $securityContext['two_factor_enabled']
+                                ? 'La cuenta requiere un segundo factor al iniciar sesión.'
+                                : 'La cuenta inicia sesión solo con contraseña.' }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-4">
+                        <div class="flex items-center justify-between">
+                            <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Sesiones activas</p>
+                            <x-icon name="monitor" class="h-4 w-4 text-[var(--color-muted-foreground)]" />
+                        </div>
+                        <p class="mt-2 font-mono text-lg font-semibold text-[var(--color-foreground)]">{{ $securityContext['active_sessions'] }}</p>
+                        <p class="mt-1 text-xs leading-relaxed text-[var(--color-muted-foreground)]">Dispositivos con sesión vigente.</p>
+                    </div>
+
+                    <div class="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-4">
+                        <div class="flex items-center justify-between">
+                            <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Último acceso</p>
+                            <x-icon name="clock" class="h-4 w-4 text-[var(--color-muted-foreground)]" />
+                        </div>
+                        @if ($securityContext['last_login'])
+                            <p class="mt-2 text-sm font-semibold text-[var(--color-foreground)]">
+                                {{ \Carbon\Carbon::parse($securityContext['last_login'])->translatedFormat('d M Y') }}
+                            </p>
+                            <p class="mt-0.5 font-mono text-xs text-[var(--color-muted-foreground)]">
+                                {{ \Carbon\Carbon::parse($securityContext['last_login'])->format('H:i:s') }}
+                            </p>
+                        @else
+                            <p class="mt-2 text-sm text-[var(--color-muted-foreground)]">Sin registros</p>
+                        @endif
+                    </div>
+
+                    <div class="rounded-[var(--radius-md)] border p-4 {{ $securityContext['account_blocked']
+                        ? 'border-[var(--color-destructive)]/30 bg-[color-mix(in_srgb,var(--color-destructive)_8%,transparent)]'
+                        : 'border-[var(--color-border)] bg-[var(--color-muted)]/40' }}">
+                        <div class="flex items-center justify-between">
+                            <p class="text-[10px] font-semibold uppercase tracking-wide text-[var(--color-muted-foreground)]">Estado de la cuenta</p>
+                            <x-icon :name="$securityContext['account_blocked'] ? 'user-x' : 'user-check'" class="h-4 w-4 {{ $securityContext['account_blocked'] ? 'text-[var(--color-destructive)]' : 'text-[var(--color-success)]' }}" />
+                        </div>
+                        <p class="mt-2 text-lg font-semibold {{ $securityContext['account_blocked'] ? 'text-[var(--color-destructive)]' : 'text-[var(--color-success)]' }}">
+                            {{ $securityContext['account_blocked'] ? 'Bloqueada' : 'Operativa' }}
+                        </p>
+                        <p class="mt-1 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
+                            {{ $securityContext['account_blocked']
+                                ? 'Requiere intervención de un administrador de seguridad.'
+                                : 'Sin restricciones de seguridad activas.' }}
+                        </p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Columna Derecha: Métricas de Seguridad -->
-        <div class="lg:col-span-2">
-            <div class="synapse-glass p-6 h-full">
-                <div class="flex items-center gap-2 border-b border-slate-800/50 pb-3 mb-6">
-                    <span class="text-xl">🛡️</span>
-                    <h2 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Auditoría de Cuenta</h2>
-                </div>
-
-                @if(empty($securityContext))
-                    <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-slate-900/30 rounded-2xl border border-dashed border-slate-700">
-                        <span class="text-4xl opacity-30 mb-3">⚠️</span>
-                        <p class="text-slate-400 text-sm font-medium">No se pudo obtener el contexto de seguridad para este usuario.</p>
-                        <p class="text-slate-600 text-xs mt-1">El servicio de auditoría podría estar temporalmente fuera de línea.</p>
-                    </div>
-                @else
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        
-                        <!-- Métrica: 2FA -->
-                        <div class="security-metric {{ $securityContext['two_factor_enabled'] ? 'border-emerald-500/20' : 'border-amber-500/30' }}">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">Autenticación 2FA</span>
-                                <span class="text-lg">{{ $securityContext['two_factor_enabled'] ? '🔒' : '🔓' }}</span>
-                            </div>
-                            <div>
-                                @if($securityContext['two_factor_enabled'])
-                                    <span class="text-emerald-400 font-black text-xl">Activo</span>
-                                    <p class="text-[10px] text-slate-500 mt-1">Protección de capa adicional habilitada.</p>
-                                @else
-                                    <span class="text-amber-400 font-black text-xl">Inactivo</span>
-                                    <p class="text-[10px] text-slate-500 mt-1">El usuario es vulnerable a ataques de credenciales.</p>
-                                @endif
-                            </div>
-                        </div>
-
-                        <!-- Métrica: Sesiones -->
-                        <div class="security-metric">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">Sesiones Activas</span>
-                                <span class="text-lg">💻</span>
-                            </div>
-                            <div>
-                                <span class="text-white font-black text-2xl">{{ $securityContext['active_sessions'] }}</span>
-                                <p class="text-[10px] text-slate-500 mt-1">Dispositivos conectados actualmente.</p>
-                            </div>
-                        </div>
-
-                        <!-- Métrica: Último Login -->
-                        <div class="security-metric">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">Último Acceso</span>
-                                <span class="text-lg">⏱️</span>
-                            </div>
-                            <div>
-                                <span class="text-indigo-300 font-mono text-sm font-bold block mb-1">
-                                    {{ $securityContext['last_login'] ? \Carbon\Carbon::parse($securityContext['last_login'])->format('d M Y') : '—' }}
-                                </span>
-                                <span class="text-white text-xs">
-                                    {{ $securityContext['last_login'] ? \Carbon\Carbon::parse($securityContext['last_login'])->format('H:i:s') : 'Sin registros' }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Métrica: Bloqueo de cuenta -->
-                        <div class="security-metric {{ $securityContext['account_blocked'] ? 'bg-red-500/10 border-red-500/30' : '' }}">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">Estado de Cuenta</span>
-                                <span class="text-lg">{{ $securityContext['account_blocked'] ? '🚫' : '✅' }}</span>
-                            </div>
-                            <div>
-                                @if($securityContext['account_blocked'])
-                                    <span class="text-red-400 font-black text-xl">Bloqueada</span>
-                                    <p class="text-[10px] text-red-500/70 mt-1 font-bold">Requiere intervención administrativa.</p>
-                                @else
-                                    <span class="text-emerald-400 font-black text-xl">Operativa</span>
-                                    <p class="text-[10px] text-slate-500 mt-1">Sin restricciones de seguridad.</p>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
-                @endif
-            </div>
-        </div>
-
+            @endif
+        </x-card>
     </div>
 </x-page>
 @endsection
