@@ -102,8 +102,9 @@ class AuthController extends Controller
             'token_expiry'  => $result['token_expiry'],
             'email'         => $result['email'],
             'roles'         => $result['roles'],
-        ]);
+            'name'          => $result['name'],
 
+        ]);
         return redirect()->route('dashboard');
     }
 

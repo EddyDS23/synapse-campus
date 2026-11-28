@@ -1,48 +1,57 @@
 /* ============================================================
-   Synapse Campus — Design Tokens (Option B: Institutional)
-   Navy + Research Amber · EB Garamond + Atkinson Hyperlegible
+   Synapse Campus — Design Tokens (Regla 60-30-10)
+   60% Neutro (Stone/White) · 30% Carbón · 10% Carmesí Oscuro
    ============================================================ */
 
 :root {
-    /* ---------- Color: light (default) ---------- */
-    --color-primary: #991B1B;
+    /* ---------- 10% Acento: Carmesí Oscuro ---------- */
+    --color-primary: #881337;
+    --color-primary-hover: #9F1239;
     --color-on-primary: #FFFFFF;
-    --color-secondary: #C2410C;
-    --color-on-secondary: #FFFFFF;
-    --color-accent: #B45309;
+    --color-secondary: #1C1917;
+    --color-on-secondary: #FAFAF9;
+    --color-accent: #881337;
     --color-on-accent: #FFFFFF;
 
-    --color-background: #FAF7F2;
-    --color-foreground: #1F2937;
-    --color-card: #FFFFFF;
-    --color-card-foreground: #1F2937;
-    --color-muted: #F4EFE7;
-    --color-muted-foreground: #6B6257;
-    --color-border: #E9E2D7;
+    /* ---------- 30% Estructura: Carbón (Sidebar / Topbar / Branding) ---------- */
+    --color-chrome-bg: #1C1917;
+    --color-chrome-elevated: #292524;
+    --color-chrome-border: #292524;
+    --color-chrome-fg: #FAFAF9;
+    --color-chrome-muted: #A8A29E;
 
-    --color-destructive: #B91C1C;
+    /* ---------- 60% Neutro: Superficies y Lectura (Light Default) ---------- */
+    --color-background: #FAFAF9;
+    --color-foreground: #1C1917;
+    --color-card: #FFFFFF;
+    --color-card-foreground: #1C1917;
+    --color-muted: #F5F5F4;
+    --color-muted-foreground: #57534E;
+    --color-border: #E7E5E4;
+
+    /* ---------- Estados Semánticos ---------- */
+    --color-destructive: #DC2626;
     --color-on-destructive: #FFFFFF;
     --color-success: #15803D;
     --color-warning: #B45309;
 
-    /* ecosystem status */
     --color-ok: #15803D;
     --color-warn: #B45309;
-    --color-danger: #B91C1C;
+    --color-danger: #DC2626;
 
-    /* ---------- Radius / spacing / shadow ---------- */
+    /* ---------- Radios, Sombras y Layout ---------- */
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 14px;
     --radius-xl: 20px;
 
-    --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, .08), 0 2px 4px rgba(15, 23, 42, .06);
-    --shadow-lg: 0 12px 32px rgba(15, 23, 42, .12), 0 4px 8px rgba(15, 23, 42, .06);
+    --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.05), 0 1px 3px rgba(28, 25, 23, 0.07);
+    --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.08), 0 2px 4px rgba(28, 25, 23, 0.05);
+    --shadow-lg: 0 12px 32px rgba(28, 25, 23, 0.12), 0 4px 8px rgba(28, 25, 23, 0.06);
 
     --t: 160ms ease;
     --sidebar-w: 240px;
-    --topbar-h: 56px;
+    --topbar-h: 60px;
 
     --font-sans: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-serif: 'EB Garamond', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
@@ -50,23 +59,34 @@
 }
 
 [data-theme="dark"] {
-    --color-primary: #4F46E5;
+    /* ---------- 10% Acento: Carmesí Vibrante sobre oscuro ---------- */
+    --color-primary: #BE123C;
+    --color-primary-hover: #E11D48;
     --color-on-primary: #FFFFFF;
-    --color-secondary: #6366F1;
-    --color-on-secondary: #FFFFFF;
-    --color-accent: #FBBF24;
-    --color-on-accent: #1F2937;
+    --color-secondary: #292524;
+    --color-on-secondary: #FAFAF9;
+    --color-accent: #BE123C;
+    --color-on-accent: #FFFFFF;
 
-    --color-background: #0B1120;
-    --color-foreground: #E2E8F0;
-    --color-card: #111827;
-    --color-card-foreground: #E2E8F0;
-    --color-muted: #1E293B;
-    --color-muted-foreground: #94A3B8;
-    --color-border: #1F2937;
+    /* ---------- 30% Estructura: Carbón Profundo ---------- */
+    --color-chrome-bg: #141210;
+    --color-chrome-elevated: #1C1917;
+    --color-chrome-border: #292524;
+    --color-chrome-fg: #FAFAF9;
+    --color-chrome-muted: #A8A29E;
 
+    /* ---------- 60% Neutro: Superficies Oscuras ---------- */
+    --color-background: #0C0A09;
+    --color-foreground: #F5F5F4;
+    --color-card: #1C1917;
+    --color-card-foreground: #F5F5F4;
+    --color-muted: #292524;
+    --color-muted-foreground: #A8A29E;
+    --color-border: #292524;
+
+    /* ---------- Estados Semánticos ---------- */
     --color-destructive: #F87171;
-    --color-on-destructive: #1F2937;
+    --color-on-destructive: #1C1917;
     --color-success: #4ADE80;
     --color-warning: #FBBF24;
 
@@ -74,9 +94,9 @@
     --color-warn: #FBBF24;
     --color-danger: #F87171;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 3px rgba(0, 0, 0, .3);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, .45), 0 2px 4px rgba(0, 0, 0, .3);
-    --shadow-lg: 0 12px 32px rgba(0, 0, 0, .55), 0 4px 8px rgba(0, 0, 0, .35);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.50), 0 2px 4px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.60), 0 4px 8px rgba(0, 0, 0, 0.40);
 }
 
 /* Respect reduced motion */

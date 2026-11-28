@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -32,7 +33,7 @@ class UserController extends Controller
             ->first();
 
         $active_sessions = $user->apiSessions()->count();
-
+     
         return response()->json([
             'user_id'=>$user->id,
             'two_factor_enabled'=>$user->two_factor_enabled,

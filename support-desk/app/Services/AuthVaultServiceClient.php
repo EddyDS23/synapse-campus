@@ -41,7 +41,7 @@ class AuthVaultServiceClient
 
         $token = $response->json('token');
 
-        Cache::add(SELF::CACHE_TOKEN_SERVICE, $token, now()->addMinutes(58));
+        Cache::add(SELF::CACHE_TOKEN_SERVICE, $token, now()->addMinutes(14));
         return $token;
     }
 

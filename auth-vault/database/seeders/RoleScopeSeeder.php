@@ -21,7 +21,7 @@ class RoleScopeSeeder extends Seeder
         'librarian' => ['profile:read', 'library:books:read', 'library:loans:read', 'library:loans:renew', 'library:fines:read', 'library:fines:pay', 'library:inventory:manage','files:read','files:upload'],
         'support_agent' => ['profile:read', 'support:tickets:read', 'support:tickets:comment', 'support:tickets:assign', 'support:tickets:close','files:read','files:upload'],
         'academic_admin' => ['profile:read', 'student:profile:read', 'student:status:read', 'student:schedule:read', 'student:subjects:read','files:read','files:upload','files:delete'],
-        'security_admin' => ['profile:read', 'audit:events:read','user:security_status:read','files:read','files:upload','files:delete'],
+        'security_admin' => ['profile:read', 'audit:events:read','user:security-status:read','support:tickets:read','support:tickets:comment','support:tickets:close','files:read','files:upload','files:delete'],
     ];
 
     foreach ($assignments as $roleName => $scopeNames) {

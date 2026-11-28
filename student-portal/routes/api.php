@@ -4,6 +4,7 @@ use App\Http\Controllers\InternalController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['authvault.jwt'])->group(function(){
@@ -13,7 +14,9 @@ Route::middleware(['authvault.jwt'])->group(function(){
 });
 
 Route::middleware(['authvault.jwt','scope.check:student:profile:read'])->group(function(){
+    Log::info("Paso 1");
     Route::get('/profile', [StudentController::class,'profile']);
+    Log::info("Paso 2");
 });
 
 

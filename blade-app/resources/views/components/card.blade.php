@@ -1,14 +1,14 @@
 @props(['title' => null, 'subtitle' => null, 'padding' => 'p-5', 'hover' => false])
 
-<div {{ $attributes->merge(['class' => 'rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-card-foreground)] shadow-[var(--shadow-sm)] transition ' . ($hover ? 'hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5' : '') . ' ' . $padding]) }}>
+<div {{ $attributes->merge(['class' => 'rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-card-foreground)] shadow-[var(--shadow-sm)] transition-all ' . ($hover ? 'hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5' : '') . ' ' . $padding]) }}>
     @if ($title || $subtitle || isset($header))
         <div class="mb-4 flex items-start justify-between gap-3">
             <div>
                 @if ($title)
-                    <h3 class="text-base font-semibold font-[family-name:var(--font-serif)] leading-tight">{{ $title }}</h3>
+                    <h3 class="text-sm font-bold text-[var(--color-foreground)] tracking-tight leading-snug">{{ $title }}</h3>
                 @endif
                 @if ($subtitle)
-                    <p class="mt-1 text-xs text-[var(--color-muted-foreground)]">{{ $subtitle }}</p>
+                    <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)]">{{ $subtitle }}</p>
                 @endif
             </div>
             @isset($header)

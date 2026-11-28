@@ -42,7 +42,8 @@ class StudentPortalService
     }
 
     public function getProfile(): array
-    {
+    {   
+        Log::info( config('services.studentportal.profile_url'));
         return $this->request('get', config('services.studentportal.profile_url'));
     }
 
@@ -65,6 +66,7 @@ class StudentPortalService
     {
 
         $token = $this->getToken();
+        Log::info( config('services.studentportal.base_url') . $path);
         $response = Http::withToken($token)
             ->{$method}(config('services.studentportal.base_url') . $path);
 

@@ -66,6 +66,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email'=>$this->email,
+            'name'=>$this->name,
             'aud'=>'auth-vault',
             'roles'=>$this->roles->pluck('name'),
             'scopes'=> $this->roles->flatMap(fn($role)=> $role->scopes->pluck('name'))->unique()->values(),

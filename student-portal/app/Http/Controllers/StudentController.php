@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\StudentProfile;
 use App\Services\AuthVaultServiceClient;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -19,7 +20,6 @@ class StudentController extends Controller
         $studentId = $request->attributes->get('jwt_payload')->sub;
 
         $student_profile = StudentProfile::with('career')->find($studentId);
-
         if($student_profile === null){
             return response()->json(['This student havent profile'],404);
         }

@@ -481,7 +481,7 @@ class TicketController extends Controller
             if(!isEmpty($response)){
                 return response()->json(['message'=>'User not obteined'],503);
             }
-        
+                        
             $auditLogData = [
                 'actor_id'=>$payload->sub,
                 'service'=>'support-desk',

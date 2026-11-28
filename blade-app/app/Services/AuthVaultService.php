@@ -47,7 +47,8 @@ class AuthVaultService
             'refresh_token' => $data['refresh_token'],
             'token_expiry' => $this->getTokenExpiry($token),
             'email' => $this->extractEmail($token),
-            'roles' => $this->extractRoles($token)
+            'roles' => $this->extractRoles($token),
+            'name' => $this->extractName($token),
         ];
     }
 
@@ -153,6 +154,14 @@ class AuthVaultService
         $data = json_decode(base64_decode(str_pad($parts[1], strlen($parts[1]) % 4, '=')), true);
         return $data['email'];
     }
+
+    private function extractName(string $token): string
+    {
+        $parts = explode('.', $token);
+        $data = json_decode(base64_decode(str_pad($parts[1], strlen($parts[1]) % 4, '=')), true);
+        return $data['name'];
+    }
+
 
     private function getTokenExpiry(string $token): int
     {

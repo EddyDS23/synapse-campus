@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\StudentPortalService;
 
 use App\Exceptions\ServiceUnavailableException;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {

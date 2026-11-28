@@ -47,9 +47,20 @@ class SupportController extends Controller
             return view('errors.service')->with('message', 'Mesa de ayuda no disponible en este momento.');
         }
 
+        if (is_array($data) && !isset($data['data']) && (isset($data['error']) || isset($data['message']))) {
+            session()->now('error', $data['error'] ?? $data['message']);
+        }
+
+        $tickets = $data['data'] ?? (is_array($data) && array_is_list($data) ? $data : []);
+        $meta    = $data['metadata'] ?? [
+            'currentPage' => 1,
+            'totalPage'   => 1,
+            'total'       => count($tickets),
+        ];
+
         return view('support.all-tickets', [
-            'tickets'    => $data['data'],
-            'meta'       => $data['metadata'],
+            'tickets'    => $tickets,
+            'meta'       => $meta,
             'statuses'   => ['open', 'in_progress', 'on_hold', 'resolved', 'closed'],
             'priorities' => ['low', 'medium', 'high', 'urgent'],
         ]);
